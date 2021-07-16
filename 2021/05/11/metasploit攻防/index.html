@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>metasploit攻防 | Imane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用metasploitable2作为靶机，kali版本：Linux kali 5.6.0-kali1-amd64 #1 SMP Debian 5.6.7-1kali1 (2020-05-12) x86_64 GNU&#x2F;Linux 攻击靶机获取账号密码同组人来修改自己靶机的密码（8位）并透露其中4位，自己攻击自己的靶机。 本次我的靶机root密码中4位：2324，msfadmin密码中4位：1864">
+<meta property="og:type" content="article">
+<meta property="og:title" content="metasploit攻防">
+<meta property="og:url" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/index.html">
+<meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="使用metasploitable2作为靶机，kali版本：Linux kali 5.6.0-kali1-amd64 #1 SMP Debian 5.6.7-1kali1 (2020-05-12) x86_64 GNU&#x2F;Linux 攻击靶机获取账号密码同组人来修改自己靶机的密码（8位）并透露其中4位，自己攻击自己的靶机。 本次我的靶机root密码中4位：2324，msfadmin密码中4位：1864">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%811.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%812.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%813.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%814.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%815.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%816.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%817.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%818.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%819.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8110.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8111.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8112.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8113.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8114.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8115.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8116.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8117.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8118.png">
+<meta property="article:published_time" content="2021-05-11T11:47:11.000Z">
+<meta property="article:modified_time" content="2021-05-17T08:44:37.678Z">
+<meta property="article:author" content="Imane">
+<meta property="article:tag" content="渗透">
+<meta property="article:tag" content="metasploit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%811.png">
+  
+    <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/project/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/project/" id="logo">Imane&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/project/">Home</a>
+        
+          <a class="main-nav-link" href="/project/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/project/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/project/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Imane219.github.io/project"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-metasploit攻防" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/" class="article-date">
+  <time datetime="2021-05-11T11:47:11.000Z" itemprop="datePublished">2021-05-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      metasploit攻防
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用metasploitable2作为靶机，kali版本：Linux kali 5.6.0-kali1-amd64 #1 SMP Debian 5.6.7-1kali1 (2020-05-12) x86_64 GNU/Linux</p>
+<h3 id="攻击靶机获取账号密码"><a href="#攻击靶机获取账号密码" class="headerlink" title="攻击靶机获取账号密码"></a>攻击靶机获取账号密码</h3><p>同组人来修改自己靶机的密码（8位）并透露其中4位，自己攻击自己的靶机。</p>
+<p>本次我的靶机root密码中4位：2324，msfadmin密码中4位：1864</p>
+<ol>
+<li><p><strong>获得靶机ip</strong></p>
+<p>首先查看自己的靶机所在的局域网，使用<code>ifconfig</code>命令得到自己ip为192.168.253.135</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%811.png"></p>
+<p>使用命令<code>namp -sP 192.168.253.0/24</code>查看同一局域网内的主机并选择攻击目标</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%812.png"></p>
+<p>一般ip的头尾不会作为主机ip，因此先排除192.168.253.1，而最后一个192.168.253.135就是攻击机本身，故只剩下三个选择。尝试ping三个ip地址，发现254无法ping通，故排除。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%813.png"></p>
+<p>使用命令nmap -O 192.168.253.xxx扫描主机的操作系统，可以看见.2的os信息是VMware Player virtual NAT device，可知它不是metasploitable靶机；.137是Linux 2.6.9 - 2.6.33，而我们知道metasploitable的内核是linux2.6.24，很有可能这个ip就是靶机。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%814.png"></p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%815.png"></p>
+<p>metasploitable会开启http服务，直接将ip:192.168.253.137输入到浏览器中，可以看到出现了metasploitable的http服务，至此我们可以确定靶机ip为192.168.253.137</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%816.png"></p>
+</li>
+<li><p><strong>寻找靶机漏洞</strong></p>
+<ul>
+<li><p>使用命令<code>nmap -T4 -sV -v 192.168.253.137</code>扫描靶机开机的端口，可以看到靶机开启了如下端口，我们利用apache服务器的WebDAV漏洞进行攻击。WebDAV是基于Web服务的扩展服务。它允许用户像操作本地文件一样，操作服务器上的文件。借助该功能，用户很方便的在网络上存储自己的文件。为了方便用户使用，通常会提供给用户较大的文件权限，如上传、修改甚至是执行权限。</p>
+<p>  <img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%817.png"></p>
+<p>  Kali Linux提供了一款WebDAV服务漏洞利用工具DAVTest。该工具会自动检测权限，寻找可执行文件的权限。一旦发现，用户就可以上传内置的后门工具，对服务器进行控制。同时，该工具可以上传用户指定的文件，便于后期利用。davtest的帮助如下：</p>
+<p>  <img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%818.png"></p>
+<p>  使用命令<code>davtest -url davtest -url http://192.168.253.137/dav</code>寻找可执行文件的权限，可以看到php文件是可以成功执行的，那么我们就生成php木马。</p>
+<p>  <img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%819.png"></p>
+</li>
+<li><p>也可以利用vsftpd 2.3.4漏洞。vsftpd 是一个 UNIX 类操作系统上运行的服务器的名字，它可以运行在诸如 Linux, BSD, Solaris, HP-UX 以及 IRIX 上面。它支持很多其他的 FTP 服务器不支持的特征。而vsftpd-2.3.4早期版本存在恶意的后门，我们可以直接利用它。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>利用漏洞</strong></p>
+<p>在初次启动metasploit的时候，需要打开postgresql数据库，命令<code>/etc/init.d/postgresql start</code>，想要开机自启则是<code>update-rc.d postgresql enable</code>。接着初次使用数据库服务时需初始化，以便创建系统默认的数据库及数据库用户；命令如下：<code>msfdb init</code>（默认创建的数据库名：msf，msf_test;用户名：msf；口令默认为空）。使用msfconsole即可开启msf。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8110.png"></p>
+<p>使用命令<code>search vsftpd</code>，可以看到msf中有可以利用的程序，使用它。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8111.png"></p>
+<p>输入命令<code>use exploit/unix/ftp/vsftpd_234_backdoor</code>，输入<code>show options</code>查看参数，需要rhost和rport参数。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8112.png"></p>
+<p>使用命令<code>set rhost 192.168.253.137</code>其中.137是我们的靶机，再次输入<code>show options</code>查看参数情况。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8113.png"></p>
+<p>直接输入<code>exploit</code>利用它，可以看到获取了shell，并且是root权限。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8114.png"></p>
+</li>
+<li><p><strong>获取密码</strong></p>
+<p><strong>/etc/passwd</strong>是获取用户的地方，语法格式：name:password:uid:gid:comment:home:shell。其中name是登录名，passwd是用户口令（加密的，通常用x表示），uid是指定用户的uid，gid是组id，comment用来保存用户的真实姓名和个人细节，home指定用户的主目录的绝对路径，shell默认使用的shell。</p>
+<p>可以看到root账户和msfadmin账户，其他都是伪用户。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8115.png"></p>
+<p><strong>/etc/shadow</strong>文件是只有系统管理员才有权利进行查看和修改的文件，其中的记录行与/etc/passwd中的一一对应，它由pwconv命令根据/etc/passwd中的数据自动产生，语法格式：username: passwd: lastchg: min: max: warn: inactive: expire: flag。username是与/etc/passwd文件中的登录名相一致的用户账号，passwd字段存放的是加密后的用户口令字，长度为13个字符；如果为空，则对应用户没有口令，登录时不需要口令；如果含有不属于集合{./0-9A-Za-z}中的字符，则对应的用户不能登录，lastchg表示的是从某个时刻起，到用户最后一次修改口令时的天数，min指的是两次修改口令之间所需的最小天数。(0代表任何时候可以修改)，max指的是口令保持有效的最大天数。（1代表永远不能修改），warn字段表示的是从系统开始警告用户到用户密码正式失效之间的天数。（-1代表没有警告），inactive表示的是用户没有登录活动但账号仍能保持有效的最大天数。（-1永远不会禁止），expire字段给出的是一个绝对的天数，如果使用了这个字段，那么就给出相应账号的生存期。期满后，该账号就不再是一个合法的账号，也就不能再用来登录了，flag保留以后使用。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8116.png"></p>
+<p>可以得到root用户的加密口令是<code>$1$VPC6Fq2x$q8t.HI6Rfm/fw2vwiE6pK.</code>，msfadmin用户的加密口令是<code>$1$fdA35sR0$csJypy26ZhgApL.zj0qGR1</code></p>
+<p>其中加密后的口令语法格式为：<code>$id$salt$encrypted</code>，id为1时，采用md5算法加密；id为5时，采用SHA256算法加密；id为6时，采用SHA512算法加密；salt为盐值,是对密码进行hash的一个干扰值；encrypted为散列值。</p>
+<p>将上述两个口令保存到文件root.txt和user.txt中，使用命令<code>hashcat -m 500 -a 3 /root/root.txt ?l?l?l?l2324 --force</code>完成破解，结果如图所示：</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8117.png"></p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8118.png"></p>
+<p>root账户的密码是swyy2324，msfadmin账户的密码是yyws1864</p>
+</li>
+</ol>
+<p>最后将整个exploit过程的流量包用wireshark抓包之后保存为pcapng格式即可。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/" data-id="ckr5o9zyl000mxkur3obo0xml" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          流量分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2021/04/27/%E6%B4%9B%E8%B0%B7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">洛谷</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/project/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/db/" rel="tag">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/project/tags/ARP/" style="font-size: 10px;">ARP</a> <a href="/project/tags/C/" style="font-size: 10px;">C++</a> <a href="/project/tags/CV/" style="font-size: 10px;">CV</a> <a href="/project/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/project/tags/Git/" style="font-size: 10px;">Git</a> <a href="/project/tags/STL/" style="font-size: 10px;">STL</a> <a href="/project/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/project/tags/adversarial-patch/" style="font-size: 10px;">adversarial patch</a> <a href="/project/tags/android/" style="font-size: 10px;">android</a> <a href="/project/tags/blog/" style="font-size: 20px;">blog</a> <a href="/project/tags/db/" style="font-size: 10px;">db</a> <a href="/project/tags/dp/" style="font-size: 10px;">dp</a> <a href="/project/tags/encryption/" style="font-size: 10px;">encryption</a> <a href="/project/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/project/tags/linux/" style="font-size: 10px;">linux</a> <a href="/project/tags/metasploit/" style="font-size: 10px;">metasploit</a> <a href="/project/tags/scapy/" style="font-size: 10px;">scapy</a> <a href="/project/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" style="font-size: 15px;">中国象棋</a> <a href="/project/tags/%E5%88%B7%E9%A2%98/" style="font-size: 10px;">刷题</a> <a href="/project/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/project/tags/%E6%95%A3%E5%88%97/" style="font-size: 10px;">散列</a> <a href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" style="font-size: 10px;">栈溢出</a> <a href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" style="font-size: 10px;">流量分析</a> <a href="/project/tags/%E6%B8%97%E9%80%8F/" style="font-size: 10px;">渗透</a> <a href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/project/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a> <a href="/project/tags/%E9%80%92%E5%BD%92/" style="font-size: 10px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/10/">October 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/project/2021/07/16/tmp/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/19/vpn/">miniVPN实现</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Imane<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/project/" class="mobile-nav-link">Home</a>
+  
+    <a href="/project/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/project/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/project/tags" class="mobile-nav-link">Tags</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/project/fancybox/jquery.fancybox.css">
+
+  
+<script src="/project/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/project/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

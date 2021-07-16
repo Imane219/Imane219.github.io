@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>miniVPN实现 | Imane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.网络环境搭建使用三个docker环境模拟三台主机，seedubuntu自身作为vpn服务器，vpn客户端和内网主机用容器。使用extranet模拟客户端和网关之间的外网，intranet模拟内网。  首先创建docker网络extranet和intranet，使用命令 sudo docker network create --subnet&#x3D;10.0.2.0&#x2F;24 --gateway&#x3D;10.0.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="miniVPN实现">
+<meta property="og:url" content="https://imane219.github.io/project/2021/05/19/vpn/index.html">
+<meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="1.网络环境搭建使用三个docker环境模拟三台主机，seedubuntu自身作为vpn服务器，vpn客户端和内网主机用容器。使用extranet模拟客户端和网关之间的外网，intranet模拟内网。  首先创建docker网络extranet和intranet，使用命令 sudo docker network create --subnet&#x3D;10.0.2.0&#x2F;24 --gateway&#x3D;10.0.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%931.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%932.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%933.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%934.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%935.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%936.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%937.png">
+<meta property="og:image" content="https://imane219.github.io/vpn/ca1.png">
+<meta property="article:published_time" content="2021-05-19T11:56:01.000Z">
+<meta property="article:modified_time" content="2021-05-29T11:02:27.620Z">
+<meta property="article:author" content="Imane">
+<meta property="article:tag" content="vpn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imane219.github.io/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
+  
+    <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/project/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/project/" id="logo">Imane&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/project/">Home</a>
+        
+          <a class="main-nav-link" href="/project/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/project/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/project/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Imane219.github.io/project"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-vpn" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/19/vpn/" class="article-date">
+  <time datetime="2021-05-19T11:56:01.000Z" itemprop="datePublished">2021-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      miniVPN实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-网络环境搭建"><a href="#1-网络环境搭建" class="headerlink" title="1.网络环境搭建"></a>1.网络环境搭建</h3><p>使用三个docker环境模拟三台主机，seedubuntu自身作为vpn服务器，vpn客户端和内网主机用容器。使用extranet模拟客户端和网关之间的外网，intranet模拟内网。</p>
+<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png"></p>
+<p><strong>首先创建docker网络extranet和intranet</strong>，使用命令</p>
+<p><code>sudo docker network create --subnet=10.0.2.0/24 --gateway=10.0.2.8 --opt  &quot;com.docker.network.bridge.name&quot;=&quot;docker1&quot; extranet</code></p>
+<p>创建extranet的网段是10.0.2.0/24，网关的地址是10.0.2.8，接口的名称是docker1</p>
+<p>创建intranet的命令是</p>
+<p><code>sudo docker network create --subnet=192.168.60.0/24 --gateway=192.168.60.1 --opt &quot;com.docker.network.bridge.name&quot;=&quot;docker2&quot; intranet</code></p>
+<p>成功后在虚拟机输入<code>docker network ls</code>可以看到多出了extranet和intranet</p>
+<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png"></p>
+<p><strong>接着开启两个新的终端，并创建容器HostU和HostV</strong>，使用命令</p>
+<p><code>sudo docker run -it --name=HostU --hostname=HostU --net=extranet --ip=10.0.2.7  --privileged &quot;seedubuntu&quot; /bin/bash</code></p>
+<p>指定该主机连接的网段是extranet，ip是10.0.2.7</p>
+<p>创建HostV的命令是<code>sudo docker run -it --name=HostV --hostname=HostV --net=intranet --ip=192.168.60.101 --privileged &quot;seedubuntu&quot; /bin/bash</code></p>
+<p>在两台主机上删除默认路由<code>route del default</code>，以免hostU能路由到hostV</p>
+<p>查看容器情况如图所示，容器ip均成功配置</p>
+<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png"></p>
+<h3 id="2-创建VPN隧道"><a href="#2-创建VPN隧道" class="headerlink" title="2.创建VPN隧道"></a>2.创建VPN隧道</h3><p>TLS/SSL VPN 中使用了 TUN/TAP 技术，其在现代操作系统中已经广泛使用。TUN 和 TAP 是虚拟网络内核驱动程序；它们可以实现完全由软件支持的网络设备。TAP 模拟以太网设备，处理的是以太网帧等二层数据包；TUN 模拟网络层设备，处理的是 IP 等三层数据包。我们可以用 TAP/TUN 创建虚拟网络接口。</p>
+<p>如图虚线是隧道，vpn客户端和服务器程序可以使用TUN接口从主机获取ip数据包和发送ip数据包到主机。</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%931.png"></p>
+<p>当HostU需要往HostV发送数据包，应用层的程序首先将数据传递，IP报文会被路由到tun0接口，vpnclient程序这时就会从tun0读取报文，并进行加密等操作后，发送到物理网卡eth0，由eth0把他当作应用层数据再进行一次封装。当报文达到vpn网关时，网关的物理网卡会将其解封装，把加密的报文传给vpnserver程序，vpnserver程序会将其解密，然后传递给tun0，路由到docker2网卡，封装后明文发给HostV</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%932.png"></p>
+<p>首先我们需要打开tun接口，编写编译vpnclient和vpnserver程序，并把编译好的vpnclient程序放入HostU容器中，使用命令<code>sudo docker cp vpnclient HostU:/vpnclient</code>。接着在虚拟机中运行vpnserver（<code>./vpnserver</code>），在HostU中运行vpnclient(<code>./vpnclient 10.0.2.8</code>)，将tun0接口打开，但是我们还需要配置tun0接口，使用命令<code>sudo ifconfig tun0 192.168.53.5/24 up</code>，将HostU的tun0接口配置到192.168.53.5/24网段，如图所示，tun0接口有了自己的ip，且状态是up</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%933.png"></p>
+<p>同样在虚拟机（server）中也要配置tun0接口，命令是<code>sudo ifconfig tun0 192.168.53.1/24 up</code></p>
+<p>接着我们需要给HostU和HostV配置默认路由。让HostU发给HostV的报文经过tun0再往外面发送，命令<code> route add -net 192.168.60.0/24 tun0</code>；让HostV发给HostU的报文经过vpn server网关，命令<code>route add -net 192.168.53.0/24 gw 192.168.60.1</code>，其中53/24是HostU的tun0接口，gw是网关地址</p>
+<p>配置后查看路由表可以看到有了到192.168.60.0/24的路由</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%934.png"></p>
+<p>同时开启server机器的ip转发功能，<code>sudo sysctl net.ipv4.ip_forward=1</code>，并关闭可能阻断转发的iptables规则<code>sudo iptables -F</code></p>
+<p>现在两台主机已经可以通过隧道通信了，如图所示，HostV上的tcpdump也成功截获了报文。</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%935.png"></p>
+<p>在docker1（extranet）网段截包，可以看到HostU到vpn网关往来的udp报文，其中udp报文中的数据部分是一个ip报文，看到data中以4500开头可以知道是典型ipv4报文头部，而这个报文则会是内网通讯的报文。</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%936.png"></p>
+<p>在docker2（intranet）截包可以看到是网关和HostV之间用icmp报文通信，此时已经剥开了外面的隧道报文，用于内网通信。</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%937.png"></p>
+<h3 id="3-加密隧道"><a href="#3-加密隧道" class="headerlink" title="3.加密隧道"></a>3.加密隧道</h3><p>利用TLS加密机制加密套接字通信，将前面UDP套接字通信改成TCP。使用openssl创建TLS会话，代码见下一节</p>
+<h3 id="4-建立CA"><a href="#4-建立CA" class="headerlink" title="4.建立CA"></a>4.建立CA</h3><p>在建立VPN之前，VPN客户端必须对服务器进行身份认证，确保服务器的真实性；同样服务器也需要对客户端认证。典型的认证方法是使用公钥证书，VPN服务器首先从CA获取公钥证书，当客户端连接到VPN服务器时，服务器将使用证书来证明自己是真的服务器。</p>
+<p>我们首先基于OpenSSL<strong>创建CA</strong>，然后使用它给服务器和用户颁发证书。</p>
+<ol>
+<li><p>创建文件夹CA，并且将/usr/lib/ssl/openssl.cnf配置文件复制到CA文件夹中，按照配置文件中的说明创建多个子目录（CA default部分）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cp /usr/lib/ssl/openssl.cnf openssl.cnf</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> demoCA</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir certs</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir crl</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> touch index.txt</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir newcerts</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> 1000 &gt; serial</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vpn/ca1.png"></p>
+</li>
+<li><p>给CA 自己创建一个自签名证书，这意味着此CA完全可信，其证书将作为根证书。命令<code>openssl req -new -x509 -keyout ca.key -out ca.crt -config openssl.cnf</code>生成ca.key文件存储ca的私钥，ca.crt文件存储ca的公钥证书。执行命令时会让填写国家等基本信息，还有PEM密码（123456），以后每次签发证书的时候都需要输入此密码。</p>
+</li>
+<li><p>现在我们需要给服务器签发公钥证书，首先创造一对公私钥对，使用命令<code>openssl genrsa -des3 -out server.key 1024</code>，我们还需要自己输入密码保护这对公私钥（123456）；接着生成证书签名请求（CSR），CSR将发送给CA，CA将为密钥生成证书，命令<code>openssl req -new -key server.key -out server.csr -config openssl.cnf</code></p>
+</li>
+<li><p>使用相似的命令生成服务端的RSA密钥对和CSR<code>openssl genrsa -des3 -out client.key 1024</code>(pass phrase:123456) <code>openssl req -new -key client.key -out client.csr -config openssl.cnf</code></p>
+</li>
+<li><p>生成证书：CSR文件需要有CA的签名才能形成证书，服务器：<code>openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key -config openssl.cnf</code>，客户端：<code>openssl ca -in client.csr -out client.crt -cert ca.crt -keyfile ca.key -config openssl.cnf</code></p>
+</li>
+</ol>
+<p><strong>创建CA方法2</strong>，使用上述方法签发证书会出现奇怪的bug，可以采用以下方法创建CA签发证书，用这种方法生成的证书并没有用到conf规定的目录，写程序的时候需要注意以下路径。</p>
+<ol>
+<li><p>生成签署CA证书</p>
+<p>生成CA私钥：<code>openssl genrsa -aes256 -out ca.key 2048</code></p>
+<p>生成CA证书签名请求（CSR）：<code>openssl req -new -sha256 -key ca.key -out ca.csr</code></p>
+<p>自签署证书：<code>openssl x509 -req -days 36500 -sha256 -extensions v3_ca -signkey ca.key -in ca.csr -out ca.crt</code></p>
+</li>
+<li><p>生成签署服务器证书</p>
+<p>生成服务器私钥：<code>openssl genrsa -aes256 -out server.key 2048</code></p>
+<p>生成服务器证书签名请求（CSR）：<code>openssl req -new -sha256 -key server.key -out server.csr</code></p>
+<p>签署服务器证书：<code>openssl x509 -req -days 36500 -sha256 -extensions v3_req  -CA  ca.crt -CAkey ca.key  -CAserial ca.srl  -CAcreateserial -in server.csr -out server.crt</code></p>
+</li>
+<li><p>生成签署客户端证书</p>
+<p>生成客户端私钥：<code>openssl genrsa -aes256 -out client.key 2048</code></p>
+<p>生成客户端证书签名请求（CSR）：<code>openssl req -new -sha256 -key client.key  -out client.csr</code></p>
+<p>签署客户端证书：<code>openssl x509 -req -days 36500 -sha256 -extensions v3_req  -CA  ca.crt -CAkey ca.key -CAserial ca.srl -CAcreateserial -in client.csr -out client.crt</code></p>
+</li>
+</ol>
+<h3 id="5-client程序编写"><a href="#5-client程序编写" class="headerlink" title="5.client程序编写"></a>5.client程序编写</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/19/vpn/" data-id="ckr5o9zym000oxkur7axgaryc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          hexo使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">安卓程序加密算法及密钥生成过程分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/project/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/db/" rel="tag">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/project/tags/ARP/" style="font-size: 10px;">ARP</a> <a href="/project/tags/C/" style="font-size: 10px;">C++</a> <a href="/project/tags/CV/" style="font-size: 10px;">CV</a> <a href="/project/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/project/tags/Git/" style="font-size: 10px;">Git</a> <a href="/project/tags/STL/" style="font-size: 10px;">STL</a> <a href="/project/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/project/tags/adversarial-patch/" style="font-size: 10px;">adversarial patch</a> <a href="/project/tags/android/" style="font-size: 10px;">android</a> <a href="/project/tags/blog/" style="font-size: 20px;">blog</a> <a href="/project/tags/db/" style="font-size: 10px;">db</a> <a href="/project/tags/dp/" style="font-size: 10px;">dp</a> <a href="/project/tags/encryption/" style="font-size: 10px;">encryption</a> <a href="/project/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/project/tags/linux/" style="font-size: 10px;">linux</a> <a href="/project/tags/metasploit/" style="font-size: 10px;">metasploit</a> <a href="/project/tags/scapy/" style="font-size: 10px;">scapy</a> <a href="/project/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" style="font-size: 15px;">中国象棋</a> <a href="/project/tags/%E5%88%B7%E9%A2%98/" style="font-size: 10px;">刷题</a> <a href="/project/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/project/tags/%E6%95%A3%E5%88%97/" style="font-size: 10px;">散列</a> <a href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" style="font-size: 10px;">栈溢出</a> <a href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" style="font-size: 10px;">流量分析</a> <a href="/project/tags/%E6%B8%97%E9%80%8F/" style="font-size: 10px;">渗透</a> <a href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/project/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a> <a href="/project/tags/%E9%80%92%E5%BD%92/" style="font-size: 10px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/10/">October 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/project/2021/07/16/tmp/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/19/vpn/">miniVPN实现</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Imane<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/project/" class="mobile-nav-link">Home</a>
+  
+    <a href="/project/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/project/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/project/tags" class="mobile-nav-link">Tags</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/project/fancybox/jquery.fancybox.css">
+
+  
+<script src="/project/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/project/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

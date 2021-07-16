@@ -5,15 +5,34 @@
   
 
   
-  <title>Archives: 2021/7 | Imane&#39;s Blog</title>
+  <title>流量分析 | Imane&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Imane&#39;s Blog">
-<meta property="og:url" content="https://imane219.github.io/project/archives/2021/07/index.html">
+  <meta name="description" content="本次实验做对pcap包的流量分析，需要确定攻击主机ip，攻击手段，以及获取账户密码。 靶机：192.168.2.222  首先用wireshark打开pcap包，用统计功能查看ip数量及各自出现的次数。（统计-&gt;ipv4 statistics-&gt;all addresses）  可以看到出现次数比较多的是这三个ip地址，而其中最多的是我们的靶机.222，我们可以猜测和他出现频率差不多并且">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流量分析">
+<meta property="og:url" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="本次实验做对pcap包的流量分析，需要确定攻击主机ip，攻击手段，以及获取账户密码。 靶机：192.168.2.222  首先用wireshark打开pcap包，用统计功能查看ip数量及各自出现的次数。（统计-&gt;ipv4 statistics-&gt;all addresses）  可以看到出现次数比较多的是这三个ip地址，而其中最多的是我们的靶机.222，我们可以猜测和他出现频率差不多并且">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/1.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/2.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/3.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/4.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/5.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/6.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/7.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/8.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/9.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/10.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/11.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/12.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/14.png">
+<meta property="article:published_time" content="2021-05-14T10:50:24.000Z">
+<meta property="article:modified_time" content="2021-05-18T09:25:18.520Z">
 <meta property="article:author" content="Imane">
+<meta property="article:tag" content="流量分析">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/1.png">
   
     <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
   
@@ -66,53 +85,108 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/project/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/project/2021/07/16/tmp/" class="archive-article-date">
-  <time datetime="2021-07-16T01:29:21.380Z" itemprop="datePublished">Jul 16</time>
+        <section id="main"><article id="post-流量分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2021-05-14T10:50:24.000Z" itemprop="datePublished">2021-05-14</time>
 </a>
-      
-    </header>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
   </div>
-</article>
-  
+
+  </div>
+  <div class="article-inner">
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  <time datetime="2021-07-16T01:29:21.339Z" itemprop="datePublished">Jul 16</time>
-</a>
-      
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+    <h1 class="article-title" itemprop="name">
+      流量分析
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本次实验做对pcap包的流量分析，需要确定攻击主机ip，攻击手段，以及获取账户密码。</p>
+<p>靶机：192.168.2.222</p>
+<ol>
+<li><p>首先用wireshark打开pcap包，用统计功能查看ip数量及各自出现的次数。（统计-&gt;ipv4 statistics-&gt;all addresses）</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/1.png"></p>
+<p>可以看到出现次数比较多的是这三个ip地址，而其中最多的是我们的靶机.222，我们可以猜测和他出现频率差不多并且在同一局域网内的192.168.2.183是攻击主机。</p>
+</li>
+<li><p>接着使用过滤功能查看和靶机192.168.2.222有关的流量信息，如图所示，可以看到183对222（靶机）的不同端口持续发送syn包。有的端口在靶机上未开放，靶机回复rst释放连接，183并没有再继续对该端口进行尝试；有的端口在靶机上开放了，靶机回复syn ack，183也没有再回复ack完成三次握手，只是一直对靶机的不同端口发送syn报文。很显然183是在对靶机进行端口扫描，查看哪些端口是开放的。据此我们基本上可以确定183就是攻击机。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/2.png"></p>
+</li>
+<li><p>接下来的报文则是183对靶机所有开放端口进行三次握手建立连接，如图所示。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/3.png"></p>
+</li>
+<li><p>再往下则是某些服务建立连接之后的一些操作，有一些靶机的DNS查询报文，有正向查询也有逆向查询，猜测是开放的服务的某些功能需要这么做。还有的比如TELNET还有IRC给攻击者发送了一些数据包，但是攻击者立刻中断了此tcp链接，可以知道这个并不是攻击者所需要的。因此我们知道，完成三次握手建立连接的这一过程，是为了判断开放的端口所提供的服务配置版本等信息，结合我们平常使用nmap端口扫描能够知道对应服务的版本号可以猜测到这一点。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/4.png"></p>
+</li>
+<li><p>再到后面就是对某个端口服务漏洞的利用尝试，比如512端口，这部分比较长，而且不止一个服务，一个个分析容易白废功夫。我们直接从后面看起，看到底是哪一个漏洞成功获取到了账号密码。如图可以看到最后都是对6200端口的通讯，再往前看可以看到攻击机从靶机用FTP PORT命令下载了一个压缩包。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/5.png"></p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/6.png"></p>
+</li>
+<li><p>我们想办法获取这个压缩包，首先找到它前面最近的TCP报文，右击-&gt;追踪流-&gt;TCP流，选择显示原始数据，将其保存到本地，格式为.tgz</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/7.png"></p>
+</li>
+<li><p>解压下载的压缩包可以看到passwd和shadow文件，查看文件可以得到root的口令密文是<code>$1$AEvN/LAF$UE4aDFyWJa.AzVZkDnflq0</code></p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/8.png"></p>
+</li>
+<li><p>既然是通过6200端口完成的攻击，我们就到6200端口最开始出现的地方分析攻击是怎么完成的。首先是对21号端口建立TCP连接，表示要访问FTP服务，而靶机的FTP报文回复告诉我们靶机使用vsFTPd2.3.4来作为FTP服务器。对vsFTPd2.3.4进行搜索可以发现对于这个版本的vsFTPd有一个后门漏洞，当用户登陆的时候在用户名后面加上笑脸就可以拿到shell的root权限，这个后门代码绑定的侦听端口是6200。继续往下看，攻击机发出的FTP请求中果然在用户名后包含笑脸，在输入了密码之后，攻击机重新开了新的端口32884和靶机的6200端口建立连接并且得到了回应，因此此时漏洞利用已经成功。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/9.png"></p>
+</li>
+<li><p>接着攻击机用获取到的shell查询靶机的id信息，并且用命令nohup保持这个shell的运行。随后输入了echo命令测试shell的功能，此时原来用于连接vsFTPd服务的连接也被攻击机释放了。接着用uname -a查看了靶机的系统信息，用whoami查看了当前shell的权限。随后攻击机创建了一个叫newuser的用户，并设置了密码anewuser，其他用户信息一概默认。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/10.png"></p>
+</li>
+<li><p>随后攻击机把shadow文件和passwd文件打包进了user.tgz文件夹中</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/11.png"></p>
+<p>接着攻击机重新开了一个端口（控制连接）去连接FTP服务器（图上前三行），登陆时使用刚刚创建的newuser，并查询了服务器操作系统信息，设置了数据传输模式为二进制模式。随后试图使用PORT命令下载刚刚打包的user.gtz文件，但是失败了，用得到的shell端口检查后发现是打包的文件是root权限，普通的user无法下载它，于是修改文件权限后成功下载。FTP服务器开启20端口和PORT命令指定的端口号建立数据连接，准备进行数据传输。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/12.png"></p>
+<p>传输成功后就得到了我们的FTP-DATA报文，通过它就可以获得gtz包。后面就是退出命令，此时攻击者的目的已经达到了。</p>
+</li>
+<li><p>接下来我们需要通过获取的passwd文件获取root账户的密码，使用john the ripper工具进行密码破解，在kali中该工具存放字典的目录是/usr/share/john/password.lst，在其中加入提示的msf相关的可能口令。此外还需要将passwd文件中的root的密码存入一个新的txt中，因为我们只需要root的密文而不需要其他的。执行命令<code>john -- /usr/share/john/password.lst /root/etc/shadow.txt --format=md5crypt</code>破解密码，结果如下图，可知破解出来root账户的密码是adminmsf</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/14.png"></p>
+</li>
+</ol>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" data-id="ckr5o9zzf002gxkurg38idvze" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/05/17/ECCV2020/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Bias-based Universal Adversarial Patch Attack for Automatic Check-out
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">metasploit攻防</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>逆向 | Imane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="apk逆向分析实验1.   实验环境 (1) 逍遥模拟器； (2) AndroidKiller软件； (3) IDA Pro 7.0软件。 2.   实验内容 结合Android程序实例“Crackme_2.apk”，完成以下工作： （1）分析Android程序执行的过程，及核心代码的地址和范围； （2）程序中关键信息混淆的方法，并还原相关内容； （3）程序中反调试方法； （4）还原程序中被加密的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逆向">
+<meta property="og:url" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/index.html">
+<meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="apk逆向分析实验1.   实验环境 (1) 逍遥模拟器； (2) AndroidKiller软件； (3) IDA Pro 7.0软件。 2.   实验内容 结合Android程序实例“Crackme_2.apk”，完成以下工作： （1）分析Android程序执行的过程，及核心代码的地址和范围； （2）程序中关键信息混淆的方法，并还原相关内容； （3）程序中反调试方法； （4）还原程序中被加密的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk1.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk2.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk3.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk4.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk5.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk6.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk7.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk8.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk9.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk10.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk11.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk12.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk13.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk14.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk15.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk16.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk17.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk18.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk19.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk20.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk21.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk22.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk23.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk24.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk25.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk26.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk27.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk28.png">
+<meta property="article:published_time" content="2021-04-18T06:09:01.000Z">
+<meta property="article:modified_time" content="2021-05-17T08:00:46.814Z">
+<meta property="article:author" content="Imane">
+<meta property="article:tag" content="逆向">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/apk1.png">
+  
+    <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/project/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/project/" id="logo">Imane&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/project/">Home</a>
+        
+          <a class="main-nav-link" href="/project/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/project/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/project/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Imane219.github.io/project"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-逆向" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/04/18/%E9%80%86%E5%90%91/" class="article-date">
+  <time datetime="2021-04-18T06:09:01.000Z" itemprop="datePublished">2021-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      逆向
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="apk逆向分析实验"><a href="#apk逆向分析实验" class="headerlink" title="apk逆向分析实验"></a>apk逆向分析实验</h3><p><strong>1.</strong>   <strong>实验环境</strong></p>
+<p>(1) 逍遥模拟器；</p>
+<p>(2) AndroidKiller软件；</p>
+<p>(3) IDA Pro 7.0软件。</p>
+<p><strong>2.</strong>   <strong>实验内容</strong></p>
+<p>结合Android程序实例“Crackme_2.apk”，完成以下工作：</p>
+<p>（1）分析Android程序执行的过程，及核心代码的地址和范围；</p>
+<p>（2）程序中关键信息混淆的方法，并还原相关内容；</p>
+<p>（3）程序中反调试方法；</p>
+<p>（4）还原程序中被加密的代码，结合还原后的代码重新打包生成程序，并确保程序能够正常运行；</p>
+<p>（5）在上述工作基础上，获取实例代码中的“flag”，并进行验证。</p>
+<p><strong>3.</strong>   <strong>实验目标</strong></p>
+<p>(1 ) 借助于IDA工具，逆向实例程序，根据Android程序执行过程，定位核心代码；</p>
+<p>(2) 分析程序在初始化过程中，如何完成对关键信息的混淆，根据分析的结果，还原这些关键信息；</p>
+<p>(3) 分析程序中反调试的方法；</p>
+<p>(4) 借助于指令修改工具，去除反调试代码；</p>
+<p>(5) 通过静态分析方法，对核心代码进行还原;</p>
+<p>(6) 根据反编译的伪C代码，跟踪相关信息；</p>
+<p>(7) 以“flag”可能涉及到的变量为线索，跟踪“flag”相关的信息；</p>
+<p>尝试恢复“flag”。</p>
+<p><strong>4.</strong>   <strong>分析方法和过程</strong></p>
+<p>首先使用安卓模拟器打开需要破解的apk文件，Crackme_2.apk，如图所示：</p>
+<p><img src="apk1.png" alt="img"></p>
+<p>程序提示我们输入密码，随便输入“aaa”看它会出现什么提示，输入后显示“验证码校验失败”，如图所示：</p>
+<p><img src="apk2.png" alt="img"></p>
+<p>​    知道了错误输出之后，我们就可以去寻找对应的字符串了。将apk放入android killer中，android killer经过分析找到了程序的入口，点击即可进入，如图所示：</p>
+<p><img src="apk3.png" alt="img"></p>
+<p>​    使用搜索功能搜索“验证码”，但是没有找到相关的字符串，如图所示：</p>
+<p><img src="apk4.png" alt="img"></p>
+<p>​    我们尝试将main_activity.smali反编译，看看能不能看出点什么，如图所示，找到了错误字符串：</p>
+<p><img src="apk5.png" alt="img"></p>
+<p>​    仔细分析下图所示的反编译java代码，可以知道，第一个static块用于加载库文件crackme，这肯定是该程序实现的主要功能所在，可惜它并不在main_activity里面；第二个onCreate函数中间很多代码，我们不去管，仅仅看有“验证码校验失败”的部分，看到包含该字符串的方法命名为makeText，顾名思义，该方法用于创建“验证码校验失败”这个提示弹窗，那么激活这个创建弹窗的程序部分，才是我们所需要的；最后有一个native标识的securityCheck方法，native代表该方法并不是java内部所定义的，该方法是java调用一个非java代码的接口，根据这个名字我们猜测它的功能很重要。这样main_activity的分析就结束了，我们先去找crackme链接库。</p>
+<p><img src="apk6.png" alt="img"></p>
+<p>​    首先点击android killer的工程管理器，在lib文件夹中找到libcrackme.so库文件，如图所示:</p>
+<p><img src="apk7.png" alt="img"></p>
+<p>​    双击它发现全是乱码，如图所示，可知android killer不能解析.so文件，我们先将apk后缀改为zip，再用压缩工具将该apk解压，用ida pro打开.so文件。</p>
+<p><img src="apk8.png" alt="img"></p>
+<p>​    接着尝试在函数表中搜索crack，找到了包含crack的函数，如图所示，看名字应该就是我们所需要的。</p>
+<p><img src="apk9.png" alt="img"></p>
+<p>​    反汇编该代码，如图所示，可以看到变量命名可读性很差，但是有一个while循环函数，我们猜测它是用来字符串比对，仔细阅读可以发现，v7变量用于暂存v6字符串当前的值，接着将v7字符和v5地址处的字符串逐个比较，倘若不同则退出循环返回0，如果比对到最后都相同，并且v7 == 0（即到了字符串的末尾），则说明字符串比对成功，返回1.那么v6和v5两个地址必然一个指向我们需要的目标字符串，一个指向我们的输入字符串。我们可以看到，v6地址等于一个地址块首地址，点击它查看该处的字符串信息。</p>
+<p><img src="apk10.png" alt="img"></p>
+<p>​    进入后可以看到字符串“wojiushidaan”，如图所示，很显然这就是“我就是答案”的全拼，于是激动地将其输入，发现结果不对。可以反思自己的分析过程应该是没有错的，那么就只有可能这个函数并不是用来和真正的目标字符串比对的，这个“wojiushidaan”字符串是程序特地设计出来要迷惑我们的。</p>
+<p><img src="apk11.png" alt="img"></p>
+<p>​    那么此时静态分析已经黔驴技穷了，我们准备进行<strong>动态分析</strong>。</p>
+<p>​    首先做好动态分析的准备，下载adb（android debug bridge）工具，直接下载windows下的SDK Platform Tools到d盘，解压后可以看到里面有adb.exe，在该目录下打开终端，执行.\adb可以看到帮助选项。</p>
+<p>​    接着打开模拟器（我用的是逍遥模拟器），找到设备的版本号连点5次，打开开发者模式，于是就可以开启usb调试功能。接着查找逍遥模拟器的端口号是21503，输入命令adb connect 127.0.0.1:21503连接到该模拟器</p>
+<p>然后我们使用命令：adb connect 127.0.0.1:21503连接到该模拟器，从而可以进行动态调试，接着使用命令：adb devices查看已经连接的设备，可以看到已经成功连接至该模拟器，如图所示：</p>
+<p><img src="apk12.png" alt="img"></p>
+<p>​    接着我们到IDA pro的dbgsrv目录下找到android_server，用adb命令将其push 到Android的data/local/tmp目录下，使用命令：adb push，如图所示：</p>
+<p><img src="apk13.png" alt="img"></p>
+<p>​    接下来就可以使用adb shell命令进入安卓端的命令行，然后使用su命令提权，进入到/data/local/tmp目录下，给android_server赋予最高权限，输入命令：chmod 777 android_server，再输入命令：./an*，运行该server，监听端口，如图所示：</p>
+<p><img src="apk14.png" alt="img"></p>
+<p>​    别忘了还需要进行端口映射，再打开一个命令行，输入adb forward tcp:23946 tcp:23946，进行PC端和安卓端的端口映射，这样就可以开始动态调试了，如图所示：</p>
+<p><img src="apk15.png" alt="img"></p>
+<p>​    我们用IDA pro打开libcrackme.so文件，然后点击“Debugger”→“Switch Debugger”，选择“Remote ARM Linux/Android debugger”， 接着在Debugger Options中选择如图所示的选项：</p>
+<p><img src="apk16.png" alt="img"></p>
+<p>在“Process Options”里面将local host填为127.0.0.1，如图所示</p>
+<p><img src="apk17.png" alt="img"></p>
+<p>​    然后在模拟器中打开crackme程序，在IDA pro中“Debugger”中选择“Attach to process”准备调试安卓模拟器（手机端）中的进程,搜索“crackme”即可找到com.yaotong.crackme这个进程，点击进去开始动态运行，如图所示：</p>
+<p><img src="apk18.png" alt="img"></p>
+<p>​    但是十分遗憾，一点击这个进程，模拟器中的crackme程序就直接闪退掉了，这说明crackme程序本身可能对调试功能做了什么处理，增加了反调试功能。但是这也没关系，我们找到反调试部分将其用二进制编辑器去掉即可。</p>
+<p>​    结合课堂上讲的知识，我们知道反调试代码可能出现在.init_array和JNI_Onload中，首先进入init_array查看，打开view-&gt;open subviews-&gt;segements，找到init_array函数，如图所示：</p>
+<p><img src="apk19.png" alt="img"></p>
+<p>​    进去查看是初始化过程，并没有找到反调试相关信息,于是去找JNI_Onload函数,如图所示,在JNI_Onload函数中我们看到了一个可疑的大循环,但是仔细分析之后仍然什么都看不出来,只能找找其他的可以点击的函数名or地址块(变量名)来寻找可以分析的信息了。</p>
+<p><img src="apk20.png" alt="img"></p>
+<p>  我们发现下图1所示代码中的sub_16A4函数点开之后是比较明晰的C代码,如下图2所示:</p>
+<p><img src="apk21.png" alt="img"></p>
+<p><img src="apk22.png" alt="img"></p>
+<p>​    我们可以看到这个循环的循环体只是执行sub_130C函数,点进去看一看,又有一个大循环,虽然还是不明白循环的作用,但是找到了循环体的一个出口,如图所示,当v12&gt;=1就跳出该循环。我们猜测该循环是为了检测程序是否启动了调试，如果没有启动就一直检测，启动了就立即跳出循环退出。那么我们尝试将跳出循环部分删除,改成arm架构的空指令: 00 00 A0 E1。</p>
+<p><img src="apk23.png" alt="img"></p>
+<p>我们将修改过的.so文件替换原apk中的.so文件,利用android_killer重新打包成apk: 点击“Android”→“编译”，对该apk文件重新进行编译和签名。将新的apk文件放入模拟器中,删除原来的,再次执行adb连接等动态调试准备动作,用ida动态调试修改过的.so文件。</p>
+<p>进入crackme程序进程后，我们点击modules，在其中搜索crackme，找到libcrackme.so模块进程，如图所示： </p>
+<p><img src="apk24.png" alt="img"></p>
+<p>点击第一个，进入后可以看到该进程就两个功能函数，一个是我们开头分析过的main_activity，另一个是一个交jolin的函数，如图所示：</p>
+<p><img src="apk25.png" alt="img"></p>
+<p>我们知道libcrackme.so是实现程序功能的重要文件，那么其中除了main_activity，另外的函数肯定就是我们的功能函数，所以进入jolin看看，如图所示：</p>
+<p><img src="apk26.png" alt="img"></p>
+<p>​    点击TAB键将其反编译成c代码，替换其中的ascii码为字符，如图所示：</p>
+<p><img src="apk27.png" alt="img"></p>
+<p>​    已经胜利在望了，我们可以看到，目标字符串是“aiyo_,bu_uoo”，下划线处的字母很容易猜到是’u’和’c’，于是先将猜测的字符串输入程序中。</p>
+<p>​    输入“aiyou,bucuoo”，程序显示破解成功，如图所示：</p>
+<p><img src="apk28.png" alt="img"></p>
+<p><strong>5.</strong>   <strong>实验结论</strong></p>
+<p>本次实验难度比上次大很多，仅仅静态调试无法完成破解，因为程序加密了，于是进入动态调试。静态调试部分忧伤一个实验的基础，进行起来比较顺利，动态调试是从零开始，也遇到了许多困难，问了一些同学查找了很多资料，才慢慢地解决，最后完成破解。</p>
+<p>记录一下遇到的问题和解决方法：</p>
+<ol>
+<li><p>我一开始使用的模拟器是蓝叠模拟器，一直会遇到adb检测到两个devices的问题，在网上找了很多办法，包括更改adb的默认搜索端口，设置环境变量等等，都不起作用，最后用taskkill命令强制删除占用端口号的device，才能正常push android_server到模拟器中。</p>
+</li>
+<li><p>Push成功之后无法使用su功能给命令行提权，虽然使用chmod给android_server降低了权限，但是仅仅能执行它，却不能在ida中找到模拟器中的所有进程，只能找到手机终端的进程。搜索之后解决办法是使用adb root start-server以root权限打开start-server，但是打开后也并没有成功。无奈之下只能换一个模拟器重新开始。</p>
+</li>
+<li><p>换了逍遥模拟器之后，ida可以很顺利地attach进程，但是当我尝试在其中找JNI_Onload函数的时候却搜索不到。我去静态分析过程中找到JNI_Onload函数地偏移地址，再到动态分析中找到.so模块的基址，相加之后得到JNI_Onload的绝对地址，按G jmp过去后发现空空如也，没有代码。于是我只能另辟蹊径，点开.so模块，看看里面有些什么函数，比较出人意料的是只有两个函数，应该是因为什么原因ida没有将进程加载完全。但是仅根据已有的信息，已经能够破解字符串了。</p>
+</li>
+</ol>
+<p><strong>6.</strong>   <strong>实验心得</strong></p>
+<p>这次实验是我第一次接触安卓程序，也是第一次接触java代码，一开始上课听老师讲感觉一知半解的，破解过程似乎也很复杂，但是实验做完将其破解之后再回过头来卡课堂上讲的就很清晰易懂了。所以这也说明了通过此次实验我学到了很多东西，并且真正动手完成了一个比较复杂的程序的破解，感觉还是有一些成就感。</p>
+<p>另外一点感受就是逆向分析破解程序，可以有很多种方法去完成破解，当一种方法走不通可以尝试另一种方法，比如静态分析遇到了加密的代码可以用动态分析，找不到JNI_Onload可以不去找它，看看其他的函数等等。想要成功地完成逆向分析，一定要有不畏难的精神，撞到了南墙就换另一条路走；另外还需要对工具对代码结构足够地熟悉，这样才能在遇到困难时想到另一种方法去完成它。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/04/18/%E9%80%86%E5%90%91/" data-id="ckr5o9zzh002jxkurf5ixhpnz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/04/19/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          TCP协议漏洞利用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2021/04/12/scapy%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">scapy中间人攻击</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/project/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/db/" rel="tag">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/project/tags/ARP/" style="font-size: 10px;">ARP</a> <a href="/project/tags/C/" style="font-size: 10px;">C++</a> <a href="/project/tags/CV/" style="font-size: 10px;">CV</a> <a href="/project/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/project/tags/Git/" style="font-size: 10px;">Git</a> <a href="/project/tags/STL/" style="font-size: 10px;">STL</a> <a href="/project/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/project/tags/adversarial-patch/" style="font-size: 10px;">adversarial patch</a> <a href="/project/tags/android/" style="font-size: 10px;">android</a> <a href="/project/tags/blog/" style="font-size: 20px;">blog</a> <a href="/project/tags/db/" style="font-size: 10px;">db</a> <a href="/project/tags/dp/" style="font-size: 10px;">dp</a> <a href="/project/tags/encryption/" style="font-size: 10px;">encryption</a> <a href="/project/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/project/tags/linux/" style="font-size: 10px;">linux</a> <a href="/project/tags/metasploit/" style="font-size: 10px;">metasploit</a> <a href="/project/tags/scapy/" style="font-size: 10px;">scapy</a> <a href="/project/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" style="font-size: 15px;">中国象棋</a> <a href="/project/tags/%E5%88%B7%E9%A2%98/" style="font-size: 10px;">刷题</a> <a href="/project/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/project/tags/%E6%95%A3%E5%88%97/" style="font-size: 10px;">散列</a> <a href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" style="font-size: 10px;">栈溢出</a> <a href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" style="font-size: 10px;">流量分析</a> <a href="/project/tags/%E6%B8%97%E9%80%8F/" style="font-size: 10px;">渗透</a> <a href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/project/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a> <a href="/project/tags/%E9%80%92%E5%BD%92/" style="font-size: 10px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/10/">October 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/project/2021/07/16/tmp/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/19/vpn/">miniVPN实现</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Imane<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/project/" class="mobile-nav-link">Home</a>
+  
+    <a href="/project/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/project/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/project/tags" class="mobile-nav-link">Tags</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/project/fancybox/jquery.fancybox.css">
+
+  
+<script src="/project/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/project/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

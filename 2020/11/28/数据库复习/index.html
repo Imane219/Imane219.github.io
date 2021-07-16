@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>数据库 | Imane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="数据库数据库基本概念数据库四个基本概念： 数据（Data）——永久存储，有组织，可共享 数据库（Database），数据库管理系统（DBMS)，数据库系统（DBS） 数据库（DB）的基本特征：  数据按一定的数据模型组织、描述和储存 可为各种用户共享 冗余度较小 数据独立性较高 易扩展  数据库管理系统(DBMS)： 用途：科学地组织和存储数据，高效地获取和维护数据 主要功能：  数据定义——提供">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库">
+<meta property="og:url" content="https://imane219.github.io/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="数据库数据库基本概念数据库四个基本概念： 数据（Data）——永久存储，有组织，可共享 数据库（Database），数据库管理系统（DBMS)，数据库系统（DBS） 数据库（DB）的基本特征：  数据按一定的数据模型组织、描述和储存 可为各种用户共享 冗余度较小 数据独立性较高 易扩展  数据库管理系统(DBMS)： 用途：科学地组织和存储数据，高效地获取和维护数据 主要功能：  数据定义——提供">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imane219.github.io/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F.png">
+<meta property="og:image" content="https://imane219.github.io/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/1606916927528.png">
+<meta property="article:published_time" content="2020-11-28T00:30:30.000Z">
+<meta property="article:modified_time" content="2021-05-17T08:00:56.446Z">
+<meta property="article:author" content="Imane">
+<meta property="article:tag" content="db">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imane219.github.io/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F.png">
+  
+    <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/project/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/project/" id="logo">Imane&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/project/">Home</a>
+        
+          <a class="main-nav-link" href="/project/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/project/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/project/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Imane219.github.io/project"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-数据库复习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/" class="article-date">
+  <time datetime="2020-11-28T00:30:30.000Z" itemprop="datePublished">2020-11-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据库
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><h3 id="数据库基本概念"><a href="#数据库基本概念" class="headerlink" title="数据库基本概念"></a>数据库基本概念</h3><p><strong>数据库四个基本概念：</strong></p>
+<p>数据（Data）——永久存储，有组织，可共享</p>
+<p>数据库（Database），数据库管理系统（DBMS)，数据库系统（DBS）</p>
+<p><strong>数据库（DB）的基本特征：</strong></p>
+<ol>
+<li>数据按一定的数据模型组织、描述和储存</li>
+<li>可为各种用户共享</li>
+<li>冗余度较小</li>
+<li>数据独立性较高</li>
+<li>易扩展</li>
+</ol>
+<p><strong>数据库管理系统(DBMS)：</strong></p>
+<p><u>用途</u>：科学地组织和存储数据，高效地获取和维护数据</p>
+<p><u>主要功能</u>：</p>
+<ol>
+<li>数据定义——提供数据定义语言（DDL），定义数据对象（table，view）</li>
+<li>数据组织、存储和管理</li>
+<li>数据操纵——提供数据操纵语言（DML），实现基本操作（增删改查）</li>
+<li>数据库的事物管理和运行管理</li>
+<li>数据库的建立和维护功能<ul>
+<li>数据控制：</li>
+<li>数据的安全性保护</li>
+<li>数据的完整性检查</li>
+<li>并发控制</li>
+<li>数据库恢复</li>
+</ul>
+</li>
+<li>其它</li>
+</ol>
+<p><u>优点</u>：简化了应用程序的编制，减少了应用程序的维护和修改</p>
+<p><strong>数据库系统的构成：</strong></p>
+<p>数据库、数据库管理系统（及其应用开发工具）、应用数据、数据库管理员</p>
+<p><img src="%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F.png" alt="数据库系统"></p>
+<p><strong>数据库系统的特点：</strong></p>
+<ol>
+<li>数据结构化——数据用数据模型描述</li>
+<li>数据的共享性高，冗余度低且易扩充</li>
+<li>数据独立性高——物理独立性（应用程序和物理存储独立），逻辑独立性（应用程序和逻辑结构独立）</li>
+<li>数据由DBMS统一管理和控制——数据的安全性保护，数据的完整性检查、并发控制、数据库恢复</li>
+</ol>
+<p><u>文件系统</u>：共享性差、冗余度大、记录内有结构整体无结构、独立性差、所有文件副本必须同时更新</p>
+<p><u>联系</u>：都是管理数据库的软件。操作系统可以解析文件系统，而数据库系统独立于操作系统。数据库系统的存储和组织是通过操作系统中的文件系统完成的。</p>
+<p><strong>数据库系统的三级模式结构：</strong></p>
+<p>数据的逻辑结构和物理结构变了，应用程序可以不变。</p>
+<ol>
+<li><p>模式（逻辑模式）：全体数据逻辑结构和特征的描述，所有用户的公共数据视图。一个数据库只有一个模式。包括：数据的逻辑结构、数据之间的联系、数据有关的安全性、完整性要求。</p>
+<p>例：数据库中全部关系模式和约束集合</p>
+</li>
+<li><p>外模式（子模式，用户模式）：用户使用的局部逻辑结构，模式的子集。一个模式可以有多个外模式，一个外模式可以供给多个应用程序</p>
+<p>用途：支持不同用户建立适应局部应用特征的结构，简化应用处理，提高安全性</p>
+</li>
+<li><p>内模式（存储模式）：数据的物理结构和存储方式的描述。一个数据库只有一个。独立于存储设备。</p>
+</li>
+</ol>
+<p><strong>数据库的二级映像功能：</strong></p>
+<ol>
+<li>外模式/模式映像：模式改变时对映像做改变使外模式不变，保证了数据与程序的逻辑独立性(多个)</li>
+<li>模式/内模式映像：当存储结构改变，修改映像使模式不变，保证了数据与程序的物理独立性(唯一)</li>
+</ol>
+<p>保证了数据库外模式的稳定性，从底层保证了应用程序的稳定性。</p>
+<p><strong>数据模型：</strong></p>
+<p>数据结构、数据操作、数据的完整性约束条件</p>
+<ol>
+<li>概念模型<ul>
+<li>按用户的观点对数据和信息建模</li>
+</ul>
+</li>
+<li>逻辑模型和物理模型<ul>
+<li>逻辑模型：网状模型、层次模型、关系模型等，按计算机系统的观点对数据建模，用于DBMS实现</li>
+<li>物理模型：数据在系统内部（磁盘或磁带）的表示方法和存取方法</li>
+</ul>
+</li>
+</ol>
+<p><strong>层次模型：</strong></p>
+<p>树形，根节点之外的其他结点有且只有一个双亲结点</p>
+<ul>
+<li>只能处理一对多的实体联系</li>
+<li>任何记录只有按路径查看才能显出全部意义</li>
+<li>没有一个子女记录能脱离双亲记录而存在</li>
+</ul>
+<p>完整性约束：</p>
+<ul>
+<li>无相应的双亲结点值就不能插入子女结点值</li>
+<li>如果删除双亲结点子女结点也同时删除</li>
+<li>更新操作应更新所有相应记录</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>数据结构简单清晰</li>
+<li>查询效率高，优于关系模型不低于网状模型</li>
+<li>有良好的完整性支持</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>多对多联系表示不自然</li>
+<li>对插入删除限制多</li>
+<li>查询子女必须通过双亲</li>
+</ul>
+<p><strong>网状模型：</strong></p>
+<p>允许无双亲和多个双亲，一对多</p>
+<p>优点：</p>
+<ul>
+<li>能更直接的描述现实世界</li>
+<li>具有良好的性能</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>结构复杂</li>
+<li>DDL,DML语言复杂</li>
+<li>用户需要了解系统结构的细节</li>
+</ul>
+<p><strong>关系模型：</strong></p>
+<ul>
+<li>候选码：一组属性能唯一标识一个元组，而其子集不能</li>
+<li>主属性：候选码的属性，一组则是一组属性</li>
+<li>主码：选定的一个候选码</li>
+<li>域：一组具有相同数据类型的值的集合</li>
+<li>分量：元组中一个属性值</li>
+<li>关系模式：对关系的描述（“学生（学号，姓名，……）”）</li>
+</ul>
+<p>规范条件：关系的每一个分量必须是不可分的数据项</p>
+<p>关系的完整性：</p>
+<ol>
+<li><p>实体完整性</p>
+<p>主属性不能取空值</p>
+</li>
+<li><p>参照完整性</p>
+<p>当另一个关系S的主码Ks成为一个关系R的属性F（非码属性），则F是R的外码，R为参照关系，S为被参照关系。</p>
+<p>R中的每个元组在F上的值必须：要么取空值，要么等于S中某个元组的主码（Ks）值。</p>
+</li>
+<li><p>用户定义的完整性</p>
+</li>
+</ol>
+<p>优点：</p>
+<ul>
+<li>建立在严格的数学概念基础上</li>
+<li>概念单一（实体和联系以及结果都用关系表示）</li>
+<li>关系模型的存取路径对用户透明（数据独立性高，安全性高，简化程序员工作）</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>存取路径对用户透明，查询效率往往不如格式化数据</li>
+<li>为提高性能必须对查询请求优化，增加管理难度</li>
+</ul>
+<p><strong>数据模型的组成要素：</strong></p>
+<p>数据结构（静态特性）、数据操作（动态特性）、数据的完整性约束条件</p>
+<h3 id="关系代数"><a href="#关系代数" class="headerlink" title="关系代数"></a>关系代数</h3><p><strong>关系操作：</strong>查询——<strong>选择、投影</strong>、连接、除、<strong>并、差</strong>、交、<strong>笛卡尔积</strong></p>
+<p>sql——数据定义语言、数据操纵语言、数据控制语言</p>
+<p>关系相容：具有相同的度且两者第i个属性来自同一个域</p>
+<h3 id="数据库安全性"><a href="#数据库安全性" class="headerlink" title="数据库安全性"></a>数据库安全性</h3><p><strong>实现数据库系统安全性的技术和方法：</strong></p>
+<p><u>用户身份认证、访问/存取控制技术</u>、视图技术、审计技术、数据加密存储和加密传输</p>
+<p><strong>访问控制流程：</strong></p>
+<ol>
+<li><p>DBMS对提出访问请求的数据库用户进行身份认证</p>
+<ul>
+<li><p>用户身份认证：用户标识——用户名+UID</p>
+<p>静态口令认证、动态口令认证、生物特征认证、智能卡认证</p>
+</li>
+</ul>
+</li>
+<li><p>在处理层进行自主访问控制和强制访问控制</p>
+<ul>
+<li>访问控制：定义用户权限+合法权限检查——访问控制子系统</li>
+<li>自主访问控制（DAC）：不同用户对不同的对象有不同权限，用户可以将权限授予他人</li>
+<li>强制访问控制（MAC）：每个数据对象标定一个密级，每个用户授予一个级别的许可证，根据级别访问</li>
+</ul>
+</li>
+<li><p>对用户访问行为和关键操作进行审计，对异常用户行为进行简单入侵检测</p>
+</li>
+</ol>
+<p><strong>自主访问控制方法：</strong></p>
+<ol>
+<li>GRANT<ul>
+<li>GRANT select/all priviliges/update(Sno) ON TABLE sc,course TO u1,u2/public [WITH GRANT OPTION];</li>
+</ul>
+</li>
+<li>REVOKE<ul>
+<li>REVOKE select ON TABLE sc FROM u1 [CASCADE/RESTRICT];</li>
+</ul>
+</li>
+<li>创建用户<ul>
+<li>CREATE USER u1 [WITH] [DBA|RESOURCE|CONNECT];</li>
+<li>CONNECT:默认权限，只能登陆数据库</li>
+<li>RESOURCE:能创建基本表和视图，不能创建模式、新用户</li>
+<li>DBA:啥都能干</li>
+</ul>
+</li>
+<li>数据库角色——权限的集合<ul>
+<li>CREATE ROLE r1；</li>
+<li>GRANT select ON TABLE student TO r1;//可重复使用该句增加r1权限</li>
+<li>GRANT r1 TO u1,r2 [WITH ADMIN OPTION];//授予者是r1权限拥有者</li>
+<li>REVOKE r1 FROM u1;//可重复使用该句收回r1某个权限</li>
+</ul>
+</li>
+</ol>
+<p><strong>强制访问控制方法：</strong></p>
+<p>敏感度标记：TS&gt;=S&gt;=C&gt;=P</p>
+<p>主体的许可证级别<strong>大于或等于</strong>客体的密级时，才能<strong>读</strong>客体</p>
+<p>主体的许可证级别<strong>小于或等于</strong>客体的密级时，才能<strong>写</strong>客体</p>
+<p>实现强制访问控制时首先要实现自主访问控制</p>
+<p><strong>视图机制：</strong></p>
+<p>把要保密的数据对用户隐藏，间接支持存取谓词的用户权限定义</p>
+<p>CREATE VIEW v1 AS (select * from student where sdept=’cs’);</p>
+<p>GRANT select ON v1 TO u1;</p>
+<p><strong>审计（AUDIT）：</strong></p>
+<ul>
+<li>AUDIT update ON sc;</li>
+<li>NOAUDIT update ON sc;</li>
+</ul>
+<p><strong>数据加密：</strong></p>
+<ol>
+<li>存储加密<ul>
+<li>透明存储加密<ul>
+<li>内核级加密保护方式，对用户完全透明</li>
+<li>数据写到磁盘时加密，授权用户读取时解密。</li>
+<li>应用程序只需在创建表语句中说明加密的字段即可</li>
+</ul>
+</li>
+<li>非透明存储加密<ul>
+<li>通过多个加密函数实现</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>传输加密<ul>
+<li>链路加密<ul>
+<li>在链路层进行</li>
+<li>报文和报头均加密</li>
+</ul>
+</li>
+<li>端到端加密<ul>
+<li>发送端加密，接收端解密</li>
+<li>只加密报文</li>
+<li>所需密码设备数量较少，容易被非法监听者发现并获取敏感信息</li>
+</ul>
+</li>
+<li>基于安全套接层协议(SSL)传输方案的实现思路<ul>
+<li>确认通信双方端点的可靠性</li>
+<li>协商加密算法和密钥</li>
+<li>可靠数据传输</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>其他安全性保护：</strong></p>
+<ol>
+<li><p>推理控制</p>
+<ul>
+<li>基于函数依赖的推理控制</li>
+<li>基于敏感关联的推理控制</li>
+</ul>
+</li>
+<li><p>隐蔽信道</p>
+</li>
+<li><p>数据隐私保护</p>
+</li>
+</ol>
+<h3 id="数据库完整性"><a href="#数据库完整性" class="headerlink" title="数据库完整性"></a>数据库完整性</h3><p><strong>实体完整性</strong>——主属性不能取空值且能唯一标识元组</p>
+<ol>
+<li>列级定义：create table字段后加 PRIMARY KEY</li>
+<li>表级定义：create table sc( xxxxx, PRIMARY KEY(Sno,Cno));</li>
+<li>检查和违约处理：<ul>
+<li>检查主码值是否唯一，不唯一则拒绝插入or修改（全表扫描/在主码上建立索引）</li>
+<li>检查主码是否为空，有一个为空则拒绝插入or修改</li>
+</ul>
+</li>
+</ol>
+<p><strong>参照完整性</strong></p>
+<ol>
+<li>表级：create table sc( xxxxx, FOREIGN KEY(Sno) REFERENCES student(Sno) [ON DELETE CASCADE ] [ON UPDATE NO ACTION]);</li>
+<li>检查和违约处理：<ul>
+<li>sc表中增加or修改了Sno不在student中的元组——拒绝</li>
+<li>student表中删除or修改了一些元组使sc表中一些Sno无法在studnet中找到——拒绝NO ACTION/级联删除or修改CASCADE/设置为空SET NULL</li>
+</ul>
+</li>
+</ol>
+<p><strong>用户定义的完整性</strong></p>
+<ol>
+<li>属性上的：NOT NULL,UNIQUE（可以为空）,CHECK</li>
+<li>元组上的：CHECK (Ssex=’女’ OR Sname NOT LIKE ‘Ms.%’)</li>
+<li>检查和违约处理：拒绝</li>
+</ol>
+<p><strong>完整性约束命名子句</strong></p>
+<ol>
+<li>create table sc( xxxxx, CONSTRAINT C1 FOREIGN KEY(Sno) REFERENCES student(Sno) [ON DELETE CASCADE ] [ON UPDATE NO ACTION]);</li>
+<li>ALTER TABLE sc DROP/ADD CONSTRAINT C1 xxx;</li>
+</ol>
+<p><strong>断言</strong></p>
+<p>不满足断言为真值的语句会被拒绝执行</p>
+<ol>
+<li>CREATE ASSERTION A1 CHECK(60 &gt;= (select xxxxx))//可以设置子句，比表级约束更具一般性</li>
+<li>DROP ASSERTION A1;</li>
+</ol>
+<p><strong>触发器</strong></p>
+<p>触发器保存在数据库服务器中</p>
+<p>触发器只能定义在基本表上，表的拥有者才可以创建触发器，触发器和表必须在同一个模式下，同一个模式中触发器名唯一。</p>
+<ol>
+<li><p>CREATE TRIGGER T1 BEFORE/AFTER update OR insert [OF grade] ON sc FOR EACH ROW/STATEMENT [WHEN(xxx)] [BEGIN] 命令语句 [END];</p>
+</li>
+<li><p>注：如果是row级触发器，在过程体中可以使用new和old引用事件之后的新值和事件之前的旧值。</p>
+</li>
+<li><p>如果触发器动作体执行失败，激活触发器的事件就会停止执行，触发器可能影响的其他对象不发生任何变化。</p>
+</li>
+<li><p>DROP TRIGGER T1 ON sc;//只能由有权限的用户删除</p>
+</li>
+</ol>
+<h3 id="关系数据库理论"><a href="#关系数据库理论" class="headerlink" title="关系数据库理论"></a>关系数据库理论</h3><p>关系模式R&lt;U,F&gt;：U一组属性，F属性组上的数据依赖（D，DOM——域和属性向域的映像）</p>
+<p><u>好的关系模式</u>：尽可能少数据冗余、没有更新异常、没有插入异常、没有删除异常</p>
+<p><strong>函数依赖：</strong></p>
+<p>$X \rightarrow Y$: X函数确定Y/Y函数依赖于X</p>
+<p>$X \leftrightarrow Y$: $X\rightarrow Y$ 且 $Y \rightarrow X$</p>
+<p>$X \nrightarrow Y$: Y不函数依赖于X</p>
+<p>$X \rightarrow Y$ 且 $Y \not\subseteq X$ : 非平凡函数依赖</p>
+<p>$X \rightarrow Y$ 且 $Y \subseteq X$ : 平凡函数依赖，恒成立</p>
+<p>$ X\stackrel{F}{\longrightarrow} Y$ :  Y对X完全函数依赖（X能决定Y，但是X的任意真子集都不能决定Y）</p>
+<p>$ X\stackrel{P}{\longrightarrow} Y$ : Y对X部分函数依赖（X能决定Y，但不是完全函数依赖）</p>
+<p>$ X\stackrel{传递}{\longrightarrow} Z$ ：Z对X传递函数依赖：X决定Y（非平凡）且Y不能决定X，Y决定Z（非平凡）</p>
+<p><strong>范式：</strong></p>
+<p><img src="1606916927528.png" alt="1606916927528"></p>
+<ol>
+<li><p>1NF——每个属性不可再分（规范化关系）</p>
+<p>问题：数据冗余、插入异常、删除异常、更新复杂</p>
+<p>原因：非主属性对候选码有部分函数依赖（依赖于候选码的子集）</p>
+</li>
+<li><p>2NF——1NF+每个非主属性完全依赖于所有候选码</p>
+<p>问题：数据冗余、插入异常、删除异常、更新复杂（只解决了部分）</p>
+<p>原因：非主属性对候选码的传递依赖</p>
+<p>推论：1NF+候选码为单个属性=2NF</p>
+</li>
+<li><p>3NF——1NF+没有非主属性对码的传递依赖</p>
+<p>问题：数据冗余、插入异常、删除异常、更新复杂（只解决了部分）</p>
+<p>原因：主属性对候选码部分依赖和传递依赖</p>
+<p>推论：3NF必是2NF；2NF+至多一个非主属性=3NF；二元关系必是3NF</p>
+</li>
+<li><p>BCNF——1NF+每一个决定属性集都含有码</p>
+<p>实现彻底分离，消除异常</p>
+</li>
+</ol>
+<h3 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h3><p><strong>基本步骤：</strong></p>
+<ol>
+<li><p>需求分析</p>
+<p>数据字典：数据流图中数据的描述，在需求分析阶段建立，不断修改完善。是进行详细数据收集和分析的结果。包括，数据项、数据结构、数据流、数据存储、处理过程。</p>
+</li>
+<li><p>概念结构设计</p>
+<p>将需求抽象为概念模型。</p>
+</li>
+<li><p>逻辑结构设计</p>
+<p>ER图变关系模型：一个实体型一个关系模式，一个联系一个关系模式（单独一个：各实体的码+联系的属性；和某端合并：加上对方的码和联系的属性），具有相同码的关系模式可以合并</p>
+<p>数据模型优化：确定数据依赖，对依赖分析优化</p>
+</li>
+<li><p>物理结构设计</p>
+<p>物理结构：数据库在物理设备上的存储结构（设计存放位置）和存取方法（索引）</p>
+<p>评价方案：存储空间、存取时间、维护代价</p>
+</li>
+<li><p>数据库实施</p>
+<p>数据载入，数据库试运行（分期入库，转储恢复）</p>
+</li>
+<li><p>数据库运行和维护</p>
+<p>转储恢复，安全性完整性控制、性能监督分析改进、数据库的重组织和重构造</p>
+</li>
+</ol>
+<p><strong>ER图冲突：</strong></p>
+<ul>
+<li>属性冲突——同一属性的域定义冲突</li>
+<li>命名冲突——不同意义相同名字，相同意义不同名字</li>
+<li>结构冲突——同一对象在不同应用中具有不同的抽象</li>
+</ul>
+<h3 id="数据库恢复技术"><a href="#数据库恢复技术" class="headerlink" title="数据库恢复技术"></a>数据库恢复技术</h3><p><strong>事物：</strong></p>
+<p>BEGIN TRANSACTION</p>
+<p>xxx</p>
+<p>COMMIT;//提交事务所有操作，更新写入磁盘中</p>
+<p>ROLLBACK;//事务异常终止，撤销更新操作，回滚到事务开始时状态</p>
+<p><strong>ACID</strong></p>
+<ul>
+<li><p>原子性——数据库的逻辑工作单位，事务中操作要么都做要么都不做</p>
+</li>
+<li><p>一致性——事务的执行从一个一致性状态转移到另一个一致性状态（只包含事务提交的结果）</p>
+</li>
+<li><p>隔离性——一个事务的执行不能被其他事务干扰</p>
+</li>
+<li><p>持续性——一个事务一旦提交，他对数据的改变就是永久的。</p>
+</li>
+</ul>
+<p><strong>故障的种类：</strong></p>
+<ol>
+<li><p>事务内部的故障</p>
+<p>恢复：事务撤销（UNDO），强行回滚该事务</p>
+</li>
+<li><p>系统故障（软故障）</p>
+<p>后果：正在运行的事务非正常终止，不破坏数据库、内存中缓冲区信息丢失</p>
+<p>恢复：UNDO所有未完成的事物，REDO所有已提交的事务</p>
+</li>
+<li><p>介质故障（硬故障）</p>
+<p>后果：破坏部分数据库，影响正在存取这部分数据的所有事务</p>
+<p>恢复：装入数据副本，REDO成功事务</p>
+</li>
+<li><p>计算机病毒</p>
+</li>
+</ol>
+<p><strong>恢复的实现技术：</strong></p>
+<ol>
+<li><p>数据转储</p>
+<p>数据库管理员定期将整个数据库复制到磁带、磁盘或其他存储介质上保存起来的过程。备用的数据文本称为后备副本。</p>
+<ul>
+<li><p>静态转储</p>
+<p>在系统中无运行事务时转储。转出开始时数据库处于一致性装填，转储期间不允许对数据库存取修改。得到的一定是数据一致性的副本。</p>
+<p>优点：实现简单</p>
+<p>缺点：降低数据库可用性</p>
+</li>
+<li><p>动态转储</p>
+<p>转储和事务并发进行</p>
+<p>优点：不用等待</p>
+<p>缺点：不能保证副本数据正确有效</p>
+<p>需要用日志文件记录转储操作期间对数据库的修改操作。副本+日志文件。</p>
+</li>
+<li><p>海量转储：转储全部数据库</p>
+</li>
+<li><p>增量转储：只转储上次转储后更新过的数据</p>
+</li>
+<li><p>对比：海量恢复起来更方便，数据库很大事务处理频繁则增量有效。</p>
+</li>
+</ul>
+</li>
+<li><p>登记日志文件</p>
+<p>记录事务对数据库更新操作的文件</p>
+<p>登记的顺序必须严格按并发事务执行时间次序；必须先写日志文件，后写数据库。</p>
+<p>用缓冲区临时保存日志，根据需要一次写入多个缓冲块到磁盘。</p>
+<ul>
+<li><p>以记录为单位——记录事务的开始（begin）结束（commit；rollback）以及所有更新操作。</p>
+<p>事务标识、操作类型、操作对象、更新前数据旧值、更新后数据新值。</p>
+</li>
+<li><p>以数据块为单位</p>
+<p>事务标识、被更新的数据块。</p>
+</li>
+</ul>
+<p>作用：</p>
+<ul>
+<li>事务故障恢复、系统故障恢复、介质故障恢复</li>
+<li>动态转储必须建立日志文件，静态转储也可以建立日志文件</li>
+</ul>
+</li>
+</ol>
+<h3 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h3><p><strong>并发操作带来的不一致性：</strong></p>
+<p>并发操作破坏了数据的隔离性</p>
+<ul>
+<li><p>丢失修改</p>
+<p>后来的写入覆盖了之前的修改</p>
+</li>
+<li><p>不可重复读</p>
+<p>T1读取数据后T2对数据进行了更新（修改、删除、插入），T1没法再次读到原来数据</p>
+</li>
+<li><p>读“脏”数据</p>
+<p>T1修改数据写入磁盘，T2读取，T1撤销修改将数据恢复原值，此时T2的数据就是“脏”数据</p>
+</li>
+</ul>
+<p><strong>并发控制主要技术：</strong></p>
+<p>封锁、时间戳、乐观控制法、多版本并发控制</p>
+<p><strong>封锁：</strong></p>
+<p>操作前先加锁</p>
+<ol>
+<li><p>排他锁（X/写锁）</p>
+<p>只允许加锁者读取和修改，其他事务不能再加锁，也不能读和修改。</p>
+</li>
+<li><p>共享锁（S/读锁)</p>
+<p>加锁者可以读不能修改，其他事务只能加S锁不能加X锁，都只能读。</p>
+</li>
+</ol>
+<p><strong>封锁协议：</strong></p>
+<ol>
+<li><p>一级封锁协议</p>
+<p>事务在修改数据前必须加X锁，结束才能释放。</p>
+<p>防止丢失修改，不保证可重复读和不读脏数据</p>
+</li>
+<li><p>二级封锁协议</p>
+<p>一级+事务在读之前必须加S锁，读完释放。</p>
+<p>防止丢失修改、读脏数据，不保证可重复读</p>
+</li>
+<li><p>三级封锁协议</p>
+<p>一级+事务在读之前必须加S锁，事务结束才释放。</p>
+</li>
+</ol>
+<p><strong>活锁：</strong></p>
+<p>T1封锁了R，T2请求封锁R等待，T3请求封锁R，首先批准T3，则T2一直被插队。</p>
+<p><strong>死锁：</strong></p>
+<p>T1封锁R1，T2封锁R2，他们相互请求封锁对方的数据。</p>
+<ul>
+<li>预防死锁：一次封锁全部数据，按照数据对象给定的顺序封锁</li>
+<li>诊断解除死锁：超时则判定死锁，（周期性生成）事务等待图（有回路则死锁）。选择处理代价最小的事务撤销，释放其所有的锁。</li>
+</ul>
+<h3 id="数据库编程"><a href="#数据库编程" class="headerlink" title="数据库编程"></a>数据库编程</h3><p><strong>SQLCA：</strong>（数据结构）</p>
+<p>sql语句执行后系统反馈给程序当前的工作状态、运行环境</p>
+<p><strong>主变量：</strong></p>
+<p>sql语句中使用的主语言的程序变量</p>
+<p><strong>游标：</strong></p>
+<p>数据缓冲区，存放SQL语句执行结果</p>
+<p><strong>建立和关闭数据库连接</strong></p>
+<p><strong>存储过程：</strong></p>
+<p>经编译后存储在数据库服务器中，使用只需要调用。持久性存储模块。</p>
+<ul>
+<li><p>CREATE PROCEDURE P1(a int, b float) </p>
+<p>AS DECLARE c int;</p>
+<p>BEGIN </p>
+<p>select grade into a from sc;</p>
+<p>IF THEN ENDIF; </p>
+<p>END;</p>
+</li>
+<li><p>CALL PROCEDURE P1(a,b);</p>
+</li>
+<li><p>ALTER PROCEDURE P1 RENAME TO P2;</p>
+</li>
+<li><p>DROP PROCEDURE P1;</p>
+</li>
+</ul>
+<p><strong>函数：</strong></p>
+<p>函数必须指定返回的类型</p>
+<ul>
+<li>CREATE FUNCTION F1(a INT) RETURN char(9) AS…;</li>
+<li>SELECT F1(a);</li>
+</ul>
+<h3 id="SQL特点"><a href="#SQL特点" class="headerlink" title="SQL特点"></a>SQL特点</h3><ul>
+<li>综合统一——集DDL,DML,DCL功能于一体，可以独立完成数据库生命周期中的全部活动，可随时修改模式，数据操作符统一</li>
+<li>高度非过程化——无需了解存储路径</li>
+<li>面向集合的操作方式</li>
+<li>以同一种语法结构提供多种使用方式——独立语言，也可以嵌入式</li>
+<li>语言简洁、易学易用</li>
+</ul>
+<p><strong>数据定义：</strong></p>
+<ul>
+<li>CREATE SCHEMA S1 AUTHORIZATION zhang;</li>
+<li>DROP SCHEMA S1 CASCADE/RESTRICT;</li>
+<li>CREATE TABLE T1(Sno char(9) PRIMARY KEY, Sname char(20) UNIQUE);//UNIQUE不能取空</li>
+<li>ALTER TABLE T1 [ADD COLUMN Snoo char(9) NOT NULL] [ADD CONSTRAINT XXX] [DROP COLUMN/CONSTRAINT XXX [CASCADE|RESTRICT] ] [ALTER COLUMN Sno char(10)];</li>
+<li>DROP TABLE T1 [CASCADE| RESTRICT];//cascade会删除视图、触发器、索引等</li>
+<li>CREATE [UNIQUE] [CLUSTER] INDEX I1 ON SC(Sno DESC);//默认ASC</li>
+<li>ALTER INDEX I1 RENAME TO I2;</li>
+<li>DROP INDEX I1;</li>
+</ul>
+<p><strong>数据查询：</strong></p>
+<p>SELECT [ALL|DISTINCT] Sno FROM SC [AS XX] [WHERE xxx] [GROUP BY xxx HAVING XXX] [ORDER BY Sno [ASC|DESC] ];</p>
+<p>GROUP BY:如果没有对查询结果分组，聚集函数将作用于整个查询结果，分组后聚集函数作用于每个组。</p>
+<p>WHERE中不能有聚集函数，用HAVING替代，HAVING作用于组。</p>
+<p>外连接：SELECT XX FROM Student LEFT OUT JOIN sc ON (Studnt.Sno = sc.Sno);</p>
+<p>嵌套查询：子查询不能order by</p>
+<p>集合查询：UNION（自动去掉重复元组，加ALL保留） INTERSECT EXCEPT，两个结果必须相容</p>
+<p>基于派生表的查询：</p>
+<p>SELECT Sno,Cno FROM SC,(SELECT Sno,avg(grade) FROM sc GROUP BY Sno) as avg_sc(avg_Sno,avg_grade) WHERE xxx;</p>
+<p><strong>数据插入：</strong></p>
+<ul>
+<li>INSERT INTO sc [(Sno,cno)] VALUES (‘XXX’,’XX’);</li>
+<li>INSERT INTO sc [(xx)] (SELECT XXX);//必须与INTO匹配</li>
+</ul>
+<p><strong>数据修改删除：</strong></p>
+<ul>
+<li>UPDATE SC SET sno=’1’, cno = ‘2’ [WHERE XXX];</li>
+<li>DELETE FROM SC [WHERE XXX];</li>
+</ul>
+<p><strong>视图：</strong></p>
+<ul>
+<li>CREATE VIEW V1 [(Sno, Cno)] AS (SELECT XXX) [WITH CHECK OPTION];//对视图更新操作满足视图定义的条件</li>
+<li>DROP VIEW V1[CASCADE];</li>
+<li>查询视图：视图消解法</li>
+<li>更新视图：回更新基本表，但有些视图是不能更新的，因为不能唯一有意义的转换为对基本表的更新。不允许更新的视图定义上的视图也不允许更新。</li>
+<li>作用：简化用户操作，使用户以多种角度看待同一数据，提供逻辑独立性，安全保护，更清晰表达查询。</li>
+</ul>
+<p>L14p79检查点</p>
+<p>L15p69可串行性</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2020/11/28/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%8D%E4%B9%A0/" data-id="ckr5o9zzp003cxkur8iwi7aua" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/db/" rel="tag">db</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/01/26/Git/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Git
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">动态规划</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/project/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/db/" rel="tag">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/project/tags/ARP/" style="font-size: 10px;">ARP</a> <a href="/project/tags/C/" style="font-size: 10px;">C++</a> <a href="/project/tags/CV/" style="font-size: 10px;">CV</a> <a href="/project/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/project/tags/Git/" style="font-size: 10px;">Git</a> <a href="/project/tags/STL/" style="font-size: 10px;">STL</a> <a href="/project/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/project/tags/adversarial-patch/" style="font-size: 10px;">adversarial patch</a> <a href="/project/tags/android/" style="font-size: 10px;">android</a> <a href="/project/tags/blog/" style="font-size: 20px;">blog</a> <a href="/project/tags/db/" style="font-size: 10px;">db</a> <a href="/project/tags/dp/" style="font-size: 10px;">dp</a> <a href="/project/tags/encryption/" style="font-size: 10px;">encryption</a> <a href="/project/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/project/tags/linux/" style="font-size: 10px;">linux</a> <a href="/project/tags/metasploit/" style="font-size: 10px;">metasploit</a> <a href="/project/tags/scapy/" style="font-size: 10px;">scapy</a> <a href="/project/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" style="font-size: 15px;">中国象棋</a> <a href="/project/tags/%E5%88%B7%E9%A2%98/" style="font-size: 10px;">刷题</a> <a href="/project/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/project/tags/%E6%95%A3%E5%88%97/" style="font-size: 10px;">散列</a> <a href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" style="font-size: 10px;">栈溢出</a> <a href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" style="font-size: 10px;">流量分析</a> <a href="/project/tags/%E6%B8%97%E9%80%8F/" style="font-size: 10px;">渗透</a> <a href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/project/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a> <a href="/project/tags/%E9%80%92%E5%BD%92/" style="font-size: 10px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/10/">October 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/project/2021/07/16/tmp/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/19/vpn/">miniVPN实现</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Imane<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/project/" class="mobile-nav-link">Home</a>
+  
+    <a href="/project/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/project/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/project/tags" class="mobile-nav-link">Tags</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/project/fancybox/jquery.fancybox.css">
+
+  
+<script src="/project/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/project/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Bias-based Universal Adversarial Patch Attack for Automatic Check-out | Imane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[ECCV2020]基于偏见（Bias）的通用对抗补丁生成框架  本文提出了基于偏置的对抗补丁生成框架，它所生成的补丁具有跨类别攻击能力(class-agnostic)和跨模型攻击能力(universal)，并且具有强大的泛化能力(generalization ability)。  一、简介Automatic Check-Out(ACO)是一种可视商品计数系统，它以商品图像作为输入，以不同类别的商">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bias-based Universal Adversarial Patch Attack for Automatic Check-out">
+<meta property="og:url" content="https://imane219.github.io/project/2021/05/17/ECCV2020/index.html">
+<meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="[ECCV2020]基于偏见（Bias）的通用对抗补丁生成框架  本文提出了基于偏置的对抗补丁生成框架，它所生成的补丁具有跨类别攻击能力(class-agnostic)和跨模型攻击能力(universal)，并且具有强大的泛化能力(generalization ability)。  一、简介Automatic Check-Out(ACO)是一种可视商品计数系统，它以商品图像作为输入，以不同类别的商">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210401225128011.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402010350908.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402091457294.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402091633896.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402091910858.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402093524045.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402094330810.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402095330228.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402095611814.png">
+<meta property="og:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210402100103515.png">
+<meta property="article:published_time" content="2021-05-17T08:51:01.000Z">
+<meta property="article:modified_time" content="2021-05-17T13:29:55.397Z">
+<meta property="article:author" content="Imane">
+<meta property="article:tag" content="adversarial patch">
+<meta property="article:tag" content="CV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/Imane/AppData/Roaming/Typora/typora-user-images/image-20210401225128011.png">
+  
+    <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/project/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/project/" id="logo">Imane&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/project/">Home</a>
+        
+          <a class="main-nav-link" href="/project/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/project/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/project/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Imane219.github.io/project"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ECCV2020" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/05/17/ECCV2020/" class="article-date">
+  <time datetime="2021-05-17T08:51:01.000Z" itemprop="datePublished">2021-05-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Bias-based Universal Adversarial Patch Attack for Automatic Check-out
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ECCV2020-基于偏见（Bias）的通用对抗补丁生成框架"><a href="#ECCV2020-基于偏见（Bias）的通用对抗补丁生成框架" class="headerlink" title="[ECCV2020]基于偏见（Bias）的通用对抗补丁生成框架"></a>[ECCV2020]基于偏见（Bias）的通用对抗补丁生成框架</h2><blockquote>
+<p> 本文提出了基于偏置的对抗补丁生成框架，它所生成的补丁具有<b>跨类别攻击能力(class-agnostic)</b>和<b>跨模型攻击能力(universal)</b>，并且具有强大的<b>泛化能力(generalization ability)</b>。</p>
+</blockquote>
+<h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><p><b>Automatic Check-Out(ACO)</b>是一种可视商品计数系统，它以商品图像作为输入，以不同类别的商品计数作为输出。它依赖于深度学习并广泛应用于生活中的自动结账系统。</p>
+<p>深度学习面对对抗样本时十分脆弱，一些微小的扰动对人眼来说不可察觉但却能极大的误导深度神经网络(DNN).除开精心设计的扰动外，<strong>对抗补丁</strong>也是生成对抗样本的一个可选项，它可以直接放置于输入图像之上，很方便地用于现实生活中的攻击。</p>
+<p>现有的策略生成的对抗补丁依赖于<strong>特定的输入</strong>，且不能对有<strong>所有类别</strong>的图片展开攻击。</p>
+<p>本文提出的框架利用感知和语义偏见解决了上述问题（见下段）。我们对数字世界和物理世界都进行了白盒和黑盒攻击实验，结果显示我们的框架优于目前最先进的对抗补丁生成思路，尤其可以对未知类别的输入进行有效的攻击。</p>
+<h3 id="二、提出的框架"><a href="#二、提出的框架" class="headerlink" title="二、提出的框架"></a>二、提出的框架</h3><p>整体框架如下图，分为两个部分：1.利用DNN模型固有的感知偏见从<strong>hard examples</strong>中提取<b>先验补丁(textural patch prior)</b>，并融合处理获得更好的泛化攻击能力。2.生成包含丰富语义信息的<b>类原型(prototypes)</b>帮助训练对抗补丁，以获得对抗补丁生成效率上的提升。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210401225128011.png" alt="image-20210401225128011"></p>
+<ol>
+<li><p><strong>基于感知偏见的先验补丁生成(Perceptually Biased Prior Generation)</strong></p>
+<p><strong>hard examples：</strong> 指那些模型很难正确分辨的样本，它们接近模型的决策边界并且更容易跨越边界让模型识别错误，因此基于hard examples提取的特征训练我们的补丁会更有成效。</p>
+<p>而研究表明，DNN的判断更多的依赖于纹理信息(texture)（也被认为是模型的感知偏见），因此我们从多个不同种类的hard examples中提取纹理特征，并将他们融合成一个更强的先验补丁。</p>
+<p>然而仅仅在像素级别很难提取和融合纹理特征，我们引入<b>风格损失(style loss)</b>来处理它们：</p>
+<p>$$L_s = E_k[||G(x^*) - G(x_k^h)||_F^2]$$</p>
+<p>$$L_s = E_k[||G(x^*) - G(x_k^h)||<em>F^2],\G</em>{ij}(x) = \sum_{k}F_{ik}^l(x) \cdot F_{jk}^l(x)\G是从特定神经网络层提取出的特征Gram矩阵，F_{\cdot k}^l是l层k处的特定过滤器的激活\x^*是融合后的样本，x_k^h是k=1,2…r时的hard\ example$$</p>
+<p>此外我们引入<b>类不确性损失(class-wise uncertainty loss)</b>来提高对补丁不同类的泛化攻击能力，我们通过最小化负熵的方法增加模型的预测不确定性，这样的话我们的融合样本会更接近决策边界并获得对于不同类的低置信度。<br>$$<br>L_u = E_i[log\ y^{h,i}]\<br>y^{h,i}是模型在面对融合样本x^<em>时的第i个类的置信度<br>$$<br>整个融合损失函数优化如下：<br>$$<br>L_f = L_s + \lambda \cdot L_u\<br>\lambda控制两项的平衡<br>$$<br>此外我们引入<b>注意力模块(attention module)</b>来消除冗余像素，保持补丁的大小一致，并从融合样本中生成纹理先验。<br>$$<br>\delta^</em> = A(x^*;F)\<br>A(\cdot)是视觉注意力模块，用来从融合样本中选出合适的视觉像素\<br>\delta^<em>是纹理先验，x^</em>是融合样本，F是模型<br>$$<br>其中融合样本的每个像素权重计算如下：<br>$$<br>a_{ij} = \sum_{k=1}^{w}\frac{\partial{y^h}}{\partial{Z_{ij}^k}}Z_{ij}^k\<br>a_{ij}是像素点(i,j)处的权重，Z_{ij}^k是点(i,j)的第k个特征映射的像素值\<br>w是特征映射总数<br>$$</p>
+</li>
+<li><p><strong>基于语义偏见的类原型训练(Training with Semantically Biased Prototypes)</strong></p>
+<p><strong>类原型(prototype)：</strong>一种包含数据集中某一类的语义信息的典型表示，其代表了某一类别的深层特征，对模型而言，这种类原型会使得模型产生语义上的偏见，通过引入类原型，可以训练对抗补丁利用这种固有的语义上的偏见实现对模型的欺骗行为。</p>
+<p>类别t的类原型目标函数如下：<br>$$<br>I_t = arg_xmin\frac{1}{C}\sum_{c\neq t}max(0,margin-S_t(x)+S_c(x))^p\<br>S_t(x)代表输入x的类别t的logits，由模型的分类层计算\<br>C是类的总数，margin是控制多类边距的阈值<br>$$<br>为了生成对抗补丁，我们引入<b>对抗攻击损失(adversarial attack loss)</b>，定义如下：<br>$$<br>L_t = E_{I,\delta^{adv}}[P(c=t|I’) - max(P(c\neq t|I’))]\<br>\delta^{adv}是由纹理先验\delta^*得到的对抗补丁，P(\cdot)是目标模型对输入的预测值\<br>I’是类原型I加对抗补丁\delta^{adv}的混合图片，c代表class(类)，t是I的类<br>$$<br>此外，研究表明对抗样本对环境条件无效，而真实世界的图片输入总是伴随着不同的环境条件，这会影响我们的攻击成功率，因此我们引入<b>期望转换(expectation of transformations)</b>来提高攻击成功率，如上式中条件期望c所示。</p>
+</li>
+</ol>
+<p>整个框架算法如下图：</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402010350908.png" alt="image-20210402010350908"></p>
+<h3 id="三、测验"><a href="#三、测验" class="headerlink" title="三、测验"></a>三、测验</h3><ol>
+<li><p><strong>数据集和检测标准</strong></p>
+<p>使用RPC数据集（目前为止应用于ACO的最大的商品数据集）</p>
+<p>使用分类准确性作为检测标准，分为top-1,top-3,top-5三档</p>
+</li>
+<li><p><strong>测验设置</strong></p>
+<p>输入图片大小512*512，补丁大小32*32</p>
+<p>使用学习率0.01，权重衰减$10^{-4}$，最大50个epochs的Adam optimizer优化损失，使用200个hard examples优化我们的融合先验，使用如下的transformations来优化我们补丁的泛化攻击能力：</p>
+<ul>
+<li><strong>旋转</strong> 旋转角度范围在$[-30^{\circ},30^{\circ}]$</li>
+<li><strong>失真</strong> 失真率控制参数范围$[0,0.1]$</li>
+<li><strong>仿射变换</strong> 仿射率在0~4之间</li>
+</ul>
+<p>代码构建于Pytorch之上</p>
+<p>我们选择目前最先进的对抗补丁策略来与我们的框架效果进行对比</p>
+</li>
+<li><p><strong>数字世界攻击</strong></p>
+<p><strong>白盒攻击：</strong>我们使用ResNet-152模型来生成对抗补丁并攻击这个模型本身，并使用白补丁作为对照样本，结果如下图，我们的攻击效果更好（即模型分辨准确率更低）</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402091457294.png" alt="image-20210402091457294"></p>
+<p><strong>黑盒攻击：</strong>我们使用ResNet-152模型来生成对抗补丁并用它攻击其他的模型，结果如下表，我们的补丁效果更好。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402091633896.png" alt="image-20210402091633896"></p>
+<p>此外下图展现了几种补丁生成策略的训练过程，我们补丁生成过程很快完成并达到稳定，其他的策略在经过一段时间后仍然会有抖动。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402091910858.png" alt="image-20210402091910858"></p>
+</li>
+<li><p><strong>真实世界攻击</strong></p>
+<p>使用淘宝和京东平台作为攻击模型，输入为4种商品的80张照片（在不同环境之下）</p>
+<p>结果：在不加补丁时，淘宝和京东的识别率分别为100%和95%；加了我们的补丁之后，两个平台的识别率降低为56.25%和55%。这个结果证明了我们补丁在现实世界中的攻击能力。</p>
+</li>
+<li><p><strong>泛化能力</strong></p>
+<p>我们通过测试补丁对<strong>未知类别</strong>的攻击能力来测试补丁的泛化攻击能力。</p>
+<p>对训练模型来说未知的类别：我们选择数据集的子集来训练，未纳入训练的数据对于模型则是未知的。结果如下表，我们的补丁效果最好。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402093524045.png" alt="image-20210402093524045"></p>
+<p>对目标模型来说未知的类别：我们使用RPC数据集训练我们的补丁，在淘宝平台展开攻击。我们选择4种不在ResNet-152认知范围内的物品进行不同环境的测试，结果发现淘宝识别率为65.63%。</p>
+</li>
+<li><p><strong>对纹理先验的分析</strong></p>
+<p><strong>由不同的先验开始训练：</strong>我们使用几种不同的先验来训练补丁，其余设置和数字世界攻击一致，结果纹理先验生成的补丁效果最好。</p>
+<p><strong>决策边界距离分析：</strong>数据点到决策边界的最小距离显示了模型对小噪声的鲁棒性，同样也展示了攻击的可行性。我们计算不同先验训练出来的最小距离，结果如下图，可见纹理先验生成的补丁数据点距离最小。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402094330810.png" alt="image-20210402094330810"></p>
+</li>
+<li><p><strong>融合的分析</strong></p>
+<p><strong>类原型的效果：</strong>首先考虑不同比例的类原型和和普通图片混合对对抗样本攻击效果的影响，结果是类原型占比越高，效果越好，如下图所示：</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402095330228.png" alt="image-20210402095330228"></p>
+<p>接着考虑使用类原型和不使用类原型的情况下训练<strong>数据的需求量</strong>，结果如下表所示，可见要达到相同的攻击效果，不使用类原型需要更大的数据量才能做到。它表示类原型有更强的类代表能力。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402095611814.png"></p>
+<p><strong>转换模型：</strong>我们使用单种转换模型和不适用转换模型来进行攻击能力的比对，结果如下表，可知使用转换模型能更提高攻击能力。</p>
+<p><img src="C:\Users\Imane\AppData\Roaming\Typora\typora-user-images\image-20210402100103515.png" alt="image-20210402100103515"></p>
+</li>
+</ol>
+<h3 id="四、项目的Github仓库"><a href="#四、项目的Github仓库" class="headerlink" title="四、项目的Github仓库"></a>四、项目的Github仓库</h3><p><a target="_blank" rel="noopener" href="https://github.com/liuaishan/ModelBiasedAttack">https://github.com/liuaishan/ModelBiasedAttack</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/05/17/ECCV2020/" data-id="ckr5o9zy70003xkur7b5m1r69" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          安卓程序加密算法及密钥生成过程分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">流量分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/project/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/db/" rel="tag">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/project/tags/ARP/" style="font-size: 10px;">ARP</a> <a href="/project/tags/C/" style="font-size: 10px;">C++</a> <a href="/project/tags/CV/" style="font-size: 10px;">CV</a> <a href="/project/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/project/tags/Git/" style="font-size: 10px;">Git</a> <a href="/project/tags/STL/" style="font-size: 10px;">STL</a> <a href="/project/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/project/tags/adversarial-patch/" style="font-size: 10px;">adversarial patch</a> <a href="/project/tags/android/" style="font-size: 10px;">android</a> <a href="/project/tags/blog/" style="font-size: 20px;">blog</a> <a href="/project/tags/db/" style="font-size: 10px;">db</a> <a href="/project/tags/dp/" style="font-size: 10px;">dp</a> <a href="/project/tags/encryption/" style="font-size: 10px;">encryption</a> <a href="/project/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/project/tags/linux/" style="font-size: 10px;">linux</a> <a href="/project/tags/metasploit/" style="font-size: 10px;">metasploit</a> <a href="/project/tags/scapy/" style="font-size: 10px;">scapy</a> <a href="/project/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" style="font-size: 15px;">中国象棋</a> <a href="/project/tags/%E5%88%B7%E9%A2%98/" style="font-size: 10px;">刷题</a> <a href="/project/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/project/tags/%E6%95%A3%E5%88%97/" style="font-size: 10px;">散列</a> <a href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" style="font-size: 10px;">栈溢出</a> <a href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" style="font-size: 10px;">流量分析</a> <a href="/project/tags/%E6%B8%97%E9%80%8F/" style="font-size: 10px;">渗透</a> <a href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/project/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a> <a href="/project/tags/%E9%80%92%E5%BD%92/" style="font-size: 10px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/10/">October 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/project/2021/07/16/tmp/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/19/vpn/">miniVPN实现</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Imane<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/project/" class="mobile-nav-link">Home</a>
+  
+    <a href="/project/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/project/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/project/tags" class="mobile-nav-link">Tags</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/project/fancybox/jquery.fancybox.css">
+
+  
+<script src="/project/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/project/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

