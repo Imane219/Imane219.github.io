@@ -19,35 +19,35 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"imane219.github.io","root":"/Imane219.github.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/Imane219.github.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="1.网络环境搭建使用三个docker环境模拟三台主机，seedubuntu自身作为vpn服务器，vpn客户端和内网主机用容器。使用extranet模拟客户端和网关之间的外网，intranet模拟内网。  首先创建docker网络extranet和intranet，使用命令 sudo docker network create --subnet&#x3D;10.0.2.0&#x2F;24 --gateway&#x3D;10.0.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="miniVPN实现">
-<meta property="og:url" content="https://imane219.github.io/project/2021/05/19/vpn/index.html">
+<meta property="og:url" content="http://example.com/2021/05/19/vpn/index.html">
 <meta property="og:site_name" content="Imane&#39;s Blog">
 <meta property="og:description" content="1.网络环境搭建使用三个docker环境模拟三台主机，seedubuntu自身作为vpn服务器，vpn客户端和内网主机用容器。使用extranet模拟客户端和网关之间的外网，intranet模拟内网。  首先创建docker网络extranet和intranet，使用命令 sudo docker network create --subnet&#x3D;10.0.2.0&#x2F;24 --gateway&#x3D;10.0.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%931.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%932.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%933.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%934.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%935.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%936.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%937.png">
-<meta property="og:image" content="https://imane219.github.io/project/vpn/ca1.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E9%9A%A7%E9%81%931.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E9%9A%A7%E9%81%932.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E9%9A%A7%E9%81%933.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E9%9A%A7%E9%81%934.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E9%9A%A7%E9%81%935.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E9%9A%A7%E9%81%936.png">
+<meta property="og:image" content="http://example.com/project/vpn/%E9%9A%A7%E9%81%937.png">
+<meta property="og:image" content="http://example.com/project/vpn/ca1.png">
 <meta property="article:published_time" content="2021-05-19T11:56:01.000Z">
 <meta property="article:modified_time" content="2021-05-29T11:02:27.620Z">
 <meta property="article:author" content="Imane">
 <meta property="article:tag" content="vpn">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://imane219.github.io/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
+<meta name="twitter:image" content="http://example.com/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
 
-<link rel="canonical" href="https://imane219.github.io/project/2021/05/19/vpn/">
+<link rel="canonical" href="http://example.com/2021/05/19/vpn/">
 
 
 <script id="page-configurations">
@@ -178,7 +178,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://imane219.github.io/project/2021/05/19/vpn/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/19/vpn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/Imane219.github.io/images/avatar.gif">

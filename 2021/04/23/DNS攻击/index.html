@@ -19,42 +19,42 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"imane219.github.io","root":"/Imane219.github.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/Imane219.github.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="原理： DNS用于查询域名对应的IP，域名系统是一个分布式的数据库系统，包括根域名服务器、顶级域（TLD）服务器、权威DNS服务器，本地DNS服务器（在网卡中设置的DNS服务器，作为DNS代理） 用户把DNS查询请求发给本地DNS服务器（当浏览器缓存、操作系统缓存、本地hosts文件都没有找到），DNS服务器先找自己的缓存中有没有对应的IP，没有的话就向根域名服务器查询（有迭代查询和递归查询），再">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DNS攻击">
-<meta property="og:url" content="https://imane219.github.io/project/2021/04/23/DNS%E6%94%BB%E5%87%BB/index.html">
+<meta property="og:url" content="http://example.com/2021/04/23/DNS%E6%94%BB%E5%87%BB/index.html">
 <meta property="og:site_name" content="Imane&#39;s Blog">
 <meta property="og:description" content="原理： DNS用于查询域名对应的IP，域名系统是一个分布式的数据库系统，包括根域名服务器、顶级域（TLD）服务器、权威DNS服务器，本地DNS服务器（在网卡中设置的DNS服务器，作为DNS代理） 用户把DNS查询请求发给本地DNS服务器（当浏览器缓存、操作系统缓存、本地hosts文件都没有找到），DNS服务器先找自己的缓存中有没有对应的IP，没有的话就向根域名服务器查询（有迭代查询和递归查询），再">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE1.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE2.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE3.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE4.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B01.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B02.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B03.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B04.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B05.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B06.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B1.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B2.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B3.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B4.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B5.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B7.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B8.png">
-<meta property="og:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B9.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE1.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE2.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE3.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE4.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B01.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B02.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B03.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B04.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B05.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E6%9C%AC%E5%9C%B06.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B1.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B2.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B3.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B4.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B5.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B7.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B8.png">
+<meta property="og:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%BF%9C%E7%A8%8B9.png">
 <meta property="article:published_time" content="2021-04-23T06:32:43.000Z">
 <meta property="article:modified_time" content="2021-05-17T07:40:56.720Z">
 <meta property="article:author" content="Imane">
 <meta property="article:tag" content="DNS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://imane219.github.io/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE1.png">
+<meta name="twitter:image" content="http://example.com/project/DNS%E6%94%BB%E5%87%BB/dns%E8%AE%BE%E7%BD%AE1.png">
 
-<link rel="canonical" href="https://imane219.github.io/project/2021/04/23/DNS%E6%94%BB%E5%87%BB/">
+<link rel="canonical" href="http://example.com/2021/04/23/DNS%E6%94%BB%E5%87%BB/">
 
 
 <script id="page-configurations">
@@ -185,7 +185,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://imane219.github.io/project/2021/04/23/DNS%E6%94%BB%E5%87%BB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/23/DNS%E6%94%BB%E5%87%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/Imane219.github.io/images/avatar.gif">

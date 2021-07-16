@@ -19,40 +19,40 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"imane219.github.io","root":"/Imane219.github.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/Imane219.github.io/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="1.gdb的初步使用任务：使用gdb破解homework1程序 步骤：  使用32位ubuntu虚拟磁盘文件创建虚拟机  运行homework1程序查看程序的输入输出，可以发现当随便输入字符串的时候会提示:(，如图，根据经验可猜测逆向破解出正确的字符串之后可以得到正确输出。   使用gdb调试该程序，使用info functions指令来列出该程序调用了哪些函数，说不定可以从函数调用中获得信息，如">
 <meta property="og:type" content="article">
 <meta property="og:title" content="信息系统安全">
-<meta property="og:url" content="https://imane219.github.io/project/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/index.html">
+<meta property="og:url" content="http://example.com/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/index.html">
 <meta property="og:site_name" content="Imane&#39;s Blog">
 <meta property="og:description" content="1.gdb的初步使用任务：使用gdb破解homework1程序 步骤：  使用32位ubuntu虚拟磁盘文件创建虚拟机  运行homework1程序查看程序的输入输出，可以发现当随便输入字符串的时候会提示:(，如图，根据经验可猜测逆向破解出正确的字符串之后可以得到正确输出。   使用gdb调试该程序，使用info functions指令来列出该程序调用了哪些函数，说不定可以从函数调用中获得信息，如">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://imane219.github.io/project/%5C%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework11.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework12.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework13.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework14.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework15.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc1.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc4.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc2.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc5.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc6.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop1.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop2.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop3.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop4.png">
-<meta property="og:image" content="https://imane219.github.io/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop5.png">
+<meta property="og:image" content="http://example.com/project/%5C%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework11.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework12.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework13.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework14.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework15.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc1.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc4.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc2.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc5.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc6.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop1.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop2.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop3.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop4.png">
+<meta property="og:image" content="http://example.com/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop5.png">
 <meta property="article:published_time" content="2021-04-12T12:14:13.000Z">
 <meta property="article:modified_time" content="2021-05-17T08:03:32.095Z">
 <meta property="article:author" content="Imane">
 <meta property="article:tag" content="gdb">
 <meta property="article:tag" content="栈溢出">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://imane219.github.io/project/%5C%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework11.png">
+<meta name="twitter:image" content="http://example.com/project/%5C%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework11.png">
 
-<link rel="canonical" href="https://imane219.github.io/project/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">
+<link rel="canonical" href="http://example.com/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">
 
 
 <script id="page-configurations">
@@ -183,7 +183,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://imane219.github.io/project/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/12/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/Imane219.github.io/images/avatar.gif">
