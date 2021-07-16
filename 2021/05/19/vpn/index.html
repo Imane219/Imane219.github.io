@@ -14,23 +14,23 @@
 <meta property="og:site_name" content="Imane&#39;s Blog">
 <meta property="og:description" content="1.网络环境搭建使用三个docker环境模拟三台主机，seedubuntu自身作为vpn服务器，vpn客户端和内网主机用容器。使用extranet模拟客户端和网关之间的外网，intranet模拟内网。  首先创建docker网络extranet和intranet，使用命令 sudo docker network create --subnet&#x3D;10.0.2.0&#x2F;24 --gateway&#x3D;10.0.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%931.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%932.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%933.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%934.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%935.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%936.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/%E9%9A%A7%E9%81%937.png">
-<meta property="og:image" content="https://imane219.github.io/vpn/ca1.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%931.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%932.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%933.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%934.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%935.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%936.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/%E9%9A%A7%E9%81%937.png">
+<meta property="og:image" content="https://imane219.github.io/project/vpn/ca1.png">
 <meta property="article:published_time" content="2021-05-19T11:56:01.000Z">
 <meta property="article:modified_time" content="2021-05-29T11:02:27.620Z">
 <meta property="article:author" content="Imane">
 <meta property="article:tag" content="vpn">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://imane219.github.io/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
+<meta name="twitter:image" content="https://imane219.github.io/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png">
   
     <link rel="alternate" href="/project/atom.xml" title="Imane&#39;s Blog" type="application/atom+xml">
   
@@ -110,39 +110,39 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="1-网络环境搭建"><a href="#1-网络环境搭建" class="headerlink" title="1.网络环境搭建"></a>1.网络环境搭建</h3><p>使用三个docker环境模拟三台主机，seedubuntu自身作为vpn服务器，vpn客户端和内网主机用容器。使用extranet模拟客户端和网关之间的外网，intranet模拟内网。</p>
-<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png"></p>
+<p><img src="/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA1.png"></p>
 <p><strong>首先创建docker网络extranet和intranet</strong>，使用命令</p>
 <p><code>sudo docker network create --subnet=10.0.2.0/24 --gateway=10.0.2.8 --opt  &quot;com.docker.network.bridge.name&quot;=&quot;docker1&quot; extranet</code></p>
 <p>创建extranet的网段是10.0.2.0/24，网关的地址是10.0.2.8，接口的名称是docker1</p>
 <p>创建intranet的命令是</p>
 <p><code>sudo docker network create --subnet=192.168.60.0/24 --gateway=192.168.60.1 --opt &quot;com.docker.network.bridge.name&quot;=&quot;docker2&quot; intranet</code></p>
 <p>成功后在虚拟机输入<code>docker network ls</code>可以看到多出了extranet和intranet</p>
-<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png"></p>
+<p><img src="/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA2.png"></p>
 <p><strong>接着开启两个新的终端，并创建容器HostU和HostV</strong>，使用命令</p>
 <p><code>sudo docker run -it --name=HostU --hostname=HostU --net=extranet --ip=10.0.2.7  --privileged &quot;seedubuntu&quot; /bin/bash</code></p>
 <p>指定该主机连接的网段是extranet，ip是10.0.2.7</p>
 <p>创建HostV的命令是<code>sudo docker run -it --name=HostV --hostname=HostV --net=intranet --ip=192.168.60.101 --privileged &quot;seedubuntu&quot; /bin/bash</code></p>
 <p>在两台主机上删除默认路由<code>route del default</code>，以免hostU能路由到hostV</p>
 <p>查看容器情况如图所示，容器ip均成功配置</p>
-<p><img src="/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png"></p>
+<p><img src="/project/vpn/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA3.png"></p>
 <h3 id="2-创建VPN隧道"><a href="#2-创建VPN隧道" class="headerlink" title="2.创建VPN隧道"></a>2.创建VPN隧道</h3><p>TLS/SSL VPN 中使用了 TUN/TAP 技术，其在现代操作系统中已经广泛使用。TUN 和 TAP 是虚拟网络内核驱动程序；它们可以实现完全由软件支持的网络设备。TAP 模拟以太网设备，处理的是以太网帧等二层数据包；TUN 模拟网络层设备，处理的是 IP 等三层数据包。我们可以用 TAP/TUN 创建虚拟网络接口。</p>
 <p>如图虚线是隧道，vpn客户端和服务器程序可以使用TUN接口从主机获取ip数据包和发送ip数据包到主机。</p>
-<p><img src="/vpn/%E9%9A%A7%E9%81%931.png"></p>
+<p><img src="/project/vpn/%E9%9A%A7%E9%81%931.png"></p>
 <p>当HostU需要往HostV发送数据包，应用层的程序首先将数据传递，IP报文会被路由到tun0接口，vpnclient程序这时就会从tun0读取报文，并进行加密等操作后，发送到物理网卡eth0，由eth0把他当作应用层数据再进行一次封装。当报文达到vpn网关时，网关的物理网卡会将其解封装，把加密的报文传给vpnserver程序，vpnserver程序会将其解密，然后传递给tun0，路由到docker2网卡，封装后明文发给HostV</p>
-<p><img src="/vpn/%E9%9A%A7%E9%81%932.png"></p>
+<p><img src="/project/vpn/%E9%9A%A7%E9%81%932.png"></p>
 <p>首先我们需要打开tun接口，编写编译vpnclient和vpnserver程序，并把编译好的vpnclient程序放入HostU容器中，使用命令<code>sudo docker cp vpnclient HostU:/vpnclient</code>。接着在虚拟机中运行vpnserver（<code>./vpnserver</code>），在HostU中运行vpnclient(<code>./vpnclient 10.0.2.8</code>)，将tun0接口打开，但是我们还需要配置tun0接口，使用命令<code>sudo ifconfig tun0 192.168.53.5/24 up</code>，将HostU的tun0接口配置到192.168.53.5/24网段，如图所示，tun0接口有了自己的ip，且状态是up</p>
-<p><img src="/vpn/%E9%9A%A7%E9%81%933.png"></p>
+<p><img src="/project/vpn/%E9%9A%A7%E9%81%933.png"></p>
 <p>同样在虚拟机（server）中也要配置tun0接口，命令是<code>sudo ifconfig tun0 192.168.53.1/24 up</code></p>
 <p>接着我们需要给HostU和HostV配置默认路由。让HostU发给HostV的报文经过tun0再往外面发送，命令<code> route add -net 192.168.60.0/24 tun0</code>；让HostV发给HostU的报文经过vpn server网关，命令<code>route add -net 192.168.53.0/24 gw 192.168.60.1</code>，其中53/24是HostU的tun0接口，gw是网关地址</p>
 <p>配置后查看路由表可以看到有了到192.168.60.0/24的路由</p>
-<p><img src="/vpn/%E9%9A%A7%E9%81%934.png"></p>
+<p><img src="/project/vpn/%E9%9A%A7%E9%81%934.png"></p>
 <p>同时开启server机器的ip转发功能，<code>sudo sysctl net.ipv4.ip_forward=1</code>，并关闭可能阻断转发的iptables规则<code>sudo iptables -F</code></p>
 <p>现在两台主机已经可以通过隧道通信了，如图所示，HostV上的tcpdump也成功截获了报文。</p>
-<p><img src="/vpn/%E9%9A%A7%E9%81%935.png"></p>
+<p><img src="/project/vpn/%E9%9A%A7%E9%81%935.png"></p>
 <p>在docker1（extranet）网段截包，可以看到HostU到vpn网关往来的udp报文，其中udp报文中的数据部分是一个ip报文，看到data中以4500开头可以知道是典型ipv4报文头部，而这个报文则会是内网通讯的报文。</p>
-<p><img src="/vpn/%E9%9A%A7%E9%81%936.png"></p>
+<p><img src="/project/vpn/%E9%9A%A7%E9%81%936.png"></p>
 <p>在docker2（intranet）截包可以看到是网关和HostV之间用icmp报文通信，此时已经剥开了外面的隧道报文，用于内网通信。</p>
-<p><img src="/vpn/%E9%9A%A7%E9%81%937.png"></p>
+<p><img src="/project/vpn/%E9%9A%A7%E9%81%937.png"></p>
 <h3 id="3-加密隧道"><a href="#3-加密隧道" class="headerlink" title="3.加密隧道"></a>3.加密隧道</h3><p>利用TLS加密机制加密套接字通信，将前面UDP套接字通信改成TCP。使用openssl创建TLS会话，代码见下一节</p>
 <h3 id="4-建立CA"><a href="#4-建立CA" class="headerlink" title="4.建立CA"></a>4.建立CA</h3><p>在建立VPN之前，VPN客户端必须对服务器进行身份认证，确保服务器的真实性；同样服务器也需要对客户端认证。典型的认证方法是使用公钥证书，VPN服务器首先从CA获取公钥证书，当客户端连接到VPN服务器时，服务器将使用证书来证明自己是真的服务器。</p>
 <p>我们首先基于OpenSSL<strong>创建CA</strong>，然后使用它给服务器和用户颁发证书。</p>
@@ -150,7 +150,7 @@
 <li><p>创建文件夹CA，并且将/usr/lib/ssl/openssl.cnf配置文件复制到CA文件夹中，按照配置文件中的说明创建多个子目录（CA default部分）</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cp /usr/lib/ssl/openssl.cnf openssl.cnf</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> demoCA</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir certs</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir crl</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> touch index.txt</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir newcerts</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> 1000 &gt; serial</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/vpn/ca1.png"></p>
+<p><img src="/project/vpn/ca1.png"></p>
 </li>
 <li><p>给CA 自己创建一个自签名证书，这意味着此CA完全可信，其证书将作为根证书。命令<code>openssl req -new -x509 -keyout ca.key -out ca.crt -config openssl.cnf</code>生成ca.key文件存储ca的私钥，ca.crt文件存储ca的公钥证书。执行命令时会让填写国家等基本信息，还有PEM密码（123456），以后每次签发证书的时候都需要输入此密码。</p>
 </li>
@@ -183,7 +183,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://imane219.github.io/project/2021/05/19/vpn/" data-id="ckr5o9zym000oxkur7axgaryc" class="article-share-link">Share</a>
+      <a data-url="https://imane219.github.io/project/2021/05/19/vpn/" data-id="ckr5p763m000pwwur7pw183r0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/vpn/" rel="tag">vpn</a></li></ul>
@@ -264,10 +264,6 @@
       <ul>
         
           <li>
-            <a href="/project/2021/07/16/tmp/">(no title)</a>
-          </li>
-        
-          <li>
             <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
           </li>
         
@@ -281,6 +277,10 @@
         
           <li>
             <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">流量分析</a>
           </li>
         
       </ul>

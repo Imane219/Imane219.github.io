@@ -107,7 +107,7 @@
 <p><strong>暂存区(stage/index)：</strong>是进行操作时暂时存放文件的地方。他一般存放于==.git/index==中。其中.git是本地项目中的一个隐藏文件，他虽然在项目目录中但却不属于工作区。</p>
 <p><strong>版本库：</strong>即==.git==目录</p>
 <p>他们之间的关系如图所示：</p>
-<p><img src="%E5%9B%BE1.png"></p>
+<p><img src="/project/2021/01/26/Git/%E5%9B%BE1.png"></p>
 <p>其中objects是git的对象库，位于==.git/objects==目录下。</p>
 <p>master分支即当前分支，也就是本地仓库，push到远程就是push的head指向的分支。</p>
 <h2 id="Git创建仓库"><a href="#Git创建仓库" class="headerlink" title="Git创建仓库"></a>Git创建仓库</h2><p><strong>git init：</strong>使当前执行目录成为一个git仓库，会生成.git目录，一般是隐藏的</p>
@@ -125,8 +125,8 @@
 <p><strong>git config -e：</strong>修改配置文件（针对当前仓库）</p>
 <p><strong>git config -e –global：</strong>修改配置文件（针对系统上所有仓库）</p>
 <p><strong>git config –global user.name “xxx”：</strong>设置用户名（若去掉global只对当前仓库有效）</p>
-<p><strong>git config –global user.email <a href="mailto:&#120;&#x78;&#x78;&#120;&#120;&#x40;&#x78;&#x78;&#46;&#x63;&#x6f;&#109;">&#120;&#x78;&#x78;&#120;&#120;&#x40;&#x78;&#x78;&#46;&#x63;&#x6f;&#109;</a>：</strong>设置用户邮箱信息（若去掉global只对当前仓库有效）</p>
-<h2 id="Git基本操作"><a href="#Git基本操作" class="headerlink" title="Git基本操作"></a>Git基本操作</h2><p><img src="%E5%9B%BE2.png"></p>
+<p><strong>git config –global user.email <a href="mailto:&#120;&#x78;&#x78;&#x78;&#x78;&#x40;&#x78;&#x78;&#x2e;&#x63;&#111;&#109;">&#120;&#x78;&#x78;&#x78;&#x78;&#x40;&#x78;&#x78;&#x2e;&#x63;&#111;&#109;</a>：</strong>设置用户邮箱信息（若去掉global只对当前仓库有效）</p>
+<h2 id="Git基本操作"><a href="#Git基本操作" class="headerlink" title="Git基本操作"></a>Git基本操作</h2><p><img src="/project/2021/01/26/Git/%E5%9B%BE2.png"></p>
 <p>有了==.git==之后就可以执行这些操作了</p>
 <p><strong>git clone usr/ssh [newname]：</strong>将远程仓库拷贝到本地，不指定新名字则按照url中最后一个目录名</p>
 <p><strong>git clone -b branch1 <a target="_blank" rel="noopener" href="http://www.github/sdfd.git%EF%BC%9A">www.github/sdfd.git：</a></strong>将远程仓库的分支branch1拷贝到本地</p>
@@ -155,11 +155,11 @@
 <blockquote>
 <p>Github目前的主分支名不再是master而是main</p>
 <p>所以可能有如下报错，将master改成main即可</p>
-<p><img src="%E5%9B%BE3.png"></p>
+<p><img src="/project/2021/01/26/Git/%E5%9B%BE3.png"></p>
 </blockquote>
 <h2 id="Git分支管理"><a href="#Git分支管理" class="headerlink" title="Git分支管理"></a>Git分支管理</h2><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ul>
 <li><p>今天git clone的时候报错无法连接远程仓库，查找资料后解决办法为输入<code>ssh-agent bash</code>命令开启ssh代理。</p>
-<p><img src="%E5%9B%BE4.png"></p>
+<p><img src="/project/2021/01/26/Git/%E5%9B%BE4.png"></p>
 </li>
 <li><p>git clone一个新的仓库无需git init，这样会导致外面文件夹有.git里面项目文件夹也有.git。git clone的时候会自动在项目文件夹里面创建.git</p>
 </li>
@@ -168,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://imane219.github.io/project/2021/01/26/Git/" data-id="ckr5o9zy30001xkurhc5me15i" class="article-share-link">Share</a>
+      <a data-url="https://imane219.github.io/project/2021/01/26/Git/" data-id="ckr5p76330003wwurb09bb0co" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/project/tags/Git/" rel="tag">Git</a></li></ul>
@@ -249,10 +249,6 @@
       <ul>
         
           <li>
-            <a href="/project/2021/07/16/tmp/">(no title)</a>
-          </li>
-        
-          <li>
             <a href="/project/2021/07/16/hexo%E4%BD%BF%E7%94%A8/">hexo使用</a>
           </li>
         
@@ -266,6 +262,10 @@
         
           <li>
             <a href="/project/2021/05/17/ECCV2020/">Bias-based Universal Adversarial Patch Attack for Automatic Check-out</a>
+          </li>
+        
+          <li>
+            <a href="/project/2021/05/14/%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">流量分析</a>
           </li>
         
       </ul>
