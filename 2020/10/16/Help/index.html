@@ -30,7 +30,7 @@
 <meta property="og:description" content="搭建hexo博客帮助 参考链接  环境配置 下载Git和nodejs，其中nodejs选择LTS版本  到blog文件夹下打开git bash，输入：npm install -g hexo-cli下载hexo  使用命令：hexo init myblog初始化hexo，cd myblog进入myblog文件夹，npm install下载相应环境  设置SSHkey，输入如下命令生成SSH公私钥 1">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-10-16T07:31:19.000Z">
-<meta property="article:modified_time" content="2021-07-16T02:14:13.627Z">
+<meta property="article:modified_time" content="2021-07-16T06:17:37.333Z">
 <meta property="article:author" content="Imane">
 <meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-16 10:14:13" itemprop="dateModified" datetime="2021-07-16T10:14:13+08:00">2021-07-16</time>
+                <time title="Modified: 2021-07-16 14:17:37" itemprop="dateModified" datetime="2021-07-16T14:17:37+08:00">2021-07-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,7 +243,9 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean <span class="comment">#清除之前生成的东西</span></span><br><span class="line">hexo generate <span class="comment">#生成静态文章</span></span><br><span class="line">hexo deploy <span class="comment">#部署文章（有可能要输入username和password）（hfh）</span></span><br></pre></td></tr></table></figure></li>
 </ol>
 <h3 id="博客配置"><a href="#博客配置" class="headerlink" title="博客配置"></a>博客配置</h3><ol>
-<li>在config.yml中进行更多配置</li>
+<li>在config.yml中进行更多配置，修改作者名字等</li>
+<li>使用命令<code>hexo new page categories</code>能添加新的页categories，在主题yml中去掉注释</li>
+<li>使用命令<code>hexo new &quot;title&quot;</code>能添加新的博客</li>
 </ol>
 
     </div>
@@ -342,7 +344,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

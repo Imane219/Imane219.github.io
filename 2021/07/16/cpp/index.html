@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-home.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-home.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="C++编程技术C++ VS C C++声明的位置没有限制，不像C一定要在使用之前  C++允许直接使用结构体名定义实体，即不需要再用struct node定义实体，如：node a;  C++有了运算符new和delete来完成动态内存分配 1234567&#x2F;&#x2F;new类似于malloc函数，返回指针int *p &#x3D; new int;    &#x2F;&#x2F;开辟一个机器字长的空间int *p &#x3D; new int(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPP">
+<meta property="og:url" content="http://example.com/2021/07/16/cpp/index.html">
+<meta property="og:site_name" content="Imane&#39;s Blog">
+<meta property="og:description" content="C++编程技术C++ VS C C++声明的位置没有限制，不像C一定要在使用之前  C++允许直接使用结构体名定义实体，即不需要再用struct node定义实体，如：node a;  C++有了运算符new和delete来完成动态内存分配 1234567&#x2F;&#x2F;new类似于malloc函数，返回指针int *p &#x3D; new int;    &#x2F;&#x2F;开辟一个机器字长的空间int *p &#x3D; new int(">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-16T06:18:43.000Z">
+<meta property="article:modified_time" content="2021-07-19T10:02:32.604Z">
+<meta property="article:author" content="Imane">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/07/16/cpp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CPP | Imane's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Imane's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Imane219" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/16/cpp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Imane">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Imane's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CPP
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-16 14:18:43" itemprop="dateCreated datePublished" datetime="2021-07-16T14:18:43+08:00">2021-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-07-19 18:02:32" itemprop="dateModified" datetime="2021-07-19T18:02:32+08:00">2021-07-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="C-编程技术"><a href="#C-编程技术" class="headerlink" title="C++编程技术"></a>C++编程技术</h2><h3 id="C-VS-C"><a href="#C-VS-C" class="headerlink" title="C++ VS C"></a>C++ VS C</h3><ol>
+<li><p>C++声明的位置没有限制，不像C一定要在使用之前</p>
+</li>
+<li><p>C++允许直接使用结构体名定义实体，即不需要再用<strong>struct</strong> node定义实体，如：<code>node a;</code></p>
+</li>
+<li><p>C++有了运算符<strong>new</strong>和<strong>delete</strong>来完成动态内存分配</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//new类似于malloc函数，返回指针</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>;    <span class="comment">//开辟一个机器字长的空间</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="built_in"><span class="keyword">int</span></span>(<span class="number">20</span>);<span class="comment">//开辟一个机器字长的空间并在其中赋值20</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">20</span>];<span class="comment">//开辟20个机器字长的空间</span></span><br><span class="line"><span class="comment">//delete类似于free函数，参数为指针</span></span><br><span class="line"><span class="keyword">delete</span> p;</span><br><span class="line"><span class="keyword">delete</span> []p;<span class="comment">//释放数组最好用这个</span></span><br></pre></td></tr></table></figure></li>
+<li><p>C++增加了<strong>引用(references)<strong>类型，引用是让</strong>变量</strong>i拥有别名j，这样i和j都代表同一块地址中的内容。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">//类型名 &amp; 引用型函数名或变量名=前已声明的变量名</span></span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   <span class="keyword">int</span> &amp;j = i;<span class="comment">//j是i的引用，此时对i和j中任何一个进行赋值、自增等操作，都会影响到他们共同代表的那块地址内容。</span></span><br><span class="line">   <span class="comment">//注意引用不能对常数声明</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> &amp;)</span></span>;</span><br><span class="line">   <span class="built_in">f</span>(<span class="keyword">int</span> &amp;j)&#123;&#125;;</span><br><span class="line">   <span class="built_in">f</span>(j);</span><br></pre></td></tr></table></figure></li>
+<li><p>C++对<strong>const</strong>语义进行了扩展</p>
+<ul>
+<li><p>一般常量</p>
+<p>对于一般常量来说，C++中用const声明的常量在后续的编译过程中就可以直接访问，而C需要在程序执行的时候才可以访问。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = <span class="number">9</span>;<span class="comment">//const声明常量的同时要初始化，并且后续不能更改</span></span><br><span class="line"><span class="keyword">char</span> t[i];<span class="comment">//此句在C中不合法</span></span><br><span class="line"><span class="comment">//声明常数组</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> array[<span class="number">5</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> array[<span class="number">5</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;<span class="comment">//const可以放在int前后</span></span><br></pre></td></tr></table></figure></li>
+<li><p>常指针和常引用</p>
+<p>对于指针和引用const的位置不同含义不同</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//以指针为例</span></span><br><span class="line"><span class="comment">//此时p的指向不能改变，但p指向的内容可以改变，即指针是常量</span></span><br><span class="line"><span class="keyword">char</span>* <span class="keyword">const</span> p = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">p = <span class="string">&quot;bbc&quot;</span>;<span class="comment">//非法</span></span><br><span class="line">*p = <span class="string">&quot;aaa&quot;</span>;<span class="comment">//合法</span></span><br><span class="line"><span class="comment">//此时p的指向可以改变，但p指向的内容不可改变，即指向的内容是常量</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* p = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">p = <span class="string">&quot;bbc&quot;</span>;<span class="comment">//合法</span></span><br><span class="line">*p = <span class="string">&quot;aaa&quot;</span>;<span class="comment">//非法</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//对于函数形参，采用第二种</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> *p)</span></span>;</span><br><span class="line"><span class="built_in">f</span>(<span class="keyword">const</span> <span class="keyword">int</span> *p)&#123;&#125;;</span><br><span class="line"><span class="built_in">f</span>(array);</span><br></pre></td></tr></table></figure></li>
+<li><p>常成员函数和常数据成员</p>
+<p>使用const关键字说明的成员函数，只有常成员函数能操作常量和常对象</p>
+<blockquote>
+<p>待学了面向对象后补充</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>C++指针的声明类型必须和指向的实体类型一致，不像C一样有缺省的自动转换，必须强制转换</p>
+</li>
+<li><p>C++中int和char不再等价，<code>sizeof(&#39;A&#39;)</code>是1而<code>sizeof(65)</code>是2</p>
+</li>
+<li><p>C++中的struct可以在内部定义成员函数，如果定义成员函数此struct的定义必须作为全局对象。</p>
+<blockquote>
+<p>struct是class的特例</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="C-存储技术"><a href="#C-存储技术" class="headerlink" title="C++存储技术"></a>C++存储技术</h3><ol>
+<li><p>C++存储类型</p>
+<ul>
+<li>extern：全局变量需要在外部文件引用时，外部文件会加extern</li>
+<li>static：局部的稳定变量，和全局变量一样在永久存储区中，只在作用域中生效</li>
+<li>register：用于修饰int和char，表示将变量值保存于寄存器中</li>
+</ul>
+</li>
+<li><p>C++存取修饰符</p>
+<ul>
+<li>const：常数型</li>
+<li>volatile：暂态型，用于说明该变量有可能被没有显式说明的方式改变，防止编译器自动优化</li>
+</ul>
+</li>
+<li><p>C++对象的生存期</p>
+<ul>
+<li>局部对象：对象被定义时调用构造函数，程序退出定义对象所在的程序块时，调用析构函数。作用域在程序块内。</li>
+<li>静态对象：程序第一次执行定义的静态对象-&gt;程序结束。作用域在某个文件内。</li>
+<li>全局变量：程序开始时，对象被创建-&gt;程序结束时，对象被析构。作用于在包含该文件的程序内。</li>
+</ul>
+<p><strong>类域</strong>：类的作用域，类定义中花括号括起的部分。类域中定义的变量只能用static修饰符，定义的函数也不能用extern。某个类A中成员M在以下情况下具有类A的作用域：</p>
+<ul>
+<li>M出现在类A的某个成员函数中，且该函数没有定义同名标识符（？）</li>
+<li>类A的对象a取用到M，<code>a.M</code></li>
+<li>类A的对象指针pa取用到M，<code>pa-&gt;M</code></li>
+<li>使用作用域运算符所限定的该成员中，<code>A::M</code>（？）</li>
+</ul>
+</li>
+</ol>
+<h3 id="C-函数技术"><a href="#C-函数技术" class="headerlink" title="C++函数技术"></a>C++函数技术</h3><h4 id="类的构造函数、析构函数和赋值函数"><a href="#类的构造函数、析构函数和赋值函数" class="headerlink" title="类的构造函数、析构函数和赋值函数"></a>类的构造函数、析构函数和赋值函数</h4><p>一个类中只有一个析构函数和一个赋值函数，但可以有多个构造函数。</p>
+<ol>
+<li><p>构造函数技术</p>
+<ul>
+<li>构造函数名必须和类名相同，且不能声明任何返回值类型</li>
+<li>（面向对象待后补充，这本书讲的不太清楚）</li>
+</ul>
+</li>
+</ol>
+<h2 id="C-标准库技术"><a href="#C-标准库技术" class="headerlink" title="C++标准库技术"></a>C++标准库技术</h2><p>C++标准库增进了I/O流技术，增加了String对象，各种容器、算法等，这些都放在命名空间std中，而旧C++的头文件如：&lt;iostream.h&gt;不包含std。为了兼容，将旧的C++头文件包装后去掉.h作为包含std的头文件，如：&lt;iostream&gt;，C的头文件去掉.h的同时前面加上c如&lt;cstdio&gt;</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag">C++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/16/hexo%E4%BD%BF%E7%94%A8/" rel="prev" title="hexo使用">
+      <i class="fa fa-chevron-left"></i> hexo使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF"><span class="nav-number">1.</span> <span class="nav-text">C++编程技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-VS-C"><span class="nav-number">1.1.</span> <span class="nav-text">C++ VS C</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E5%AD%98%E5%82%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">1.2.</span> <span class="nav-text">C++存储技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E5%87%BD%E6%95%B0%E6%8A%80%E6%9C%AF"><span class="nav-number">1.3.</span> <span class="nav-text">C++函数技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E3%80%81%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E5%92%8C%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">类的构造函数、析构函数和赋值函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E6%A0%87%E5%87%86%E5%BA%93%E6%8A%80%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">C++标准库技术</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Imane</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Imane</span>
+</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+    </div>
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+</body>
+</html>
