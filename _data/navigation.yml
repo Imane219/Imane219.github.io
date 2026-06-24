@@ -23,22 +23,22 @@ main:
 
 main_zh:
   - title: "关于我"
-    url: "#about-me"
+    url: "/zh/#about-me"
 
   - title: "动态"
-    url: "#-动态"
+    url: "/zh/#-动态"
 
   - title: "论文"
-    url: "#-论文"
+    url: "/zh/#-论文"
 
   - title: "荣誉奖项"
-    url: "#-荣誉奖项"
+    url: "/zh/#-荣誉奖项"
 
   - title: "教育经历"
-    url: "#-教育经历"
+    url: "/zh/#-教育经历"
 
   - title: "工作经历"
-    url: "#-工作经历"
+    url: "/zh/#-工作经历"
 
   - title: "English"
     url: "/"
