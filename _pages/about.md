@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-I am currently an Algorithm Engineer at **Alibaba Taotian Group**, focusing on multimodal understanding and generation.
+I am currently an Algorithm Engineer at **Alimama Advertising Technology Department, Alibaba Group**, focusing on multimodal understanding and generation.
 
 Prior to this, I received my **B.S.** and **M.S.** degrees from **Huazhong University of Science and Technology (HUST)**, where I was advised by **Prof. Yixiong Zou** and **Prof. Ruixuan Li**.
 
@@ -72,9 +72,27 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian 
 </div>
 </div>
 
-- **Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**, Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li, **CVPR 2024** [\[Paper\]](https://arxiv.org/abs/2403.00567)
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2024</div><img src='images/500x300.png' alt="CVPR2024" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
 
-- **Alleviating Noise Memorization for Adversarially Robust Few-Shot Learning**, **Yiman Hu**, Yixiong Zou, Xiaosen Wang, Yuhua Li, Kun He, Ruixuan Li, **Neural Networks** [\[Paper\]](https://www.sciencedirect.com/science/article/abs/pii/S0893608025013966)
+**Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**
+
+Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
+
+[\[Paper\]](https://arxiv.org/abs/2403.00567)
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Neural Networks</div><img src='images/500x300.png' alt="NeuralNetworks" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+**Alleviating Noise Memorization for Adversarially Robust Few-Shot Learning**
+
+**Yiman Hu**, Yixiong Zou, Xiaosen Wang, Yuhua Li, Kun He, Ruixuan Li
+
+[\[Paper\]](https://www.sciencedirect.com/science/article/abs/pii/S0893608025013966)
+</div>
+</div>
 
 # 🎖 Honors and Awards
 - *2024.10* National Scholarship (Top 1%)

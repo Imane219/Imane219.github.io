@@ -62,9 +62,27 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian 
 </div>
 </div>
 
-- **Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**, Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li, **CVPR 2024** [\[论文\]](https://arxiv.org/abs/2403.00567)
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2024</div><img src='/images/500x300.png' alt="CVPR2024" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
 
-- **Alleviating Noise Memorization for Adversarially Robust Few-Shot Learning**, **Yiman Hu**, Yixiong Zou, Xiaosen Wang, Yuhua Li, Kun He, Ruixuan Li, **Neural Networks** [\[论文\]](https://www.sciencedirect.com/science/article/abs/pii/S0893608025013966)
+**Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**
+
+Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
+
+[\[论文\]](https://arxiv.org/abs/2403.00567)
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Neural Networks</div><img src='/images/500x300.png' alt="NeuralNetworks" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+**Alleviating Noise Memorization for Adversarially Robust Few-Shot Learning**
+
+**Yiman Hu**, Yixiong Zou, Xiaosen Wang, Yuhua Li, Kun He, Ruixuan Li
+
+[\[论文\]](https://www.sciencedirect.com/science/article/abs/pii/S0893608025013966)
+</div>
+</div>
 
 # 🎖 荣誉奖项
 - *2024.10* 国家奖学金（Top 1%）
