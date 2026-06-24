@@ -9,7 +9,11 @@
   </div>
 
   <div class="author__content">
-    <h3 class="author__name">{{ author.name }}</h3>
+    {% if page.url contains '/zh/' and author.name_zh %}
+      <h3 class="author__name">{{ author.name_zh }}</h3>
+    {% else %}
+      <h3 class="author__name">{{ author.name }}</h3>
+    {% endif %}
     {% if page.url contains '/zh/' %}
       {% if author.bio_zh %}<p class="author__bio">{{ author.bio_zh }}</p>{% endif %}
     {% elsif author.bio %}

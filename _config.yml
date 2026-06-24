@@ -22,6 +22,7 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 # Site Author
 author:
   name             : "Yiman Hu"
+  name_zh          : "胡伊曼"
   avatar           : "/images/avatar.JPG"
   bio              : "Algorithm Engineer at Alibaba Group."
   bio_zh           : "阿里巴巴淘天集团算法工程师"
