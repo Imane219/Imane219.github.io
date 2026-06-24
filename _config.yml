@@ -7,7 +7,7 @@
 
 # Site Settings
 title                    : "Yiman Hu"
-description              : "Algorithm Engineer at Alibaba Taotian Group. Research interests: Multimodal LLMs, Video Understanding, Video Generation."
+description              :
 repository               : "acad-homepage/acad-homepage.github.io"
 google_scholar_stats_use_cdn : true
 
@@ -23,12 +23,13 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 author:
   name             : "Yiman Hu (胡伊曼)"
   avatar           : "images/profile.jpg"
-  bio              : "Algorithm Engineer @ Alimama, Alibaba Group"
+  bio              : "Algorithm Engineer at Alibaba Taotian Group."
   location         : "Hangzhou, China"
   employer         :
   pubmed           :
   googlescholar    : "https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID"
   email            : "pp1@alibaba-inc.com"
+  cv               :  # e.g., "/files/CV_YimanHu.pdf"
   researchgate     :  # e.g., "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
