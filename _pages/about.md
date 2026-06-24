@@ -39,7 +39,7 @@ If you are interested in academic collaboration, industry opportunities, or inte
 
 # 📝 Publications
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICML 2026</div><img src='images/hide.png' alt="HiDe" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICML 2026</div><img src='images/icml26_1.jpg' alt="HiDe" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 **HiDe: Rethinking The Zoom-IN method in High Resolution MLLMs via Hierarchical Decoupling**
@@ -50,7 +50,7 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zh
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICML 2026</div><img src='images/evads.png' alt="E-VAds" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICML 2026</div><img src='images/icml26_2.jpg' alt="E-VAds" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 **E-VAds: An E-commerce Short Videos Understanding Benchmark for MLLMs**
@@ -61,7 +61,7 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian 
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">NeurIPS 2024</div><img src='images/neurips2024.png' alt="NeurIPS2024" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">NeurIPS 2024</div><img src='images/nips24.jpg' alt="NeurIPS2024" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 **Generate Universal Adversarial Perturbations for Few-Shot Learning**
@@ -72,7 +72,7 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian 
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2024</div><img src='images/500x300.png' alt="CVPR2024" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2024</div><img src='images/cvpr24.jpg' alt="CVPR2024" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 **Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**
@@ -83,7 +83,7 @@ Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Neural Networks</div><img src='images/500x300.png' alt="NeuralNetworks" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Neural Networks</div><img src='images/nn.jpg' alt="NeuralNetworks" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 **Alleviating Noise Memorization for Adversarially Robust Few-Shot Learning**
