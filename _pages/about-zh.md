@@ -13,11 +13,11 @@ author_profile: true
 
 我的核心研究兴趣集中在<u>多模态大语言模型（Multimodal Large Language Models）、视频理解（Video Understanding）、视频生成（Video Generation）</u>。在学术研究方面，我曾在 NeurIPS、ICML、CVPR 等国际顶级学术会议上发表 5 篇论文；在本科与硕士阶段两度荣获**国家奖学金（Top 1%）**；并多次在国内外重量级 AI 算法竞赛中斩获全国冠军及亚军。
 
-在工业界深耕的同时，我始终保持对学术探索的热情，并拥有丰富的实习生指导经验（曾作为 **Tech Lead** 带领实习生完成并发表顶会论文）。目前我们团队正在开放实习生招聘！
+在工业界深耕的同时，我始终保持对学术探索的热情，并拥有丰富的实习生指导经验（曾作为 **Tech Lead** 带领实习生完成并发表顶会论文）。
 
-如果您正在寻找学术合作、工业界机会或实习岗位，欢迎随时通过邮件与我联系：[pp1@alibaba-inc.com](mailto:pp1@alibaba-inc.com)。
+目前我们团队正在开放实习生招聘！如果您正在寻找学术合作、工业界机会或实习岗位，欢迎随时通过邮件与我联系：[pp1@alibaba-inc.com](mailto:pp1@alibaba-inc.com)。
 
-🌐 [English Version](/)
+<span class='anchor' id='zh-news'></span>
 
 # 🔥 动态
 - *2026.05*: &nbsp;🎉🎉 指导实习生完成的两篇论文被 **ICML 2026** 接受！
@@ -26,6 +26,8 @@ author_profile: true
 - *2024.09*: &nbsp;🎉 一篇论文被 **NeurIPS 2024** 接受！
 - *2024.02*: &nbsp;🎉 一篇论文被 **CVPR 2024** 接受！
 - *2022.06*: 获得**优秀毕业生**及**荣誉学士学位**称号！
+
+<span class='anchor' id='zh-publications'></span>
 
 # 📝 论文
 
@@ -84,6 +86,8 @@ Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
 </div>
 </div>
 
+<span class='anchor' id='zh-honors'></span>
+
 # 🎖 荣誉奖项
 - *2024.10* 国家奖学金（Top 1%）
 - *2024.01* IEEE Cybermatics 第二届国际"Vision Meets Algae"挑战赛亚军（Top 1%）
@@ -94,9 +98,13 @@ Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
 - *2020.10* 国家奖学金（Top 1%）
 - *2019.10* 三好学生（Top 7%）
 
+<span class='anchor' id='zh-education'></span>
+
 # 📖 教育经历
 - *2022.09 - 2025.06*，硕士，计算机科学与技术学院，华中科技大学。导师：邹逸雄教授、李瑞轩教授。
 - *2018.09 - 2022.06*，学士，网络空间安全学院，华中科技大学。
+
+<span class='anchor' id='zh-work'></span>
 
 # 💻 工作经历
 - *2025.07 - 至今*，算法工程师，阿里巴巴集团阿里妈妈广告技术部，杭州。
