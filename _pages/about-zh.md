@@ -29,7 +29,7 @@ author_profile: true
 
 # 📝 论文
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICML 2026</div><img src='../images/hide.png' alt="HiDe" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICML 2026</div><img src='/images/hide.png' alt="HiDe" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 **HiDe: Rethinking The Zoom-IN method in High Resolution MLLMs via Hierarchical Decoupling**
@@ -40,7 +40,7 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zh
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICML 2026</div><img src='../images/evads.png' alt="E-VAds" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICML 2026</div><img src='/images/evads.png' alt="E-VAds" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 **E-VAds: An E-commerce Short Videos Understanding Benchmark for MLLMs**
@@ -51,7 +51,7 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian 
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">NeurIPS 2024</div><img src='../images/neurips2024.png' alt="NeurIPS2024" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">NeurIPS 2024</div><img src='/images/neurips2024.png' alt="NeurIPS2024" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 **Generate Universal Adversarial Perturbations for Few-Shot Learning**
