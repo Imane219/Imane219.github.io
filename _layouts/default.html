@@ -28,6 +28,11 @@ layout: compress
     </div>
 
     {% include scripts.html %}
+    <script>
+      $(document).ready(function() {
+        $("a").smoothScroll({ offset: -20, speed: "auto", autoCoefficient: 6 });
+      });
+    </script>
 
   </body>
 </html>
