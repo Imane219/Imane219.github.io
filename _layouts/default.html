@@ -30,7 +30,16 @@ layout: compress
     {% include scripts.html %}
     <script>
       $(document).ready(function() {
-        $("a").smoothScroll({ offset: -20, speed: "auto", autoCoefficient: 6 });
+        $(".masthead__menu-item a[href*='#']")
+          .off("click.smoothscroll")
+          .on("click", function(e) {
+            var hash = this.hash;
+            if (!hash) return;
+            var target = $(hash);
+            if (!target.length) return;
+            e.preventDefault();
+            window.scrollTo({ top: target.offset().top - 20, behavior: "smooth" });
+          });
       });
     </script>
 
