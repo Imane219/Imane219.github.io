@@ -109,5 +109,5 @@ Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
 - *2018.09 - 2022.06*, B.S., School of Cyber Science and Engineering, Huazhong University of Science and Technology (HUST).
 
 # 💻 Work Experience
-- *2025.07 - present*, Algorithm Engineer, Alibaba Taotian Group, Hangzhou.
+- *2025.07 - present*, Algorithm Engineer, Alimama Advertising Technology Department, Alibaba Group, Hangzhou.
 - *2024.05 - 2024.09*, Research Intern, Alibaba, Hangzhou.
