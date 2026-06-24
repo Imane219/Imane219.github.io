@@ -20,7 +20,7 @@ author_profile: true
 <span class='anchor' id='zh-news'></span>
 
 # 🔥 动态
-- *2026.05*: &nbsp;🎉🎉 指导实习生完成的两篇论文被 **ICML 2026** 接受！
+- *2026.05*: &nbsp;🎉 指导实习生完成的两篇论文被 **ICML 2026** 接受！
 - *2025.07*: 加入**阿里巴巴集团阿里妈妈广告技术部**，担任算法工程师！
 - *2025.06*: 获得**硕士学位**！
 - *2024.09*: &nbsp;🎉 一篇论文被 **NeurIPS 2024** 接受！
@@ -38,6 +38,8 @@ author_profile: true
 
 Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zheng
 
+我们发现多模态大语言模型处理高分辨率图像的真正瓶颈是背景干扰而非目标大小。HiDe 通过 Token 级注意力解耦与布局保留解耦，在 V\*Bench 上达到 SOTA（92.1 分），同时降低 75% 显存占用。
+
 [\[论文\]](https://arxiv.org/abs/2510.00054) [\[项目\]](https://tennine2077.github.io/HiDe.github.io/)
 </div>
 </div>
@@ -48,6 +50,8 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zh
 **E-VAds: An E-commerce Short Videos Understanding Benchmark for MLLMs**
 
 Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian Xu, Bo Zheng
+
+我们构建 E-VAds，首个专门评测多模态大语言模型在转化导向电商短视频理解上的基准，涵盖 3,961 段视频与 5 类共 19,785 个问答对。当前模型在高密度商业内容上表现显著不足；我们的 E-VAds-R1 推理模型在商业意图推理任务上取得 109.2% 的性能增益。
 
 [\[论文\]](https://arxiv.org/abs/2602.08355) [\[项目\]](https://github.com/TaobaoTmall-AlgorithmProducts/E-VAds_Benchmark) [\[模型\]](https://huggingface.co/TaobaoTmall-AlgorithmProducts/E-VAds-R1-Qwen2.5VL) [\[数据\]](https://huggingface.co/datasets/TaobaoTmall-AlgorithmProducts/E-VAds_Benchmark)
 </div>
@@ -60,6 +64,8 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian 
 
 **Yiman Hu**, Yixiong Zou, Ruixuan Li, Yuhua Li
 
+传统通用对抗扰动因任务偏移与语义偏移在小样本学习中显著失效。我们提出 FSAFW 统一攻击框架，通过对齐代理任务并利用预训练编码器的泛化性，攻击性能超越基线方法 16%。
+
 [\[论文\]](https://proceedings.neurips.cc/paper_files/paper/2024/hash/ba1c5356d9164bb64c446a4b690226b0-Abstract-Conference.html)
 </div>
 </div>
@@ -70,6 +76,8 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian 
 **Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**
 
 Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
+
+我们将损失景观分析扩展至表征空间，发现尖锐极值点同时阻碍跨域小样本学习的迁移与微调。仅替换归一化层即可实现长程平坦化，在 8 个数据集上相比最优方法提升最高达 9%。
 
 [\[论文\]](https://arxiv.org/abs/2403.00567)
 </div>
@@ -82,6 +90,8 @@ Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
 
 **Yiman Hu**, Yixiong Zou, Xiaosen Wang, Yuhua Li, Kun He, Ruixuan Li
 
+小样本对抗训练驱使模型记忆对抗噪声而非学习鲁棒特征，硬标签进一步加剧了过拟合问题。我们提出 ANM，结合自适应标签平滑与鲁棒权重学习，将噪声记忆与鲁棒性解耦，在对抗基准上取得更优泛化性能。
+
 [\[论文\]](https://www.sciencedirect.com/science/article/abs/pii/S0893608025013966)
 </div>
 </div>
@@ -92,11 +102,9 @@ Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
 - *2024.10* 国家奖学金（Top 1%）
 - *2024.01* IEEE Cybermatics 第二届国际"Vision Meets Algae"挑战赛亚军（Top 1%）
 - *2023.12* 第五届全球人工智能算法精英大赛全国总决赛冠军（Top 1%）
-- *2023.10* 三好研究生（Top 13%）
 - *2023.07* 2023 星火杯认知大模型场景创新赛全国总决赛第六名
 - *2022.06* 优秀毕业生 & 荣誉学士学位（Top 1%）
 - *2020.10* 国家奖学金（Top 1%）
-- *2019.10* 三好学生（Top 7%）
 
 <span class='anchor' id='zh-education'></span>
 
