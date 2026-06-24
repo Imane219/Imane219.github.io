@@ -17,11 +17,11 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-I am currently an Algorithm Engineer at **Alimama Advertising Technology Department, Alibaba Group**, focusing on multimodal understanding and generation.
+I am currently an Algorithm Engineer at **Alimama Advertising Technology Department, Alibaba Group**, focusing on multimodal understanding.
 
 Prior to this, I received my **B.S.** and **M.S.** degrees from **Huazhong University of Science and Technology (HUST)**, where I was advised by **Prof. Yixiong Zou** and **Prof. Ruixuan Li**.
 
-My primary research interests include <u>Multimodal Large Language Models, Video Understanding, and Video Generation</u>. I have published 5 papers at top-tier international conferences, including NeurIPS, ICML, and CVPR. During my undergraduate and graduate studies, I was twice awarded the <u>National Scholarship (Top 1%)</u>. I have also won national championships and runner-up awards <u>in major AI algorithm competitions (Top 1%)</u>.
+My primary research interests include <u>Multimodal Large Language Models and Video Understanding</u>. I have published 5 papers at top-tier international conferences, including NeurIPS, ICML, and CVPR. During my undergraduate and graduate studies, I was twice awarded the <u>National Scholarship (Top 1%)</u>. I have also won national championships and runner-up awards <u>in major AI algorithm competitions (Top 1%)</u>.
 
 I remain highly active in academic research, with extensive experience mentoring interns and guiding them to top-tier conference publications. I continue to serve as a **Tech Lead** to support interns in pursuing high-quality research.
 
@@ -76,19 +76,6 @@ Traditional Universal Adversarial Perturbations (UAPs) fail in few-shot learning
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2024</div><img src='images/cvpr24.jpg' alt="CVPR2024" width="100%"></div></div>
-<div class='paper-box-text' markdown="1">
-
-**Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**
-
-Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
-
-We extend loss landscape analysis to representation space, revealing sharp minima simultaneously impede transferability and fine-tuning in cross-domain few-shot learning. A lightweight normalization layer achieves long-range flattening with up to 9% improvement over state-of-the-art across 8 datasets.
-
-[\[Paper\]](https://arxiv.org/abs/2403.00567)
-</div>
-</div>
-
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">Neural Networks</div><img src='images/nn.jpg' alt="NeuralNetworks" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
@@ -99,6 +86,19 @@ We extend loss landscape analysis to representation space, revealing sharp minim
 Adversarial training in few-shot learning drives models to memorize adversarial noise rather than learning robust features, with hard labels further exacerbating overfitting. We propose ANM (Adaptive Label Smoothing + Robust Weight Learning) to decouple noise memorization from robustness, outperforming current adversarial benchmarks.
 
 [\[Paper\]](https://www.sciencedirect.com/science/article/abs/pii/S0893608025013966)
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2024</div><img src='images/cvpr24.jpg' alt="CVPR2024" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+**Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**
+
+Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
+
+We extend loss landscape analysis to representation space, revealing sharp minima simultaneously impede transferability and fine-tuning in cross-domain few-shot learning. A lightweight normalization layer achieves long-range flattening with up to 9% improvement over state-of-the-art across 8 datasets.
+
+[\[Paper\]](https://arxiv.org/abs/2403.00567)
 </div>
 </div>
 

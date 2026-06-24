@@ -7,11 +7,11 @@ author_profile: true
 
 <span class='anchor' id='about-me'></span>
 
-目前，我就职于**阿里巴巴集团阿里妈妈广告技术部**担任算法工程师，主要致力于多模态内容理解与生成等前沿方向的研发工作。
+目前，我就职于**阿里巴巴集团阿里妈妈广告技术部**担任算法工程师，主要致力于多模态内容理解前沿方向的研发工作。
 
 在此之前，我本硕均毕业于**华中科技大学（HUST）**。我于计算机科学与技术学院获得硕士学位，师从**邹逸雄教授**与**李瑞轩教授**；并于网络空间安全学院获得学士学位。
 
-我的核心研究兴趣集中在<u>多模态大语言模型（Multimodal Large Language Models）、视频理解（Video Understanding）、视频生成（Video Generation）</u>。在学术研究方面，我曾在 NeurIPS、ICML、CVPR 等国际顶级学术会议上发表 5 篇论文；在本科与硕士阶段两度荣获**国家奖学金（Top 1%）**；并多次在国内外重量级 AI 算法竞赛中斩获全国冠军及亚军。
+我的核心研究兴趣集中在<u>多模态大语言模型（Multimodal Large Language Models）、视频理解（Video Understanding</u>。在学术研究方面，我曾在 NeurIPS、ICML、CVPR 等国际顶级学术会议上发表 5 篇论文；在本科与硕士阶段两度荣获**国家奖学金（Top 1%）**；并多次在国内外重量级 AI 算法竞赛中斩获全国冠军及亚军。
 
 在工业界深耕的同时，我始终保持对学术探索的热情，并拥有丰富的实习生指导经验（曾作为 **Tech Lead** 带领实习生完成并发表顶会论文）。
 
@@ -70,19 +70,6 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian 
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2024</div><img src='/images/cvpr24.jpg' alt="CVPR2024" width="100%"></div></div>
-<div class='paper-box-text' markdown="1">
-
-**Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**
-
-Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
-
-我们将损失景观分析扩展至表征空间，发现尖锐极值点同时阻碍跨域小样本学习的迁移与微调。仅替换归一化层即可实现长程平坦化，在 8 个数据集上相比最优方法提升最高达 9%。
-
-[\[论文\]](https://arxiv.org/abs/2403.00567)
-</div>
-</div>
-
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">Neural Networks</div><img src='/images/nn.jpg' alt="NeuralNetworks" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
@@ -93,6 +80,19 @@ Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
 小样本对抗训练驱使模型记忆对抗噪声而非学习鲁棒特征，硬标签进一步加剧了过拟合问题。我们提出 ANM，结合自适应标签平滑与鲁棒权重学习，将噪声记忆与鲁棒性解耦，在对抗基准上取得更优泛化性能。
 
 [\[论文\]](https://www.sciencedirect.com/science/article/abs/pii/S0893608025013966)
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2024</div><img src='/images/cvpr24.jpg' alt="CVPR2024" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+**Flatten Long-Range Loss Landscapes for Cross-Domain Few-Shot Learning**
+
+Yixiong Zou, Yicong Liu, **Yiman Hu**, Yuhua Li, Ruixuan Li
+
+我们将损失景观分析扩展至表征空间，发现尖锐极值点同时阻碍跨域小样本学习的迁移与微调。仅替换归一化层即可实现长程平坦化，在 8 个数据集上相比最优方法提升最高达 9%。
+
+[\[论文\]](https://arxiv.org/abs/2403.00567)
 </div>
 </div>
 
