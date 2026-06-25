@@ -99,6 +99,7 @@
 
   /* bio */
   .bio { font-size: 13.5px; line-height: 1.75; color: #222; }
+  .accent { color: var(--red); font-weight: 600; }
   .bio-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 7px; }
   .bio-list li { position: relative; padding-left: 16px; font-size: 13.5px; line-height: 1.75; color: #222; }
   .bio-list li::before { content: '▸'; color: var(--red); position: absolute; left: 0; top: 0; }
@@ -185,18 +186,10 @@
 
   <!-- Bio -->
   <div class="section">
-    <div class="section-title" data-lang="en">Profile</div>
+    <div class="section-title" data-lang="en">About Me</div>
     <div class="section-title" data-lang="zh">个人简介</div>
-    <ul class="bio-list" data-lang="en">
-      <li><strong>Algorithm Engineer</strong> at Alimama Advertising Technology Department, Alibaba Group, focusing on multimodal understanding. <strong>Experienced Tech Lead</strong> mentoring interns to top-tier conference publications.</li>
-      <li>M.S. and B.S. from Huazhong University of Science and Technology (HUST), advised by Prof. Yixiong Zou and Prof. Ruixuan Li.</li>
-      <li><strong>Author of 5 papers at NeurIPS, ICML, CVPR, et al.</strong> Twice recipient of the <strong>National Scholarship (Top 1%)</strong> and multiple national champion titles in AI algorithm competitions.</li>
-    </ul>
-    <ul class="bio-list" data-lang="zh">
-      <li>阿里巴巴集团阿里妈妈广告技术部<strong>算法工程师</strong>，专注多模态内容理解前沿研究，作为 <strong>Tech Lead</strong> 指导实习生在顶会发表多篇论文。</li>
-      <li>硕士与学士均毕业于华中科技大学，师从邹逸雄教授和李瑞轩教授。</li>
-      <li>在 <strong>NeurIPS、ICML、CVPR 等国际会议发表论文 5 篇</strong>，两度荣获<strong>国家奖学金（Top 1%）</strong>，曾多次在 AI 算法竞赛中斩获全国冠军。</li>
-    </ul>
+    <div class="bio" data-lang="en">I am currently an Algorithm Engineer at <strong class="accent">Alimama Advertising Technology Department, Alibaba Group</strong>, focusing on multimodal understanding and generation. I received my B.S. and M.S. degrees from <strong class="accent">Huazhong University of Science and Technology (HUST)</strong>, advised by Prof. Yixiong Zou and Prof. Ruixuan Li. I have published <strong class="accent">5 papers at top conferences</strong> including NeurIPS, ICML, and CVPR, and was twice awarded the <strong class="accent">National Scholarship (Top 1%)</strong>. I actively mentor interns as <strong class="accent">Tech Lead</strong> to publish at top-tier conferences.</div>
+    <div class="bio" data-lang="zh">目前就职于<strong class="accent">阿里巴巴集团阿里妈妈广告技术部</strong>担任算法工程师，专注于多模态内容理解前沿方向的研发。本硕均毕业于<strong class="accent">华中科技大学（HUST）</strong>，师从邹逸雄教授与李瑞轩教授。在 NeurIPS、ICML、CVPR 等顶级会议<strong class="accent">发表论文 5 篇</strong>，本硕期间两度荣获<strong class="accent">国家奖学金（Top 1%）</strong>。作为 <strong class="accent">Tech Lead</strong> 积极指导实习生在顶会发表论文。</div>
   </div>
 
   <!-- Work -->
