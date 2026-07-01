@@ -42,7 +42,7 @@ If you are interested in academic collaboration, industry opportunities, or inte
 
 **HiDe: Rethinking The Zoom-IN method in High Resolution MLLMs via Hierarchical Decoupling**
 
-Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zheng
+Xianjie Liu\*, **Yiman Hu\* (Tech Lead, Corresponding Author)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zheng
 
 We discover the real bottleneck of MLLMs on high-resolution images is background interference rather than object size. HiDe uses Token-level Attention Decoupling and Layout Preservation Decoupling to achieve SOTA on V\*Bench (92.1) with 75% memory reduction.
 
@@ -55,7 +55,7 @@ We discover the real bottleneck of MLLMs on high-resolution images is background
 
 **E-VAds: An E-commerce Short Videos Understanding Benchmark for MLLMs**
 
-Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian Xu, Bo Zheng
+Xianjie Liu\*, **Yiman Hu\* (Tech Lead, Corresponding Author)**, Liang Wu, Ping Hu, Yixiong Zou, Jian Xu, Bo Zheng
 
 We build E-VAds, the first benchmark for evaluating MLLMs on conversion-oriented e-commerce short video understanding, covering 3,961 videos and 19,785 QA pairs across 5 tasks. Current MLLMs struggle significantly on high-density commercial content; our E-VAds-R1 reasoning model achieves a 109.2% gain on commercial intent reasoning.
 

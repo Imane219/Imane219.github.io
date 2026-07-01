@@ -36,7 +36,7 @@ author_profile: true
 
 **HiDe: Rethinking The Zoom-IN method in High Resolution MLLMs via Hierarchical Decoupling**
 
-Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zheng
+Xianjie Liu\*, **Yiman Hu\* (Tech Lead, Corresponding Author)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zheng
 
 我们发现多模态大语言模型处理高分辨率图像的真正瓶颈是背景干扰而非目标大小。HiDe 通过 Token 级注意力解耦与布局保留解耦，在 V\*Bench 上达到 SOTA（92.1 分），同时降低 75% 显存占用。
 
@@ -49,7 +49,7 @@ Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Yixiong Zou, Liang Wu, Jian Xu, Bo Zh
 
 **E-VAds: An E-commerce Short Videos Understanding Benchmark for MLLMs**
 
-Xianjie Liu\*, **Yiman Hu\* (Tech Lead)**, Liang Wu, Ping Hu, Yixiong Zou, Jian Xu, Bo Zheng
+Xianjie Liu\*, **Yiman Hu\* (Tech Lead, Corresponding Author)**, Liang Wu, Ping Hu, Yixiong Zou, Jian Xu, Bo Zheng
 
 我们构建 E-VAds，首个专门评测多模态大语言模型在转化导向电商短视频理解上的基准，涵盖 3,961 段视频与 5 类共 19,785 个问答对。当前模型在高密度商业内容上表现显著不足；我们的 E-VAds-R1 推理模型在商业意图推理任务上取得 109.2% 的性能增益。
 
